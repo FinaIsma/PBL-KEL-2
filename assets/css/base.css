@@ -37,53 +37,6 @@
     --space-7: 48px;
 }
 
-/* =======================================
-   FONT FAMILY SETUP
-======================================= */
-
-html {
-    font-size: 16px;
-}
-
-body {
-    font-family: 'Poppins', sans-serif;
-    color: var(--text);
-    background: var(--bg);
-}
-
-h1, h2, h3, h4, h5, h6,
-.nav-title,
-.sidebar-title {
-    font-family: 'Montserrat', sans-serif;
-    font-weight: 600;
-    color: var(--primary);
-}
-
-h1 {
-    font-size: 40px;
-}
-
-h2 {
-    font-size: 28px;
-}
-
-h3 {
-    font-size: 22px;
-}
-
-p, span, li {
-    font-size: 16px;
-}
-
-.small-text {
-    font-size: 12px;
-}
-
-.xs-text {
-    font-size: 10px;
-}
-
-
 * {
     margin: 0;
     padding: 0;
@@ -92,6 +45,7 @@ p, span, li {
 
 html {
     scroll-behavior: smooth;
+    font-size: 16px;
 }
 
 body {
@@ -108,35 +62,20 @@ ul, ol {
 
 a {
     text-decoration: none;
+    color: inherit;
 }
 
-img {
-    width: 100%;
-    display: block;
-}
-
-h1, h2, h3, h4, h5 {
+h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-title);
     font-weight: 700;
     color: var(--primary);
 }
 
-h1 {
-    font-size: var(--h1-size);
-    line-height: 1.2;
-}
-
-h2 {
-    font-size: var(--h2-size);
-    line-height: 1.3;
-}
-
-p, span, li {
-    font-family: var(--font-body);
-}
+h1 { font-size: var(--h1-size); line-height: 1.2; }
+h2 { font-size: var(--h2-size); line-height: 1.3; }
 
 .small { font-size: var(--small-size); }
-.tiny  { font-size: var(--tiny-size); }
+.tiny { font-size: var(--tiny-size); }
 
 .mb-1 { margin-bottom: var(--space-1); }
 .mb-2 { margin-bottom: var(--space-2); }
@@ -147,10 +86,13 @@ p, span, li {
 .py-4 { padding-block: var(--space-4); }
 .p-4  { padding: var(--space-4); }
 
-button {
-    font-family: var(--font-body);
-}
-
 .shadow {
     box-shadow: var(--shadow);
+}
+
+img:not(.nav-logo) {
+    max-width: 100%;
+    width: auto;
+    height: auto;
+    display: block;
 }
