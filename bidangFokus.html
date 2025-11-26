@@ -9,16 +9,59 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
   <!-- CSS Lokal -->
+  <link rel="stylesheet" href="assets/css/base.css">
   <link rel="stylesheet" href="assets/css/pages/navbar.css">
-<link rel="stylesheet" href="assets/css/pages/footer.css">
-<link rel="stylesheet" href="assets/css/pages/landing.css">
-<link rel="stylesheet" href="assets/css/base.css">
-<link rel="stylesheet" href="assets/css/components.css">
-<link rel="stylesheet" href="assets/css/layout.css">
+  <link rel="stylesheet" href="assets/css/pages/footer.css">
+<!-- <link rel="stylesheet" href="assets/css/pages/landing.css"> -->
+<!-- <link rel="stylesheet" href="assets/css/components.css">
+<link rel="stylesheet" href="assets/css/layout.css"> -->
 <link rel="stylesheet" href="assets/css/responsive.css">
-<link rel="stylesheet" href="assets/css/utils.css">
+<!-- <link rel="stylesheet" href="assets/css/utils.css"> -->
 
   <style>
+  body:not(.no-header) {
+    padding-top: 80px;
+  }
+
+  .navbar {
+    background: var(--primary) !important;
+    box-shadow: none !important;
+  }
+
+  .navbar.scrolled {
+    background: rgba(255, 255, 255, 0.98) !important;
+    box-shadow: 3px 5px 10px rgba(0, 0, 0, 0.15) !important;
+  }
+
+  .nav-brand .brand-title {
+    color: white !important;
+    margin-bottom: -10px !important;
+}
+
+.nav-brand .brand-sub {
+    font-family: var(--font-title) !important;
+    color: white !important;
+    margin-top: -10px !important;
+}
+
+.nav-menu a,
+.dropdown-btn {
+    color: white !important;
+    font-family: var(--font-title) !important;
+}
+
+.dropdown-menu li a {
+    font-size: 13px;
+    color: black !important;
+}
+
+.navbar.scrolled .brand-title,
+.navbar.scrolled .brand-sub,
+.navbar.scrolled .nav-menu a,
+.navbar.scrolled .dropdown-btn {
+    color: black !important;
+}
+
     body {
     background: white url('assets/img/aura.png');
     background-size: 700px 700px;
@@ -29,14 +72,14 @@
     .header-section {
     background: #0E1F43;
     color: white;
-    padding: 4rem 2rem;
+    padding: 0 2rem;
     text-align: center;
     position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    min-height: 400px;
+    min-height: 200px;
     }
 
 .header-section h1 {
@@ -58,8 +101,11 @@
 
     /* Content Wrapper */
     .content-wrapper {
-      width: 100%;
-      margin: 0 auto;
+      width: auto;
+      margin-right: 40px;
+      margin-left: 40px;
+      margin-top: 20px;
+      margin-bottom: 50px;
       padding: 3rem 2rem;
       display: flex;
       flex-direction: column;
@@ -169,7 +215,7 @@
 
   <!-- Navbar placeholder -->
   <div id="navbar-placeholder"></div>
-
+  <script src="assets/js/navbar.js"></script>
   <!-- Header Section -->
 <div class="header-section">
     <div class="header-content">
@@ -231,9 +277,6 @@
 
   <!-- Footer placeholder -->
   <div id="footer-placeholder"></div>
-
-  <!-- Load Navbar & Footer JS -->
-  <script src="assets/js/navbar.js"></script>
   <script src="assets/js/footer.js"></script>
 
 </body>

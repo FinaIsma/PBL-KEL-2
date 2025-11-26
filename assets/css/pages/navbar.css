@@ -119,6 +119,6 @@
     display: block;
 }
 
-body:not(.no-header) {
+/* body:not(.no-header) {
     padding-top: 90px;
-}
+} */
