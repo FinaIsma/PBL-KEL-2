@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
-    fetch("navbar.html")
+    fetch("../navbar.html")
         .then(response => response.text())
         .then(data => {
             document.getElementById("navbar-placeholder").innerHTML = data;
@@ -14,14 +14,3 @@ document.addEventListener("DOMContentLoaded", () => {
             });
         });
 });
-
-window.addEventListener("scroll", function () {
-    const navbar = document.querySelector(".navbar");
-
-    if (window.scrollY > 10) {
-        navbar.classList.add("scrolled");
-    } else {
-        navbar.classList.remove("scrolled");
-    }
-});
-

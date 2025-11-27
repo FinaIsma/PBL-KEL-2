@@ -1,5 +1,6 @@
 .navbar {
     z-index: 99999 !important;
+    z-index: 99999 !important;
     width: 100%;
     position: fixed;
     top: 0;
@@ -90,7 +91,7 @@
 
 .dropdown-menu {
     position: absolute;
-    top: 32px;
+    top: 100%;
     left: 0;
 
     background: #e6e6e6;
@@ -117,6 +118,10 @@
 
 .dropdown:hover .dropdown-menu {
     display: block;
+}
+
+body:not(.no-header) {
+    padding-top: 90px;
 }
 
 body:not(.no-header) {
