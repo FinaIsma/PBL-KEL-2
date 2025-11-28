@@ -1,0 +1,379 @@
+/* Arsip Page Specific Styles */
+
+:root {
+    --color-primary: #0E1F43;
+    --color-secondary: #FEBE11;
+    --color-bg: #ffffff;
+    --color-text: #222;
+    
+    --ff-heading: 'Montserrat', sans-serif;
+    --ff-body: 'Poppins', sans-serif;
+    
+    --radius-4: 4px;
+    --radius-6: 6px;
+    --radius-8: 8px;
+    
+    --shadow-200: 2px 4px 10px rgba(0,0,0,0.08);
+    --transition-fast: all 0.2s ease;
+}
+
+/* Main Content */
+.arsip-main {
+    padding: 2rem;
+}
+
+/* Arsip Header */
+.arsip-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 2rem;
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.btn-back {
+    width: 40px;
+    height: 40px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--transition-fast);
+    color: var(--color-text);
+    position: relative;
+}
+
+.btn-back::before {
+    content: '';
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background-image: url('data:image/svg+xml;utf8,<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" xmlns="http://www.w3.org/2000/svg"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.btn-back:hover {
+    background: #f0f0f0;
+    border-radius: var(--radius-6);
+}
+
+.arsip-title {
+    font-family: var(--ff-heading);
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--color-text);
+    margin: 0;
+}
+
+.btn-add {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: var(--color-secondary);
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 8px rgba(254, 190, 17, 0.3);
+    transition: var(--transition-fast);
+    position: relative;
+}
+
+.btn-add::before {
+    content: '';
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background-image: url('data:image/svg+xml;utf8,<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="%230E1F43" stroke-width="2" xmlns="http://www.w3.org/2000/svg"><path d="M12 5v14M5 12h14"/></svg>');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.btn-add:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(254, 190, 17, 0.4);
+}
+
+.btn-add svg {
+    stroke: var(--color-primary);
+}
+
+/* Search */
+.search-wrapper {
+    max-width: 400px;
+}
+
+.search-input {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1px solid #e6e6e6;
+    border-radius: var(--radius-8);
+    font-family: var(--ff-body);
+    font-size: 0.95rem;
+    background: #f7f7f7;
+    transition: var(--transition-fast);
+}
+
+.search-input:focus {
+    outline: none;
+    border-color: var(--color-secondary);
+    background: white;
+}
+
+/* Table Wrapper */
+.arsip-table-wrapper {
+    background: white;
+    border-radius: var(--radius-8);
+    box-shadow: var(--shadow-200);
+    overflow: hidden;
+    margin-bottom: 2rem;
+}
+
+/* Arsip Table */
+.arsip-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: var(--ff-body);
+}
+
+.arsip-table thead {
+    background: var(--color-secondary);
+}
+
+.arsip-table thead th {
+    padding: 1rem;
+    text-align: left;
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: var(--color-primary);
+    border-bottom: 2px solid var(--color-primary);
+}
+
+.arsip-table thead th:first-child {
+    padding-left: 1.5rem;
+}
+
+.arsip-table thead th:last-child {
+    padding-right: 1.5rem;
+}
+
+.arsip-table tbody tr {
+    border-bottom: 1px solid #e6e6e6;
+    transition: var(--transition-fast);
+}
+
+.arsip-table tbody tr:hover {
+    background: #fafafa;
+}
+
+.arsip-table tbody td {
+    padding: 1.25rem 1rem;
+    color: var(--color-text);
+    font-size: 0.9rem;
+}
+
+.arsip-table tbody td:first-child {
+    padding-left: 1.5rem;
+    font-weight: 600;
+}
+
+.arsip-table tbody td:last-child {
+    padding-right: 1.5rem;
+}
+
+/* File Preview */
+.file-preview {
+    width: 60px;
+    height: 40px;
+    background: #e6e6e6;
+    border-radius: var(--radius-4);
+    margin: 0 auto;
+}
+
+/* Action Buttons */
+.action-buttons {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: center;
+}
+
+.btn-action {
+    width: 36px;
+    height: 36px;
+    border: none;
+    border-radius: var(--radius-6);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--transition-fast);
+    position: relative;
+}
+
+.btn-edit {
+    background: var(--color-secondary);
+}
+
+.btn-edit::before {
+    content: '';
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    background-image: url('data:image/svg+xml;utf8,<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="%230E1F43" stroke-width="2" xmlns="http://www.w3.org/2000/svg"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.btn-edit:hover {
+    background: #e5aa10;
+    transform: translateY(-2px);
+}
+
+.btn-delete {
+    background: var(--color-secondary);
+}
+
+.btn-delete::before {
+    content: '';
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    background-image: url('data:image/svg+xml;utf8,<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="%230E1F43" stroke-width="2" xmlns="http://www.w3.org/2000/svg"><path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.btn-delete:hover {
+    background: #e5aa10;
+    transform: translateY(-2px);
+}
+
+/* Footer Button */
+.button-footer {
+    display: flex;
+    justify-content: flex-end;
+    padding-top: 1rem;
+}
+
+.btn-simpan {
+    padding: 0.75rem 2.5rem;
+    background: var(--color-secondary);
+    color: var(--color-primary);
+    border: none;
+    border-radius: var(--radius-8);
+    font-family: var(--ff-body);
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: var(--transition-fast);
+    box-shadow: 0 2px 8px rgba(254, 190, 17, 0.3);
+}
+
+.btn-simpan:hover {
+    background: #e5aa10;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(254, 190, 17, 0.4);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .arsip-main {
+        padding: 1.25rem;
+    }
+
+    .arsip-header {
+        margin-bottom: 1.5rem;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+
+    .header-left {
+        width: 100%;
+    }
+
+    .search-wrapper {
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .arsip-title {
+        font-size: 1.75rem;
+    }
+
+    .btn-add {
+        width: 45px;
+        height: 45px;
+    }
+
+    .arsip-table-wrapper {
+        overflow-x: auto;
+    }
+
+    .arsip-table {
+        min-width: 800px;
+    }
+
+    .arsip-table thead th,
+    .arsip-table tbody td {
+        padding: 0.75rem;
+        font-size: 0.85rem;
+    }
+
+    .button-footer {
+        justify-content: center;
+    }
+
+    .btn-simpan {
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .arsip-title {
+        font-size: 1.5rem;
+    }
+
+    .btn-add {
+        width: 40px;
+        height: 40px;
+    }
+
+    .search-wrapper {
+        max-width: 100%;
+    }
+
+    .arsip-table thead th,
+    .arsip-table tbody td {
+        padding: 0.5rem;
+        font-size: 0.8rem;
+    }
+
+    .file-preview {
+        width: 50px;
+        height: 35px;
+    }
+
+    .btn-action {
+        width: 32px;
+        height: 32px;
+    }
+
+    .btn-action svg {
+        width: 16px;
+        height: 16px;
+    }
+}
