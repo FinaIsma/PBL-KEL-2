@@ -1,0 +1,315 @@
+
+.tentangKami{
+    background: var(--primary);
+    color: #fff;
+    padding: var(--space-6);
+    padding-top: 160px;
+    margin-top: -120px;  /* buat atasin */
+}
+
+.tentangKami-container{
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: var(--space-7);   
+    margin-right: 0;
+}
+
+.tentangKami-left h1{
+    font-size: 50px;
+    color: #fff;
+    line-height: 1;
+    margin-top: var(--space-2);
+    padding-right: 100px;
+    padding-left: var(--space-7);
+}
+
+.tentangKami-right p{
+    margin-bottom: var(--space-7);
+}
+
+.btn-link{
+    display: flex;
+    justify-content: flex-end;
+    margin-right: var(--space-5);
+}
+
+.btn-link a {
+    display: inline-block;
+    background-color: var(--secondary);
+    padding: 8px 9px;
+
+    border-radius: var(--radius-md);
+    margin-right: var(--space-2);
+    color: black;
+}
+
+.btn-link a:hover {
+    background-color: #e0a800;
+}
+
+/* visi-misi */
+.visi-misi {
+    padding: var(--space-7);
+    position: relative;
+    overflow: hidden;
+}
+.visi-misi::before {
+    content: '';
+    position: absolute;
+    bottom: 0;  
+    right: 0;   
+    width: 600px;   
+    height: 500px;
+    transform: translate(30%, -20%); /* geser keluar ke kanan & bawah */
+    background-image: url('../../img/aura.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    pointer-events: none;
+    z-index: 0;
+}
+
+
+.visi-misi > * {
+    position: relative;
+    z-index: 1;  
+}
+.visi-misi h2 {
+    text-align: center;
+    margin-bottom: var(--space-4);
+}
+.vismis-line {
+    border: none;
+    height: 1.5px;
+    background-color:var(--secondary); 
+    width: 100%; 
+    margin-bottom: var(--space-7); 
+    margin-top: var(--space-5);
+}
+.visiMisi-container {
+    display: flex;
+    justify-content: center;
+    gap: var(--space-6);
+    
+}
+.card-visi, .card-misi {
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    border: 1px solid rgba(0,0,0,0.1);
+    background: var(--background);
+    padding: var(--space-5);
+    border-radius: var(--radius-lg);
+    width: 100%;
+    margin-bottom: var(--space-6);
+}
+.card-misi li {
+    margin-bottom: var(--space-1);
+    line-height: 1.6;
+    color: var(--text-color);
+    list-style: disc;
+}
+
+
+/* pengelola Lab */
+.pengelolaLab {
+    padding: var(--space-7);
+    position: relative;
+    overflow: hidden;
+}
+.pengelolaLab h2{
+    margin-bottom: var(--space-4);
+}
+
+.pengelolaLab::before {
+    content: '';
+    position: absolute;
+    bottom: 0px;  
+    left: 0px;    
+    width: 500px;
+    height: 500px;
+    transform: translate(-20%, 10%); 
+    background-image: url('../../img/aura.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.pengelolaLab > * {
+    position: relative;
+    z-index: 1;
+}
+.pengelola-line{
+    border: none;
+    height: 1.5px;
+    background-color:var(--secondary); 
+    width: 100%; 
+    margin-bottom: var(--space-7); 
+    margin-top: var(--space-5);
+}
+
+.slider-container {
+    position: relative;
+    width: 100%;
+    overflow: visible;  
+    padding: 0 0;
+    margin-bottom: 75px;
+    margin-top: 50px;
+}
+
+.pengelolaLab-card {
+    display: flex;
+    gap: 25px ; 
+    transition: transform 0.4s ease-in-out;
+    justify-content: center;
+}
+
+.card-name {
+    background: var(--primary);
+    width: 250px;  
+    min-width: 200px;
+    height: 320px;  
+    border-radius: var(--space-4);  
+    color: var(--background);
+    padding: var(--space-4);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.card-name:hover {
+    transform: translateY(-10px);  /* Naik ke atas */
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+}
+
+.foto {
+    background: var(--gray-200);
+    width: 100%;
+    height: 220px;  
+    border-radius: var(--space-4);
+    margin-bottom: var(--space-4);
+    background-image: url('../../img/image\ 6.png');
+    background-size: cover;
+    background-position: center;
+}
+.foto-1{
+    background: var(--gray-200);
+    width: 100%;
+    height: 220px;  
+    border-radius: var(--space-4);
+    margin-bottom: var(--space-4);
+    background-image: url('../../img/image\ 3.png');
+    background-size: cover;
+    background-position: center;
+}
+
+.card-header {
+    line-height: 1.3;
+    font-size: var(--space-4);
+    font-weight: 600;
+    margin-bottom: var(--space-2);
+}
+
+.card-body {
+    font-size: 14px;
+    opacity: 0.8;
+}
+
+.arrow {
+    background: #fff;  
+    border: none;
+    font-size: var(--space-5);
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;  
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    color: var(--primary);  
+    cursor: pointer;
+    position: absolute;
+    top: 50%;
+    z-index: 100;
+    transition: all 0.3s ;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15); 
+}
+
+.arrow-left {
+    left: -10px;
+}
+
+.arrow-right {
+    right: -10px;
+}
+
+
+.arrow:hover {
+    transform: translateY(-50%) scale(1.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+}
+
+
+
+
+/* buat navbar */
+
+/* Navbar transparan */
+.navbar:not(.scrolled) .nav-menu a,
+.navbar:not(.scrolled) .nav-brand .brand-title,
+.navbar:not(.scrolled) .nav-brand .brand-sub,
+.navbar:not(.scrolled) .dropdown-btn,
+.navbar:not(.scrolled) .nav-menu li span,
+.navbar:not(.scrolled) .nav-menu li i {
+    color: #ffffff !important;  
+    transition: 0.3s ease;
+}
+
+/* Hover untuk navbar transparan → tetap putih */
+.navbar:not(.scrolled) .nav-menu a:hover,
+.navbar:not(.scrolled) .dropdown-btn:hover,
+.navbar:not(.scrolled) .nav-menu li span:hover,
+.navbar:not(.scrolled) .nav-menu li i:hover {
+    color: #ffffff !important;
+}
+
+/* Dropdown default tetap hitam saat navbar transparan */
+.navbar:not(.scrolled) .dropdown-menu li a {
+    color: var(--gray-900) !important;
+}
+
+/* Hover dropdown tetap hitam saat navbar transparan */
+.navbar:not(.scrolled) .dropdown-menu li a:hover {
+    color: #000000 !important;
+}
+
+.navbar.scrolled {
+    background: rgba(255, 255, 255, 0.98) !important;
+    backdrop-filter: blur(6px);
+}
+
+/* Semua tulisan berubah jadi primary saat scroll */
+.navbar.scrolled .nav-menu a,
+.navbar.scrolled .nav-menu li span,
+.navbar.scrolled .nav-menu li i,
+.navbar.scrolled .nav-brand .brand-title,
+.navbar.scrolled .nav-brand .brand-sub,
+.navbar.scrolled .dropdown-btn,
+.navbar.scrolled .dropdown-menu li a {
+    color: var(--primary) !important;
+}
+
+/* Hover saat navbar scrolled → hitam semua */
+.navbar.scrolled .nav-menu a:hover,
+.navbar.scrolled .nav-menu li span:hover,
+.navbar.scrolled .nav-menu li i:hover,
+.navbar.scrolled .dropdown-btn:hover,
+.navbar.scrolled .dropdown-menu li a:hover {
+    color: #000000 !important;
+}
+

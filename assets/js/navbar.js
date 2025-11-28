@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
-    fetch("navbar.html")
+    fetch("../navbar.html")
         .then(response => response.text())
         .then(data => {
             document.getElementById("navbar-placeholder").innerHTML = data;
@@ -15,6 +15,8 @@ document.addEventListener("DOMContentLoaded", () => {
         });
 });
 
+
+// Tambahan dari stash (scroll effect)
 window.addEventListener("scroll", function () {
     const navbar = document.querySelector(".navbar");
 
@@ -24,4 +26,3 @@ window.addEventListener("scroll", function () {
         navbar.classList.remove("scrolled");
     }
 });
-
