@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tentang Kami</title>
+
+    <link rel="stylesheet" href="assets/css/base.css">
+    <link rel="stylesheet" href="assets/css/utils.css">
+    <link rel="stylesheet" href="assets/css/components.css">
+    <!-- <link rel="stylesheet" href="assets/css/layout.css"> -->
+    <link rel="stylesheet" href="assets/css/responsive.css">
+    <link rel="stylesheet" href="assets/css/pages/tabelCRUD.css">
+    <link rel="stylesheet" href="assets/css/pages/navbar.css">
+    <link rel="stylesheet" href="assets/css/pages/sidebar.css">
+    <!-- <link rel="stylesheet" href="assets/css/pages/footer.css"> -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+
+<body>
+    
+    <!-- Header -->
+    <div id="header-placeholder"></div>
+    
+    <!-- Layout dengan Sidebar -->
+    <div class="layout">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div id="sidebar-placeholder"></div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="content">
+            <div class="top-bar-page">
+                <a href="layanan-admin.html" class="btn-back">
+        <i class="fa-solid fa-arrow-left"></i>
+    </a>
+
+    <!-- Container judul + tombol tambah -->
+    <div class="title-container">
+        <div class="title-row">
+            <h1 class="title-page">Layanan</h1>
+            <button class="btn-add">
+                <i class="fa-solid fa-plus"></i>
+            </button>
+        </div>
+
+        <!-- Search dengan icon -->
+        <div class="search-row">
+            <div class="search-wrapper">
+                <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                <input type="text" class="search-input" placeholder="Search">
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="table-wrapper">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Jenis</th>
+                        <th>Nama</th>
+                        <th>Deskripsi</th>
+                        <th>Editor ID</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>Lorem Ipsum</td>
+                        <td>Lorem Ipsum</td>
+                        <td>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</td>
+                        <td>1</td>
+                        <td>
+                            <div class="action-buttons">
+    <button class="btn-action btn-edit" title="Edit">
+        <i class="fa-solid fa-pen"></i>
+    </button>
+
+    <button class="btn-action btn-delete" title="Delete">
+        <i class="fa-solid fa-trash"></i>
+    </button>
+</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>Lorem Ipsum</td>
+                        <td>Lorem Ipsum</td>
+                        <td>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</td>
+                        <td>1</td>
+                        <td>
+                            <div class="action-buttons">
+    <button class="btn-action btn-edit" title="Edit">
+        <i class="fa-solid fa-pen"></i>
+    </button>
+
+    <button class="btn-action btn-delete" title="Delete">
+        <i class="fa-solid fa-trash"></i>
+    </button>
+</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>Lorem Ipsum</td>
+                        <td>Lorem Ipsum</td>
+                        <td>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</td>
+                        <td>1</td>
+                        <td>
+                            <div class="action-buttons">
+                        <button class="btn-action btn-edit" title="Edit">
+                            <i class="fa-solid fa-pen"></i>
+                        </button>
+
+                        <button class="btn-action btn-delete" title="Delete">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+                    </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            
+        </div>
+<div class="btn-save-wrapper">
+        <button class="btn-save">Simpan</button>
+    </div>
+</div>
+
+            
+
+        </main>
+    </div>
+
+    <!-- <div id="footer-placeholder"></div>
+    
+    <script src="assets/js/footer.js"></script> -->
+    <script src="assets/js/headerSidebar.js"></script>
+    <script type="module" src="assets/js/main.js"></script>
+</body>
+</html>
