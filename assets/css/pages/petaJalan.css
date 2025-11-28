@@ -1,0 +1,235 @@
+.navbar {
+    background-color: #0E1F43 !important;
+}
+
+.navbar .nav-brand span,
+.navbar .nav-menu a,
+.navbar .dropdown-btn {
+    color: #ffffff !important;
+}
+
+.navbar .nav-menu a:hover {
+    color: #FFB84D !important;
+}
+
+.navbar .dropdown-menu,
+.navbar .dropdown-menu a {
+    color: var(--gray-900) !important;
+}
+
+.hero-section {
+    background-color: #0E1F43; 
+    color: #ffffff;
+    text-align: center;
+    padding: 100px 20px 60px; 
+}
+
+.hero-section h1 {
+    font-size: 48px;
+    font-weight: 700;
+    margin: 0;
+    color: #ffffff;
+}
+
+.timeline-section {
+    padding: 60px 20px 80px;
+    background: #ffffff;
+    position: relative;
+    overflow: visible;
+}
+
+.timeline-section::before {
+    content: "";
+    position: absolute;
+    right: 300px;        
+    top: 150px;        
+    width: 600px;
+    height: 600px;
+    background: url('../../img/aura.png') no-repeat center;
+    background-size: contain;
+    opacity: 0.35;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.timeline-section::after {
+    content: "";
+    position: absolute;
+    left: 150px;        
+    top: 40%;           
+    transform: translateY(-50%);
+    width: 600px;
+    height: 600px;
+    background: url('../../img/aura.png') no-repeat center;
+    background-size: contain;
+    opacity: 0.32;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.timeline-section .aura-bottom {
+    content: "";
+    position: absolute;
+    right: -100px;        
+    bottom: -150px;      
+    width: 600px;
+    height: 600px;
+    background: url('../../img/aura.png') no-repeat center;
+    background-size: contain;
+    opacity: 0.35;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.timeline-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+    padding: 0 20px;
+}
+
+.timeline-container::before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 0;
+    bottom: 0;
+    width: 5px;
+    background: linear-gradient(to bottom, #FFB84D, #FF9A3D);
+    transform: translateX(-50%);
+    z-index: 0;
+}
+
+.timeline-circle-top {
+    position: absolute;
+    left: 50%;
+    top: 0;
+    transform: translate(-50%, -50%);
+    width: 20px;
+    height: 20px;
+    background: #FFB84D;
+    border-radius: 50%;
+    z-index: 2;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
+
+.timeline-end-circle {
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    transform: translate(-50%, 50%);
+    width: 20px;
+    height: 20px;
+    background: #FFB84D;
+    border-radius: 50%;
+    z-index: 2;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
+
+.timeline-item {
+    display: flex;
+    margin-bottom: 50px;
+    position: relative;
+    z-index: 1;
+}
+
+.timeline-item::before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 20px;
+    height: 20px;
+    background: #FFB84D;
+    border-radius: 50%;
+    z-index: 1;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
+
+.timeline-item.left {
+    justify-content: flex-end;
+    padding-right: calc(50% + 90px);
+}
+
+.timeline-item.right {
+    justify-content: flex-start;
+    padding-left: calc(50% + 90px);
+}
+
+.timeline-card {
+    background: #0E1F43;
+    color: #fff;
+    padding: 20px 20px 20px 20px;
+    border-radius: 15px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+    max-width: 370px;
+    width: 100%;
+    position: relative;
+    z-index: 1;
+    text-align: left;
+}
+
+.timeline-card h3 {
+    font-family: var(--font-title);
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 15px;
+    color: #fff;
+    text-align: center;
+}
+
+.timeline-card p,
+.timeline-card ul li {
+    font-size: 14px;
+    line-height: 1.9;
+    color: #e6e6e6;
+    text-align: left;
+}
+
+.timeline-card ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.timeline-card ul li {
+    padding-left: 18px;
+    position: relative;
+    margin-bottom: 7px;
+}
+
+.timeline-card ul li::before {
+    content: '•';
+    position: absolute;
+    left: 0;
+    font-size: 16px;
+    line-height: 1.3;
+}
+
+.timeline-icon {
+    position: absolute;
+    top: -25px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 55px;
+    height: 55px;
+    background: #0E1F43;
+    border: 3px solid rgba(0,0,0,0.12);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.12);
+}
+
+.timeline-icon i {
+    color: #fff;
+    font-size: 22px;
+}
+
+body {
+    padding-top: 80px !important ;
+}

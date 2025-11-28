@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Galeri Admin - Network & Cyber Security Lab</title>
+
+    <link rel="stylesheet" href="assets/css/base.css">
+    <link rel="stylesheet" href="assets/css/pages/navbar.css">
+    <link rel="stylesheet" href="assets/css/pages/sidebar.css">
+    <link rel="stylesheet" href="assets/css/pages/galeriAdmin.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+
+<body>
+
+    <div id="header-placeholder"></div>
+
+    <div class="layout">
+        <aside class="sidebar">
+            <div id="sidebar-placeholder"></div>
+        </aside>
+
+        <main class="content">
+            <section class="hero-section-admin">
+                <h1>Galeri</h1>
+            </section>
+
+            <section class="agenda-section-admin">
+                <h2 class="section-title">Agenda Mendatang</h2>
+                <div class="agenda-wrapper">
+                    <button class="agenda-nav agenda-prev"><i class="fa-solid fa-chevron-left"></i></button>
+                    
+                    <div class="agenda-container">
+                        <div class="agenda-card">
+                            <h3>Nama Kegiatan</h3>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore.</p>
+                            <ul>
+                                <li>Poin ini unus, incididique sed accusam elementum</li>
+                                <li>Gravida sit blandit senarum sit</li>
+                            </ul>
+                        </div>
+
+                        <div class="agenda-card">
+                            <h3>Nama Kegiatan</h3>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore.</p>
+                            <ul>
+                                <li>Poin ini unus, incididique sed accusam elementum</li>
+                                <li>Gravida sit blandit senarum sit</li>
+                            </ul>
+                        </div>
+
+                        <div class="agenda-card">
+                            <h3>Nama Kegiatan</h3>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore.</p>
+                            <ul>
+                                <li>Poin ini unus, incididique sed accusam elementum</li>
+                                <li>Gravida sit blandit senarum sit</li>
+                            </ul>
+                        </div>
+
+                        <div class="agenda-card">
+                            <h3>Nama Kegiatan</h3>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore.</p>
+                            <ul>
+                                <li>Poin ini unus, incididique sed accusam elementum</li>
+                                <li>Gravida sit blandit senarum sit</li>
+                            </ul>
+                        </div>
+
+                        <div class="agenda-card">
+                            <h3>Nama Kegiatan</h3>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore.</p>
+                            <ul>
+                                <li>Poin ini unus, incididique sed accusam elementum</li>
+                                <li>Gravida sit blandit senarum sit</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <button class="agenda-nav agenda-next"><i class="fa-solid fa-chevron-right"></i></button>
+                </div>
+
+                <div class="agenda-button-wrapper">
+                    <button class="kelola-button">Kelola</button>
+                </div>
+            </section>
+
+            <section class="dokumentasi-section-admin">
+                <h2 class="section-title">Dokumentasi</h2>
+                <div class="dokumentasi-container">
+                    
+                    <div class="dokumentasi-card">
+                        <div class="dokumentasi-image">
+                        </div>
+                        <div class="dokumentasi-info">
+                            <h3>Lorem ipsum dolor sit</h3>
+                            <p>Lorem ipsum dolor sit amet, consectetur</p>
+                        </div>
+                    </div>
+
+                    <div class="dokumentasi-card">
+                        <div class="dokumentasi-image">
+                        </div>
+                        <div class="dokumentasi-info">
+                            <h3>Lorem ipsum dolor sit</h3>
+                            <p>Lorem ipsum dolor sit amet, consectetur</p>
+                        </div>
+                    </div>
+
+                    <div class="dokumentasi-card">
+                        <div class="dokumentasi-image">
+                        </div>
+                        <div class="dokumentasi-info">
+                            <h3>Lorem ipsum dolor sit</h3>
+                            <p>Lorem ipsum dolor sit amet, consectetur</p>
+                        </div>
+                    </div>
+
+                    <div class="dokumentasi-card">
+                        <div class="dokumentasi-image">
+                        </div>
+                        <div class="dokumentasi-info">
+                            <h3>Lorem ipsum dolor sit</h3>
+                            <p>Lorem ipsum dolor sit amet, consectetur</p>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="pagination">
+                    <button class="pagination-btn active">1</button>
+                    <button class="pagination-btn">2</button>
+                    <button class="pagination-btn">3</button>
+                </div>
+
+                <div class="dokumentasi-button-wrapper">
+                    <button class="kelola-button">Kelola</button>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <script src="assets/js/headerSidebar.js"></script>
+
+    <script>
+        const agendaPrev = document.querySelector('.agenda-prev');
+        const agendaNext = document.querySelector('.agenda-next');
+        const agendaContainer = document.querySelector('.agenda-container');
+
+        if (agendaPrev && agendaNext && agendaContainer) {
+            agendaPrev.addEventListener('click', () => {
+                agendaContainer.scrollBy({ left: -350, behavior: 'smooth' });
+            });
+
+            agendaNext.addEventListener('click', () => {
+                agendaContainer.scrollBy({ left: 350, behavior: 'smooth' });
+            });
+        }
+    </script>
+</body>
+</html>

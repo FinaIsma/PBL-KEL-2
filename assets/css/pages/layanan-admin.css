@@ -1,0 +1,245 @@
+.layanan-foto {
+    width: 100%;
+    height: 400px;
+    background-image: url("../../img/image 3.png");
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: -100px;     /* buat di atasin */
+}
+h1 {
+    color: var(--background);
+    font-size: 50px;
+    
+}
+/* Sarana prasaran */
+.Sarpras{
+    padding: var(--space-7);
+    position: relative;
+    overflow: hidden;
+}
+.Sarpras::before {
+    content: '';
+    position: absolute;
+    bottom: 0px;
+    left: -150px;
+    width: 600px;
+    height: 600px;
+    background-image: url('../../img/aura.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    pointer-events: none;
+    z-index: 0;
+}
+.Sarpras::after {
+    content: '';
+    position: absolute;
+    top: -300px;     /* Sesuaikan sendiri */
+    right: -150px;   /* Sesuaikan sendiri */
+    width: 500px;    /* Bisa lebih kecil dari before */
+    height: 500px;
+    background-image: url('../../img/aura.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    pointer-events: none;
+    opacity: 0.8;    /* opsional */
+    z-index: 0;
+}
+.Sarpras > * {
+    position: relative;
+    z-index: 1; 
+}
+
+.Sarpras h2 {
+    text-align: center;
+}
+.sarpras-line {
+    border: none;
+    height: 1.5px;
+    background-color:var(--secondary); 
+    width: 100%; 
+    margin-bottom: var(--space-7); 
+    margin-top: var(--space-5);
+}
+.Sarpras-container{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-7);
+    justify-items: center;
+    max-width: 1200px;
+    margin: auto;
+}
+.Sarpras-card{
+    background: var(--primary);
+    width: 100%;
+    max-width: 320px;   
+    height: 300px;
+    border-radius: var(--radius-xl);
+    color: var(--background);
+    padding: var(--space-3);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+}
+.Sarpras-card:hover{
+    transform: scale(1.05);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    z-index: 10;
+}
+.Sarana-foto{
+    text-align: center;
+    background: var(--gray-200);
+    width: 100%;
+    height: 2900px;
+    background-image: url('../../img/image\ 3.png');
+    border-radius: var(--radius-lg);
+    margin-bottom: var(--space-4);
+}
+.button-container {
+    justify-content: center;
+    margin-top: var(--space-7);
+    display: flex;
+    gap: var(--space-3);
+}
+.btn {
+    border-radius: 50% !important;
+    width: 40px;
+    height: 40px;
+    border: none;
+    cursor: pointer;
+    font-size: var(--small-size) !important;
+    background: var(--primary);
+    color: #fff;
+    display: inline-block;
+    align-items: center; 
+    justify-content: center; 
+}
+
+.btn:hover {
+    background: var(--secondary);
+    color: var(--primary);
+}
+
+/* layanan */
+.layanan-title{
+    padding: var(--space-7);
+    position: relative;
+    overflow: hidden;
+    margin-bottom: var(--space-7);
+}
+.layanan-title::before {
+    content: '';
+    position: absolute;
+    bottom: 200px;
+    right: -20vw;        /* aman, tidak melewati viewport */
+    width: 500px;
+    height: 500px;
+    background-image: url('../../img/aura.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    pointer-events: none;
+    z-index: -1;
+}
+
+.layanan-title > * {
+    position: relative;
+    z-index: 1; 
+}
+.layanan-title h2 {
+    text-align: center;
+}
+.layanan-warpper{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    gap: var(--space-7);
+}
+.layanan-card {
+    background: var(--primary);
+    color: var(--background);
+    width: 320px;
+    min-height: 450px;   /* tambahkan tinggi fix */
+    border-radius: var(--radius-md);
+    display: flex;
+    flex-direction: column;
+    padding: var(--space-4);
+    margin-bottom: var(--space-7);
+}
+.title-konsul{
+    color: var(--background) !important;
+    font-size: var(--h2-size);
+    text-align: center;
+    border-bottom: 1px solid var(--secondary);
+    margin-bottom: var(--space-4);
+    padding-bottom: var(--space-4);
+}
+.layanan-card p {
+    font-size: var(--small-size);
+    line-height: 2;
+    margin-bottom: var(--space-5);
+}
+.btn-box {
+    background: var(--secondary);
+    border-radius: var(--radius-md); 
+    width: 120px;
+    height: 35px;
+    line-height: 40px;     /* agar teks pas di tengah */
+    text-align: center;
+    display: inline-block; /* aman */
+    font-weight: 700;
+    cursor: pointer;
+    color: var(--primary);
+    align-self: flex-end;
+    margin-top: auto;      /* tombol TURUN ke bawah */
+    flex-shrink: 0;        /* tombol TIDAK boleh mengecil */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+
+.btn-box:hover{
+    background-color: #e0a800;;
+    color: #fff;
+}
+
+.btn-simpan2{
+    position: absolute;
+    bottom: 10px;
+    right: 70px;
+    background-color: var(--secondary);
+    color: var(--primary);
+    border: none;
+    border-radius: 6px;
+    padding: 6px 12px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s ease, transform 0.2s ease; 
+}
+
+.btn-simpan2:hover{
+    background-color: #FFD233; 
+    transform: scale(1.05);
+}
+
+
+/* tambahan */
+.content {
+    margin-left: 220px; /* sama seperti lebar sidebar */
+    width: calc(100% - 220px);
+}
+
+#header-placeholder {
+    z-index: 99999;
+    display: block;
+    height: 0 !important;
+}
+body:not(.no-header) {
+    padding-top: 83px !important;
+}

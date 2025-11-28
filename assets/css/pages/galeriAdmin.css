@@ -1,0 +1,327 @@
+.layout {
+    display: flex;
+    min-height: 100vh;
+}
+
+.content {
+    flex: 1;
+    margin-left: 220px; 
+    padding: 0;
+    min-height: 100vh;
+    background: #ffffff url('assets/img/aura.png') center/cover no-repeat;
+    backdrop-filter: blur(6px);
+}
+
+.navbar {
+    background-color: #fff !important;
+    color: black;
+}
+
+.hero-section-admin {
+    background-color: #0E1F43; 
+    color: white;
+    text-align: center;
+    padding: 70px 10px 70px; 
+}
+
+.hero-section-admin h1 {
+    font-family: var(--font-title);
+    font-size: 42px;
+    font-weight: 800;
+    color: #fff;
+    margin: 0;
+}
+
+.section-title {
+    text-align: center;
+    font-size: 36px;
+    font-weight: 700;
+    color: #0a1628;
+    margin-bottom: 20px;
+    font-family: var(--font-title);
+    position: relative;
+    z-index: 1;
+}
+
+.section-title::after {
+    content: '';
+    display: block;
+    width: 80%;
+    max-width: 1070px;
+    height: 3px;
+    background: linear-gradient(90deg, #ffd700 0%, #ffb800 100%);
+    margin: 15px auto 0;
+}
+
+.agenda-section-admin {
+    position: relative;
+    padding: 40px 0 70px;
+    background: #ffffff;
+    overflow: visible;
+}
+
+.agenda-section-admin::before,
+.agenda-section-admin::after {
+    content: '';
+    position: absolute;
+    background-image: url('../../img/aura.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    opacity: 0.55;
+    z-index: 0;
+    pointer-events: none;
+}
+
+.agenda-section-admin::before {
+    top: -50px;
+    left: -250px;
+    width: 500px;
+    height: 500px;
+}
+
+.agenda-section-admin::after {
+    bottom: -200px;
+    right: -200px;
+    width: 600px;
+    height: 600px;
+}
+
+.agenda-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    max-width: 1200px;
+    margin: 50px auto 0;
+    position: relative;
+    z-index: 1;
+    padding: 0 50px;
+}
+
+.agenda-nav {
+    background: #0E1F43;
+    color: white;
+    border: none;
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    flex-shrink: 0;
+    font-size: 18px;
+}
+
+.agenda-nav:hover {
+    background: #1a2f4f;
+    transform: scale(1.1);
+}
+
+.agenda-container {
+    display: flex;
+    gap: 30px;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    flex: 1;
+    padding: 0 10px;
+}
+
+.agenda-container::-webkit-scrollbar {
+    display: none;
+}
+
+.agenda-card {
+    flex: 0 0 300px;
+    background: #0E1F43;
+    color: white !important;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    min-width: 300px;
+}
+
+.agenda-card h3 {
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 15px;
+    color: white !important;
+    text-align: center;
+}
+
+.agenda-card p {
+    font-size: 14px;
+    line-height: 1.6;
+    margin-bottom: 15px;
+    opacity: 0.9;
+}
+
+.agenda-card ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.agenda-card ul li {
+    font-size: 14px;
+    line-height: 1.8;
+    padding-left: 20px;
+    position: relative;
+    margin-bottom: 8px;
+    opacity: 0.9;
+}
+
+.agenda-card ul li::before {
+    content: '•';
+    position: absolute;
+    left: 0;
+    color: white;
+    font-weight: bold;
+}
+
+.agenda-button-wrapper {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 40px;
+    margin-right: 70px;
+}
+
+.dokumentasi-section-admin {
+    background: #ffffff;
+    padding: 60px 0 80px;
+    position: relative;
+    overflow: hidden;
+}
+
+.dokumentasi-section-admin::before {
+    content: "";
+    position: absolute;
+    right: 800px;
+    top: 1000px;
+    width: 700px;
+    height: 700px;
+    background: url('../../img/aura.png') no-repeat center;
+    background-size: contain;
+    opacity: 0.55;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.dokumentasi-container {
+    max-width: 1200px;
+    margin: 50px auto 0;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); 
+    grid-template-rows: repeat(2, auto);   
+    gap: 30px;
+    padding: 0 50px;
+    position: relative;
+    z-index: 1;
+}
+
+.dokumentasi-card {
+    background: #0E1F43;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: none;
+    display: flex;
+    align-items: center;
+    text-align: center; 
+    flex-direction: column;
+    height: 80%;
+}
+
+.dokumentasi-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+}
+
+.dokumentasi-image {
+    width: 65%;
+    height: 400px;
+    background-color: #c4c4c4;
+    background-size: cover;
+    background-position: center;
+    margin: 20px;
+    border-radius: 15px;
+}
+
+.dokumentasi-info {
+    padding: 20px;
+    background: #0E1F43;
+    color: white;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.dokumentasi-info h3 {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: white;
+    font-family: var(--font-title);
+}
+
+.dokumentasi-info p {
+    font-size: 14px;
+    margin: 0;
+    opacity: 0.9;
+}
+
+.dokumentasi-button-wrapper {
+    display: flex;
+    justify-content: flex-end; 
+    margin-top: 40px;
+    margin-right: 70px;
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    margin-top: 50px;
+}
+
+.pagination-btn {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    border: none;
+    background: #0E1F43;
+    color: white;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.pagination-btn.active {
+    background: #FFB84D;
+    color: #0E1F43;
+}
+
+.kelola-button {
+    background: #FFB84D;
+    color: #0E1F43;
+    border: none;
+    padding: 12px 32px;
+    border-radius: 8px;
+    font-family: var(--font-body);
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 3px 10px rgba(255, 184, 77, 0.3);
+}
+
+.kelola-button:hover {
+    background: #FF9A3D;
+    box-shadow: 0 4px 14px rgba(255, 154, 61, 0.4);
+    transform: translateY(-2px);
+}
+
+body {
+    padding-top: 0 !important ;
+}

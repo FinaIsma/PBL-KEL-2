@@ -1,0 +1,276 @@
+.navbar {
+    background-color: #0E1F43 !important;
+}
+
+.navbar .nav-brand span,
+.navbar .nav-menu a,
+.navbar .dropdown-btn {
+    color: #ffffff !important;
+}
+
+.navbar .nav-menu a:hover {
+    color: #FFB84D !important;
+}
+.navbar .dropdown-menu,
+.navbar .dropdown-menu a {
+    color: var(--gray-900) !important;
+}
+
+.hero-section {
+    background: #0E1F43 !important;
+    color: white;
+    text-align: center;
+    padding: 90px 50px !important;
+    margin: 0 !important;
+    border: none !important;
+}
+
+.hero-section h1 {
+    font-size: 48px;
+    font-weight: 700;
+    margin: 0 !important;
+    color: white;
+    font-family: var(--font-title);
+}
+
+.agenda-section {
+    position: relative;
+    padding: 80px 20px 60px;
+    overflow: visible;
+    background: #ffff;
+    margin: 0;
+}
+
+.agenda-section::before {
+    content: '';
+    position: absolute;
+    top: 5px;
+    left: 200px;
+    width: 500px;
+    height: 500px;
+    background-image: url('../../img/aura.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    opacity: 0.55;
+    z-index: 0;
+}
+
+.agenda-section::after {
+    content: '';
+    position: absolute;
+    top: 300px;
+    right: 200px;
+    width: 600px;
+    height: 600px;
+    background-image: url('../../img/aura.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    opacity: 0.55;
+    z-index: 0;
+}
+
+.section-title {
+    text-align: center;
+    font-size: 36px;
+    font-weight: 700;
+    color: #0a1628;
+    margin-bottom: 20px;
+    position: relative;
+    z-index: 1;
+    font-family: var(--font-title);
+}
+
+.section-title::after {
+    content: '';
+    display: block;
+    width: 1070px;
+    height: 3px;
+    background: linear-gradient(90deg, #ffd700 0%, #ffb800 100%);
+    margin: 15px auto 0;
+}
+
+.agenda-container {
+    max-width: 1200px;
+    margin: 50px auto 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    padding: 0 20px;
+    position: relative;
+    z-index: 1;
+}
+
+.agenda-card {
+    background: #0E1F43;
+    color: white;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.agenda-card h3 {
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 15px;
+    color: white;
+    font-family: var(--font-title);
+    text-align: center;
+}
+
+.agenda-card p {
+    font-size: 14px;
+    line-height: 1.6;
+    margin-bottom: 15px;
+    opacity: 0.9;
+}
+
+.agenda-card ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.agenda-card ul li {
+    font-size: 14px;
+    line-height: 1.8;
+    padding-left: 20px;
+    position: relative;
+    margin-bottom: 8px;
+    opacity: 0.9;
+}
+
+.agenda-card ul li::before {
+    content: '•';
+    position: absolute;
+    left: 0;
+    color: white;
+    font-weight: bold;
+}
+
+.dokumentasi-section {
+    background-color: linear-gradient(135deg, #fefdf8 0%, #fffbf0 50%, #fef9f0 100%);
+    padding: 60px 20px 80px;
+    position: relative;
+}
+
+.dokumentasi-section::before {
+    content: '';
+    position: absolute;
+    bottom: -100px;
+    left: 550px;
+    width: 600px;
+    height: 600px;
+    background-image: url('../../img/aura.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    opacity: 0.55;
+    z-index: 0;
+}
+
+.dokumentasi-container {
+    max-width: 1200px;
+    margin: 50px auto 0;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 30px;
+    padding: 0px;
+    position: relative;
+    z-index: 1;
+}
+
+.dokumentasi-card {
+    background: #0E1F43;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: none;
+    display: flex;
+    align-items: center;
+    text-align: center; 
+    flex-direction: column;
+    height: 80%;
+}
+
+.dokumentasi-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+}
+
+.dokumentasi-image {
+    width: 65%;
+    height: 400px;
+    background-color: #c4c4c4;
+    background-size: cover;
+    background-position: center;
+    margin: 20px;
+    border-radius: 15px;
+}
+
+.dokumentasi-info {
+    padding: 20px;
+    background: #0E1F43;
+    color: white;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.dokumentasi-info h3 {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: white;
+    font-family: var(--font-title);
+}
+
+.dokumentasi-info p {
+    font-size: 14px;
+    margin: 0;
+    opacity: 0.9;
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    margin-top: 50px;
+    position: relative;
+    z-index: 1;
+}
+
+.pagination-btn {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    border: none;
+    background: #0E1F43;
+    color: white;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: var(--font-body);
+}
+
+.pagination-btn:hover {
+    background: #1a2f4f;
+    transform: scale(1.1);
+}
+
+.pagination-btn.active {
+    background: #FFB84D;
+    color: #0E1F43;
+}
+
+.pagination-btn.active:hover {
+    background: #FFB84D;
+}
+
+body {
+    padding-top: 70px !important ;
+}
