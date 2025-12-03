@@ -151,3 +151,9 @@
 .btn-cancel:hover {
     background: #ccc;
 }
+
+.navbar {
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1) !important;
+    background-color: #fff !important;
+    z-index: 1000 !important;
+}

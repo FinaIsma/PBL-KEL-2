@@ -33,6 +33,15 @@
     font-family: var(--font-title);
 }
 
+.agenda-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 30px;
+    width: 100%;
+}
+
 .agenda-section {
     position: relative;
     padding: 80px 20px 60px;
@@ -60,7 +69,7 @@
     content: '';
     position: absolute;
     top: 300px;
-    right: 200px;
+    right: 80px;
     width: 600px;
     height: 600px;
     background-image: url('../../img/aura.png');
@@ -92,14 +101,23 @@
 }
 
 .agenda-container {
-    max-width: 1200px;
+    max-width: 100%;
     margin: 50px auto 0;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 30px;
-    padding: 0 20px;
     position: relative;
     z-index: 1;
+
+    display: flex;
+    gap: 20px;
+    overflow: hidden;
+    scroll-behavior: smooth;
+    padding: 10px 0;
+    flex-wrap: nowrap;
+    width: 900px;
+}
+
+.agenda-container::-webkit-scrollbar {
+    height: 8px;
+    display: none;
 }
 
 .agenda-card {
@@ -107,7 +125,9 @@
     color: white;
     padding: 30px;
     border-radius: 15px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    min-width: 280px; 
+    max-width: 280px; 
+    flex: 0 0 auto; 
 }
 
 .agenda-card h3 {
@@ -147,6 +167,58 @@
     left: 0;
     color: white;
     font-weight: bold;
+}
+
+.scroll-btn {
+    width: 45px;
+    height: 45px;
+    border: none;
+    background: #0E1F43;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+}
+
+.scroll-btn:hover {
+    background: #1a2f4f;
+    transform: scale(1.1);
+}
+
+.scroll-btn i {
+    color: #ffffff;
+    font-size: 18px;
+}
+
+/* Posisi tombol kiri & kanan */
+.scroll-btn.left {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.scroll-btn.right {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.scroll-btn:hover {
+    background: #1a2f4f;
+    transform: translateY(-50%) scale(1.1);
+}
+
+.scroll-btn i {
+    color: #ffffff;
+    font-size: 18px;
 }
 
 .dokumentasi-section {
@@ -202,7 +274,7 @@
 
 .dokumentasi-image {
     width: 65%;
-    height: 400px;
+    height: 350px;
     background-color: #c4c4c4;
     background-size: cover;
     background-position: center;
