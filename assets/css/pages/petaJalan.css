@@ -161,31 +161,33 @@
 .timeline-card {
     background: #0E1F43;
     color: #fff;
-    padding: 20px 20px 20px 20px;
+    padding: 20px;
     border-radius: 15px;
     box-shadow: 0 4px 16px rgba(0,0,0,0.15);
-    max-width: 370px;
-    width: 100%;
+    width: 370px;                
+    min-height: 300px;          
     position: relative;
     z-index: 1;
     text-align: left;
+    box-sizing: border-box;
 }
 
 .timeline-card h3 {
     font-family: var(--font-title);
     font-size: 20px;
     font-weight: 700;
-    margin-bottom: 15px;
-    color: #fff;
+    margin-top: 20px;
+    color: #ffffff;
     text-align: center;
 }
 
 .timeline-card p,
 .timeline-card ul li {
-    font-size: 14px;
+    font-size: 15px;
     line-height: 1.9;
     color: #e6e6e6;
     text-align: left;
+    margin-top: 15px;
 }
 
 .timeline-card ul {
@@ -216,18 +218,26 @@
     width: 55px;
     height: 55px;
     background: #0E1F43;
-    border: 3px solid rgba(0,0,0,0.12);
+    border: 3px solid #0E1F43;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     z-index: 2;
-    box-shadow: 0 3px 10px rgba(0,0,0,0.12);
 }
 
 .timeline-icon i {
     color: #fff;
     font-size: 22px;
+}
+
+.file-btn {
+    position: absolute;
+    bottom: 20px;    
+    left: 50%;
+    transform: translateX(-50%);
+    width: max-content;
+    font-weight: 600;
 }
 
 body {

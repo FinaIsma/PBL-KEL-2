@@ -1,10 +1,9 @@
-
 .tentangKami{
     background: var(--primary);
     color: #fff;
     padding: var(--space-6);
     padding-top: 160px;
-    margin-top: -120px;  /* buat atasin */
+    margin-top: -120px;  
 }
 
 .tentangKami-container{
@@ -61,7 +60,7 @@
     right: 0;   
     width: 600px;   
     height: 500px;
-    transform: translate(30%, -20%); /* geser keluar ke kanan & bawah */
+    transform: translate(30%, -20%); 
     background-image: url('../../img/aura.png');
     background-size: contain;
     background-position: center;
@@ -112,7 +111,7 @@
 
 /* pengelola Lab */
 .pengelolaLab {
-    padding: var(--space-7);
+    padding: var(--space-7) ;
     position: relative;
     overflow: hidden;
 }
@@ -152,18 +151,54 @@
 .slider-container {
     position: relative;
     width: 100%;
-    overflow: visible;  
-    padding: 0 0;
+    overflow: hidden; /* jangan visible */
+    padding: 0;
     margin-bottom: 75px;
     margin-top: 50px;
+    display: flex;
+    justify-content: center; /* pastikan tombol dan slider rata tengah */
+    align-items: center;
 }
+
 
 .pengelolaLab-card {
     display: flex;
-    gap: 25px ; 
+    gap: 30px;
+    justify-content: center; /* <== ini bikin kartu di tengah */
+    align-items: center;     /* optional, untuk vertikal */
     transition: transform 0.4s ease-in-out;
-    justify-content: center;
 }
+
+.card-name .foto {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    background-size: cover;
+    background-position: center;
+    margin-top: 20px;    /* jarak foto ke nama */
+}
+
+.card-info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;               /* jarak antar teks */
+}
+
+.card-header {
+    font-weight: bold;
+    font-size: 1rem;
+}
+
+.card-body {
+    font-size: 0.85rem;
+    color: var(--gray-200);
+}
+
+.card-contact {
+    font-size: 0.8rem;
+    color: var(--gray-200);
+}
+
 
 .card-name {
     background: var(--primary);
@@ -174,9 +209,11 @@
     color: var(--background);
     padding: var(--space-4);
     display: flex;
+    text-align: center;
     flex-direction: column;
     align-items: center;
     cursor: pointer;
+    margin-top: 20px;
     flex-shrink: 0;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
@@ -241,11 +278,11 @@
 }
 
 .arrow-left {
-    left: -10px;
+    left: 10px;
 }
 
 .arrow-right {
-    right: -10px;
+    right: 10px;
 }
 
 
@@ -253,8 +290,6 @@
     transform: translateY(-50%) scale(1.1);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
 }
-
-
 
 
 /* buat navbar */
@@ -278,12 +313,11 @@
     color: #ffffff !important;
 }
 
-/* Dropdown default tetap hitam saat navbar transparan */
+
 .navbar:not(.scrolled) .dropdown-menu li a {
     color: var(--gray-900) !important;
 }
 
-/* Hover dropdown tetap hitam saat navbar transparan */
 .navbar:not(.scrolled) .dropdown-menu li a:hover {
     color: #000000 !important;
 }
@@ -313,3 +347,125 @@
     color: #000000 !important;
 }
 
+/* buat responsif */
+/* Tablet */
+@media (max-width: 1024px) {
+    .tentangKami-container {
+        flex-direction: column;
+        gap: var(--space-5);
+    }
+
+    .tentangKami-left h1 {
+        font-size: 40px;
+        padding-right: var(--space-4);
+        padding-left: var(--space-5);
+    }
+
+    .tentangKami-right p {
+        font-size: 0.95rem;
+    }
+
+    .visiMisi-container {
+        flex-direction: column;
+        gap: var(--space-5);
+    }
+
+    .card-visi, .card-misi {
+        width: 100%;
+    }
+
+    .pengelolaLab-card {
+        gap: 15px;
+    }
+
+    .card-name {
+        width: 200px;
+        height: 280px;
+    }
+
+    .foto, .foto-1 {
+        height: 180px;
+    }
+
+    .arrow {
+        width: 40px;
+        height: 40px;
+        font-size: var(--space-4);
+    }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+    .tentangKami {
+        padding-top: 120px;
+    }
+
+    .tentangKami-left h1 {
+        font-size: 32px;
+        padding-right: var(--space-3);
+        padding-left: var(--space-3);
+    }
+
+    .btn-link {
+        justify-content: center;
+        margin-right: 0;
+    }
+
+    .visiMisi-container {
+        flex-direction: column;
+        gap: var(--space-4);
+    }
+
+    .card-visi, .card-misi {
+        padding: var(--space-4);
+    }
+
+    .pengelolaLab-card {
+        flex-direction: column;
+        gap: var(--space-4);
+        justify-content: center;
+    }
+
+    .card-name {
+        width: 100%;
+        max-width: 250px;
+        height: auto;
+    }
+
+    .foto, .foto-1 {
+        height: 150px;
+    }
+
+    .arrow-left {
+        left: 5px;
+    }
+
+    .arrow-right {
+        right: 5px;
+    }
+}
+
+/* Extra small devices */
+@media (max-width: 480px) {
+    .tentangKami-left h1 {
+        font-size: 28px;
+    }
+
+    .card-header {
+        font-size: 0.9rem;
+    }
+
+    .card-body {
+        font-size: 0.8rem;
+    }
+
+    .arrow {
+        width: 35px;
+        height: 35px;
+        font-size: var(--space-3);
+    }
+
+    .foto, .foto-1 {
+        height: 120px;
+    }
+}

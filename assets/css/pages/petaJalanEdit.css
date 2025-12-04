@@ -1,0 +1,100 @@
+.hero-section-admin {
+padding: 20px 0;
+background-color: #f5f6fa;
+border-bottom: 1px solid #ddd;
+text-align: center;
+}
+
+.hero-section-admin h1 {
+font-size: 28px;
+color: #2f3640;
+margin: 0;
+}
+
+.form-section {
+padding: 30px 20px;
+max-width: 700px;
+margin: 0 auto;
+background-color: #fff;
+border-radius: 10px;
+box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+
+.form-peta-jalan {
+display: flex;
+flex-direction: column;
+}
+
+.form-peta-jalan label {
+margin-top: 15px;
+margin-bottom: 5px;
+font-weight: 600;
+color: #2f3640;
+}
+
+.form-peta-jalan input[type="text"],
+.form-peta-jalan input[type="number"],
+.form-peta-jalan input[type="file"],
+.form-peta-jalan textarea {
+padding: 10px 12px;
+border: 1px solid #ccc;
+border-radius: 5px;
+font-size: 15px;
+width: 100%;
+box-sizing: border-box;
+}
+
+.form-peta-jalan textarea {
+resize: vertical;
+}
+
+.form-peta-jalan .btn-submit,
+.form-peta-jalan .btn-cancel {
+margin-top: 20px;
+padding: 12px;
+font-size: 16px;
+font-weight: 600;
+border: none;
+border-radius: 5px;
+cursor: pointer;
+text-align: center;
+text-decoration: none;
+}
+
+.form-peta-jalan .btn-submit {
+background-color: #1e90ff;
+color: #fff;
+transition: background 0.3s;
+}
+
+.form-peta-jalan .btn-submit:hover {
+background-color: #1c7ed6;
+}
+
+.form-peta-jalan .btn-cancel {
+display: inline-block;
+background-color: #dcdde1;
+color: #2f3640;
+text-decoration: none;
+text-align: center;
+transition: background 0.3s;
+}
+
+.form-peta-jalan .btn-cancel:hover {
+background-color: #b2bec3;
+}
+
+.form-peta-jalan p a {
+color: #1e90ff;
+text-decoration: underline;
+}
+
+.form-peta-jalan p a:hover {
+color: #1c7ed6;
+}
+
+.navbar {
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1) !important;
+    background-color: #ffffff !important;
+    z-index: 1000 !important;
+}
