@@ -2,7 +2,6 @@
 session_start();
 include("koneksi.php");
 
-// Ambil semua data peta jalan dari PostgreSQL
 $peta = [];
 $query = "SELECT * FROM peta_jalan ORDER BY tahun ASC";
 $res = pg_query($koneksi, $query);
@@ -33,12 +32,10 @@ while ($row = pg_fetch_assoc($res)) {
 </head>
 <body>
 
-    <!-- Navbar -->
     <div id="navbar-placeholder"></div>
     <script src="assets/js/navbar.js"></script>
 
     <main class="content-wrapper">
-
         <section class="hero-section">
             <h1 class="peta-jalan-title">Peta Jalan</h1>
         </section>
@@ -87,7 +84,6 @@ while ($row = pg_fetch_assoc($res)) {
 
     </main>
 
-    <!-- Footer -->
     <div id="footer-placeholder"></div>
     <script src="assets/js/footer.js"></script>
 
