@@ -314,6 +314,14 @@
     z-index: 1;
 }
 
+.pagination a,
+.pagination-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+}
+
 .pagination-btn {
     width: 45px;
     height: 45px;
