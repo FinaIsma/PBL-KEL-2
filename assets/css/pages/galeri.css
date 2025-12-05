@@ -196,7 +196,6 @@
     font-size: 18px;
 }
 
-/* Posisi tombol kiri & kanan */
 .scroll-btn.left {
     position: absolute;
     left: 10px;
