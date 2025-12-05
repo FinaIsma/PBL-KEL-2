@@ -1,3 +1,5 @@
+
+// === SLIDER ===
 export function initPengelolaSlider(sliderSelector = ".pengelolaLab-card", visibleCount = 3) {
     const slider = document.querySelector(sliderSelector);
     const btnLeft = document.querySelector("[data-arrow='left']");
@@ -15,7 +17,7 @@ export function initPengelolaSlider(sliderSelector = ".pengelolaLab-card", visib
     function render() {
         slider.innerHTML = "";
         for (let i = 0; i < visibleCount; i++) {
-            const index = (startIndex + i) % cards.length; 
+            const index = (startIndex + i) % cards.length;
             slider.appendChild(cards[index]);
         }
     }
@@ -31,4 +33,22 @@ export function initPengelolaSlider(sliderSelector = ".pengelolaLab-card", visib
     });
 
     render();
+}
+
+
+// === SEARCH TABLE ===
+export function initSearchProfil() {
+    const searchInput = document.querySelector("[data-search]");
+    const tableRows = document.querySelectorAll("#table-body tr");
+
+    if (!searchInput) return;
+
+    searchInput.addEventListener("keyup", function() {
+        const keyword = this.value.toLowerCase();
+
+        tableRows.forEach(row => {
+            const rowText = row.innerText.toLowerCase();
+            row.style.display = rowText.includes(keyword) ? "" : "none";
+        });
+    });
 }
