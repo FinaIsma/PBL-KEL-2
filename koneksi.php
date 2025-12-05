@@ -1,7 +1,14 @@
 <?php
-$koneksi = pg_connect("host=localhost port=5432 dbname=labNCS user=postgres password=adhe0608");
+$host = "localhost";
+$port = "5432";         
+$db   = "labNCS";
+$user = "postgres";
+$pass = "adhe0608";
 
-if (!$koneksi) {
+$conn_string = "host=$host port=$port dbname=$db user=$user password=$pass";
+$conn = pg_connect($conn_string);
+
+if (!$conn) {
     die("Koneksi gagal: " . pg_last_error());
 }
 ?>
