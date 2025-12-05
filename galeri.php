@@ -1,28 +1,24 @@
 <?php
 session_start();
-include("koneksi.php"); 
+include("koneksi.php");
 
-$agenda = [];
-$agendaQuery = pg_query($koneksi, "SELECT * FROM agenda ORDER BY hari_tgl ASC");
+$perPage = 8;
+$page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+$offset = ($page - 1) * $perPage;
 
-if (!$agendaQuery) {
-    die("Query agenda gagal: " . pg_last_error($koneksi));
-}
-
-while ($a = pg_fetch_assoc($agendaQuery)) {
-    $agenda[] = $a;
-}
+$qDok = pg_query($koneksi, "
+    SELECT * FROM dokumentasi
+    ORDER BY dokumentasi_id DESC
+    LIMIT $perPage OFFSET $offset
+");
 
 $dokumentasi = [];
-$dokQuery = pg_query($koneksi, "SELECT * FROM dokumentasi ORDER BY dokumentasi_id DESC");
-
-if (!$dokQuery) {
-    die("Query dokumentasi gagal: " . pg_last_error($koneksi));
+while ($row = pg_fetch_assoc($qDok)) {
+    $dokumentasi[] = $row;
 }
 
-while ($d = pg_fetch_assoc($dokQuery)) {
-    $dokumentasi[] = $d;
-}
+$qTotal = pg_query($koneksi, "SELECT COUNT(*) AS total FROM dokumentasi");
+$totalPages = ceil(pg_fetch_assoc($qTotal)['total'] / $perPage);
 ?>
 
 <!DOCTYPE html>
@@ -32,98 +28,111 @@ while ($d = pg_fetch_assoc($dokQuery)) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Galeri - Network & Cyber Security Lab</title>
 
-<link rel="stylesheet" href="assets/css/base.css">
-<link rel="stylesheet" href="assets/css/pages/navbar.css">
-<link rel="stylesheet" href="assets/css/pages/footer.css">
-<link rel="stylesheet" href="assets/css/pages/galeri.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="assets/css/base.css">
+    <link rel="stylesheet" href="assets/css/pages/navbar.css">
+    <link rel="stylesheet" href="assets/css/pages/footer.css">
+    <link rel="stylesheet" href="assets/css/pages/galeri.css">
 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
+
 <body>
 
-<div id="navbar-placeholder"></div>
-<script src="assets/js/navbar.js"></script>
+    <div id="navbar-placeholder"></div>
+    <script src="assets/js/navbar.js"></script>
 
-<section class="hero-section">
-    <h1>Galeri</h1>
-</section>
+    <section class="hero-section">
+        <h1>Galeri</h1>
+    </section>
 
-<section class="agenda-section">
-    <h2 class="section-title">Agenda Mendatang</h2>
+    <section class="agenda-section">
+        <h2 class="section-title">Agenda Mendatang</h2>
 
-    <div class="agenda-wrapper">
+        <div class="agenda-wrapper">            
+            <button class="scroll-btn left">
+                <i class="fa-solid fa-chevron-left"></i>
+            </button>
 
-        <button class="scroll-btn left" onclick="scrollAgenda(-1)">
-            <i class="fa-solid fa-chevron-left"></i>
-        </button>
-
-        <div class="agenda-container">
-
-            <?php if (count($agenda) === 0): ?>
-                <p class="empty-text">Belum ada agenda.</p>
-            <?php endif; ?>
-
-            <?php foreach ($agenda as $ag): ?>
+            <div class="agenda-container">
                 <div class="agenda-card">
-                    <h3><?= htmlspecialchars($ag['judul']); ?></h3>
-                    <p><?= htmlspecialchars($ag['deskripsi']); ?></p>
+                    <h3>Nama Kegiatan</h3>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
                     <ul>
-                        <li>Tanggal: <?= htmlspecialchars($ag['hari_tgl']); ?></li>
-                        <li>Kegiatan oleh Lab NCS</li>
+                        <li>Poin ini unus, incididique sed accusam elementum</li>
+                        <li>Gravida sit blandit senarum sit</li>
                     </ul>
                 </div>
+
+                <div class="agenda-card">
+                    <h3>Nama Kegiatan</h3>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                    <ul>
+                        <li>Poin ini unus, incididique sed accusam elementum</li>
+                        <li>Gravida sit blandit senarum sit</li>
+                    </ul>
+                </div>
+
+                <div class="agenda-card">
+                    <h3>Nama Kegiatan</h3>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                    <ul>
+                        <li>Poin ini unus, incididique sed accusam elementum</li>
+                        <li>Gravida sit blandit senarum sit</li>
+                    </ul>
+                </div>
+            </div>
+
+            <button class="scroll-btn right">
+                <i class="fa-solid fa-chevron-right"></i>
+            </button>
+        </div>
+    </section>
+
+    <section class="dokumentasi-section">
+        <h2 class="section-title">Dokumentasi</h2>
+
+        <div class="dokumentasi-container">
+
+            <?php foreach ($dokumentasi as $dok): ?>
+            <div class="dokumentasi-card">
+                <div class="dokumentasi-image">
+                    <img src="assets/img/<?= htmlspecialchars($dok['media_path']); ?>" alt="">
+                </div>
+                <div class="dokumentasi-info">
+                    <h3><?= htmlspecialchars($dok['judul']); ?></h3>
+                    <p><?= htmlspecialchars($dok['deskripsi']); ?></p>
+                </div>
+            </div>
             <?php endforeach; ?>
 
         </div>
 
-        <button class="scroll-btn right" onclick="scrollAgenda(1)">
-            <i class="fa-solid fa-chevron-right"></i>
-        </button>
+        <div class="pagination">
+            <?php for ($i = 1; $i <= $totalPages; $i++): ?>
+                <a 
+                    href="galeri.php?page=<?= $i ?>" 
+                    class="pagination-btn <?= $i == $page ? 'active' : '' ?>">
+                    <?= $i ?>
+                </a>
+            <?php endfor; ?>
+        </div>
 
-    </div>
-</section>
+    </section>
 
-<section class="dokumentasi-section">
-    <h2 class="section-title">Dokumentasi</h2>
-    <div class="dokumentasi-container">
+    <div id="footer-placeholder"></div>
+    <script src="assets/js/footer.js"></script>
 
-        <?php if (count($dokumentasi) === 0): ?>
-            <p class="empty-text">Belum ada dokumentasi.</p>
-        <?php endif; ?>
+    <script>
+        const agendaContainer = document.querySelector('.agenda-container');
 
-        <?php foreach ($dokumentasi as $dok): ?>
-            <div class="dokumentasi-card">
+        document.querySelector('.scroll-btn.left').addEventListener('click', function() {
+            agendaContainer.scrollBy({ left: -300, behavior: 'smooth' });
+        });
 
-                <div class="dokumentasi-image">
-                    <img src="assets/img/<?= htmlspecialchars($dok['media_path']); ?>" 
-                         alt="<?= htmlspecialchars($dok['judul']); ?>">
-                </div>
+        document.querySelector('.scroll-btn.right').addEventListener('click', function() {
+            agendaContainer.scrollBy({ left: 300, behavior: 'smooth' });
+        });
+    </script>
 
-                <div class="dokumentasi-info">
-                    <h3><?= htmlspecialchars($dok['judul']); ?></h3>
-                    <p>Dokumentasi kegiatan di Network & Cyber Security Lab</p>
-                </div>
-
-            </div>
-        <?php endforeach; ?>
-
-    </div>
-
-    <div class="pagination">
-        <button class="pagination-btn active">1</button>
-        <button class="pagination-btn">2</button>
-        <button class="pagination-btn">3</button>
-    </div>
-</section>
-
-<div id="footer-placeholder"></div>
-<script src="assets/js/footer.js"></script>
-<script>
-function scrollAgenda(direction) {
-    const container = document.querySelector('.agenda-container');
-    const cardWidth = container.querySelector('.agenda-card').offsetWidth + 20;
-    container.scrollLeft += direction * cardWidth;
-}
-</script>
 </body>
 </html>

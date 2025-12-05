@@ -1,3 +1,29 @@
+/* Wrapper table */
+.table-wrapper {
+    margin-top: 20px;
+    overflow-x: auto;
+}
+
+/* Table styling */
+table {
+    border-collapse: collapse;
+    width: 100%;
+    font-size: 16px;
+}
+
+table th,
+table td {
+    border: 1px solid #999;
+    padding: 10px 12px;
+    text-align: left;
+}
+
+table th {
+    background: #f3f3f3;
+    font-weight: 700;
+}
+
+/* Save button wrapper */
 .save-button-wrapper {
     width: 100%;
     display: flex;
@@ -5,6 +31,7 @@
     margin-top: 20px;
 }
 
+/* Save Button */
 .btn-save {
     padding: 10px 25px;
     background: #0077ff;

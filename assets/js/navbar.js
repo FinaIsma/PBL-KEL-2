@@ -16,7 +16,6 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 
-// Tambahan dari stash (scroll effect)
 window.addEventListener("scroll", function () {
     const navbar = document.querySelector(".navbar");
 
