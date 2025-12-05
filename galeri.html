@@ -14,16 +14,13 @@
 </head>
 
 <body>
-    <!-- NAVBAR -->
     <div id="navbar-placeholder"></div>
     <script src="assets/js/navbar.js"></script>
 
-    <!-- HERO -->
     <section class="hero-section">
         <h1>Galeri</h1>
     </section>
 
-    <!-- AGENDA STATIC -->
     <section class="agenda-section">
         <h2 class="section-title">Agenda Mendatang</h2>
 
@@ -94,13 +91,11 @@
         </div>
     </section>
 
-    <!-- DOKUMENTASI -->
     <section class="dokumentasi-section">
         <h2 class="section-title">Dokumentasi</h2>
 
         <div id="dokumentasi-container" class="dokumentasi-container"></div>
 
-        <!-- PAGINATION -->
         <div class="pagination">
             <button class="pagination-btn" onclick="loadPage(1)" id="btn1">1</button>
             <button class="pagination-btn" onclick="loadPage(2)" id="btn2">2</button>
@@ -108,11 +103,9 @@
         </div>
     </section>
 
-    <!-- FOOTER -->
     <div id="footer-placeholder"></div>
     <script src="assets/js/footer.js"></script>
 
-    <!-- JS AGENDA SCROLL -->
     <script>
         const agendaContainer = document.querySelector(".agenda-container");
 
@@ -125,7 +118,6 @@
         };
     </script>
 
-    <!-- JS PAGINATION DATA -->
     <script>
         const dokumentasiData = {
             1: [
@@ -168,9 +160,7 @@
             document.getElementById("btn" + page).classList.add("active");
         }
 
-        // Load halaman pertama saat diakses
         loadPage(1);
     </script>
 </body>
-
 </html>
