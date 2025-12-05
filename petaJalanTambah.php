@@ -1,14 +1,12 @@
 <?php
 include("koneksi.php");
 
-// Jika form disubmit
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $judul = $_POST['judul'];
     $tahun = $_POST['tahun'];
     $deskripsi = $_POST['deskripsi'];
-    $user_id = $_POST['user_id']; // bisa diganti dengan session user ID
+    $user_id = $_POST['user_id']; 
 
-    // Tangani file upload
     $file_path = '';
     if (!empty($_FILES['file']['name'])) {
         $target_dir = "uploads/";
