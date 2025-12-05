@@ -41,16 +41,13 @@ $totalPages = ceil($totalItems / $limit);
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body>
-    <!-- Navbar -->
     <div id="navbar-placeholder"></div>
     <script src="assets/js/navbar.js"></script>
 
-    <!-- Hero -->
     <section class="hero-section">
         <h1>Galeri</h1>
     </section>
 
-    <!-- Agenda -->
     <section class="agenda-section">
         <h2 class="section-title">Agenda Mendatang</h2>
         <div class="agenda-wrapper">
@@ -68,7 +65,6 @@ $totalPages = ceil($totalItems / $limit);
         </div>
     </section>
 
-    <!-- Dokumentasi -->
     <section class="dokumentasi-section" id="dokumentasi">
         <h2 class="section-title">Dokumentasi</h2>
         <div class="dokumentasi-container">
@@ -82,7 +78,6 @@ $totalPages = ceil($totalItems / $limit);
             <?php endwhile; ?>
         </div>
 
-        <!-- Pagination -->
         <div class="pagination">
             <?php for ($i = 1; $i <= $totalPages; $i++): ?>
                 <a href="galeri.php?page=<?= $i ?>#dokumentasi" 
@@ -94,7 +89,6 @@ $totalPages = ceil($totalItems / $limit);
         </div>
     </section>
 
-    <!-- Footer -->
     <div id="footer-placeholder"></div>
     <script src="assets/js/footer.js"></script>
 
