@@ -377,3 +377,34 @@
         height: 16px;
     }
 }
+
+.thumb-preview {
+    width: 80px !important;      /* ukuran fix */
+    height: 80px !important;     /* ukuran fix */
+    object-fit: cover !important;/* crop rapi */
+    border-radius: 6px;
+    display: block;
+}
+
+/* Search Wrapper */
+.search-wrapper {
+    max-width: 400px;
+}
+
+/* Search Input */
+.search-wrapper input[type="text"] {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1px solid #e6e6e6;
+    border-radius: var(--radius-8);
+    font-family: var(--ff-body);
+    font-size: 0.95rem;
+    background: #f7f7f7;
+    transition: var(--transition-fast);
+}
+
+.search-wrapper input[type="text"]:focus {
+    outline: none;
+    border-color: var(--color-secondary);
+    background: #ffffff;
+}

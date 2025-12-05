@@ -1,18 +1,10 @@
 /* Wrapper Section */
 #arsip {
-    padding-top: 0;
     padding:var(--space-6) 0;
 }
 
 .wrapper {
-padding-top: 0; /* sesuaikan tinggi header */
-}
-
-.arsip-title-header {
-    margin-left: 220px; /* Sama dengan width sidebar */
-    margin-top: 100px;  /* Atur sesuai tinggi header */
-    padding: 20px 0;
-    margin-bottom: 16px;
+padding-top: 0;
 }
 
 .arsip-title-header {
@@ -226,36 +218,43 @@ padding-top: 0; /* sesuaikan tinggi header */
 /* -------------------------------------------------------
    PAGINATION
 -------------------------------------------------------- */
+/* Pagination */
 .pagination {
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: var(--space-2);
+    gap: 10px;
     margin-top: var(--space-6);
 }
 
 .page-btn {
-    width: 40px;
-    height: 40px;
+    width: 35px;
+    height: 35px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     border-radius: 50%;
     border: none;
     background: var(--primary);
     color: white;
     font-family: var(--font-body);
-    font-size: var(--body-size);
+    font-size: 15px;          /* supaya angka pas */
     font-weight: 600;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: all 0.25s ease;
 }
 
 .page-btn.active {
-    background: var(--secondary);
-    color: var(--primary);
+    background: var(--secondary);  /* kuning */
+    color: var(--primary);         /* navy */
+    font-weight: 700;
 }
 
 .page-btn:hover:not(.active) {
-    opacity: 0.8;
+    opacity: 0.85;
+    transform: translateY(-2px);
 }
+
 
 /* =======================================================
    RESPONSIVE STYLES
