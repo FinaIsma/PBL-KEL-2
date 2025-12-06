@@ -23,22 +23,30 @@ function pathGambar($gambar) {
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <title>Bidang Fokus - Network & Cyber Security Laboratory</title>
-    
-    <link rel="stylesheet" href="assets/css/base.css">
-    <link rel="stylesheet" href="assets/css/utils.css">
-    <link rel="stylesheet" href="assets/css/components.css">
-    <!-- <link rel="stylesheet" href="assets/css/layout.css"> -->
-    <link rel="stylesheet" href="assets/css/responsive.css">
-    <link rel="stylesheet" href="assets/css/pages/navbar.css">
-    <link rel="stylesheet" href="assets/css/pages/footer.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    
-    <style>
-        body:not(.no-header) {
-            padding-top: 80px;
-        }
-        
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Detail Bidang Fokus</title>
+  
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  
+  <!-- CSS Lokal -->
+  <link rel="stylesheet" href="assets/css/base.css">
+  <link rel="stylesheet" href="assets/css/pages/navbar.css">
+  <link rel="stylesheet" href="assets/css/pages/sidebar.css">
+
+<style>
+
+.navbar {
+background-color: #fff;
+}
+.navbar a,
+.navbar span,
+.navbar i,
+.navbar .brand-title,
+.navbar .brand-sub {
+    color: #000 !important;
+}
         body {
             background: white url('assets/img/aura.png');
             background-repeat: space;
@@ -60,6 +68,9 @@ function pathGambar($gambar) {
             align-items: center;
             justify-content: center;
             min-height: 450px;
+            margin-left: 220px; 
+            padding: 20px;
+            width: calc(100% - 220px);
         }
         
         .header-section h1 {
@@ -101,7 +112,9 @@ function pathGambar($gambar) {
             align-items: flex-start;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
             background: #0E1F43;
-            box-sizing: border-box;
+            margin-left: 220px; 
+            padding: 40px;
+            width: calc(100% - 220px);
         }
         
         .focus-column:hover {
@@ -218,6 +231,32 @@ function pathGambar($gambar) {
                 height: 180px;
             }
         }
+
+          /* Back to List Button */
+    .back-to-list {
+      text-align: right;
+      margin-top: 4rem;
+      padding-top: 2rem solid #FEBE11;
+    }
+
+    .back-list-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: #FEBE11;
+      color: #000;
+      padding: 12px 24px;
+      border-radius: 6px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 16px;
+      transition: all 0.3s ease;
+    }
+
+    .back-list-btn:hover {
+      background: #fff;
+      transform: translateX(-5px);
+    }
         
         @media (max-width: 576px) {
             .header-section {
@@ -246,47 +285,46 @@ function pathGambar($gambar) {
                 font-size: 1.25rem;
             }
         }
-        .navbar {
-        background-color: #0E1F43; /* biru */
-        transition: background-color 0.3s ease, box-shadow 0.3s ease;
-        }
-
-.navbar.scrolled {
-    background-color: #ffffff !important; 
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-    color: #000;
-}
-
-.navbar a {
-    color: white;
-    transition: color 0.3s ease;
-}
-
-.navbar.scrolled a {
-    color: #0E1F43; 
-}
     </style>
 </head>
 <body>
-    <!-- Navbar Placeholder -->
-    <div id="navbar-placeholder"></div>
-    
-    <!-- Header Section -->
-    <div class="header-section">
-        <div class="header-content">
-            <h1>Bidang Fokus</h1>
-            <div class="divider"></div>
+     <!-- Navbar -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <div class="nav-left">
+        <img src="assets/img/Logo JTI.png" alt="Logo" class="nav-logo">
+        <div class="nav-brand">
+          <span class="brand-title">Network & Cyber Security</span>
+          <span class="brand-sub">Laboratorium</span>
         </div>
+      </div>
+      <ul class="nav-menu">
+        <li class="nav-profile"><i class="fa-solid fa-user"></i><span>Admin</span><span>|</span></li>
+        <li class="nav-logout"><a href="logout.html">Logout</a></li>
+      </ul>
     </div>
+  </nav>
+
+   <!-- Detail Header -->
+  <div class="header-section">
+    <h1>Bidang Fokus</h1>
+    </div>
+
+ <!-- Layout Container -->
+  <div class="layout"></div>
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div id="sidebar-placeholder"></div>
+    </aside>
     
     <!-- Main Content -->
     <main class="content-wrapper">
         <?php if (!empty($bidang)): ?>
             <?php foreach ($bidang as $row): ?>
                 <div class="focus-column">
-                    <!-- Gambar -->
-                    <div class="focus-image"><img src="<?= htmlspecialchars(pathGambar($row['gambar'])) ?>"
+            <div class="focus-image"><img src="<?= htmlspecialchars(pathGambar($row['gambar'])) ?>"
          alt="<?= htmlspecialchars($row['judul']) ?>"></div>
+
                     
                     <!-- Konten -->
                     <div class="focus-content">
@@ -294,24 +332,25 @@ function pathGambar($gambar) {
                         <div class="paragraph-btn-wrapper">
                             <p><?= htmlspecialchars(substr($row['deskripsi'], 0, 120)) ?>...</p>
                             <!-- Detail link -->
-                             <a href="guestDetail-bidang.php?id=<?= $row['bidangfokus_id'] ?>" class="focus-btn">
-                               <i class="fa-solid fa-arrow-right"></i></a>
+                            <a href="admin_detail-bidang.php?id=<?= $row['bidangfokus_id'] ?>" class="focus-btn">
+                               <i class="fa-solid fa-arrow-right"></i>
+                            </a>
                         </div>
                     </div>
                 </div>
             <?php endforeach; ?>
         <?php else: ?>
         <?php endif; ?>
+
+        <!-- Back to List Button -->
+        <div class="back-to-list">
+          <a href="tabelBidang.php" class="back-list-btn">Kelola</a>
+        </div>
     </main>
     
-    <!-- Footer Placeholder -->
-    <div id="footer-placeholder"></div>
-    
-            <!-- JavaScript -->
-   <!-- Load navbar.js dan footer.js eksternal -->
-    <script src="assets/js/navbar.js"></script>
-    <script src="assets/js/footer.js"></script>
-    <script type="module" src="assets/js/main.js"></script>
+  <!-- Load Header & Sidebar JS -->
+  <script src="assets/js/headerSidebar.js"></script>
+  <script type="module" src="assets/js/main.js"></script>
 
 </body>
 </html>
