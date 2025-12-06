@@ -111,6 +111,7 @@ while ($row = pg_fetch_assoc($result)):
 </div>
 
 <script src="assets/js/headerSidebar.js"></script>
+<script type="module" src="assets/js/main.js"></script>
 </body>
 
 <?php if ($showConfirm && $confirmData): ?>

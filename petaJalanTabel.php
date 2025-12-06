@@ -14,7 +14,7 @@ function getNextId($koneksi) {
     return 1;
 }
 
-$query = "SELECT * FROM peta_jalan ORDER BY tahun ASC, peta_id ASC";
+$query = "SELECT * FROM peta_jalan ORDER BY peta_id ASC";
 $result = pg_query($koneksi, $query);
 
 $petaJalan = [];
@@ -85,40 +85,40 @@ if ($result) {
                             </tr>
                         </thead>
                         <tbody>
-                            <?php foreach($petaJalan as $item): ?>
-                            <tr>
-                                <td><?= htmlspecialchars($item['peta_id']) ?></td>
-                                <td><?= htmlspecialchars($item['judul']) ?></td>
-                                <td><?= htmlspecialchars($item['tahun']) ?></td>
-                                <td><?= htmlspecialchars($item['deskripsi']) ?></td>
-                                <td>
-                                    <div class="file-preview">
-                                        <?php 
-                                        $file_path = "uploads/" . basename($item['file_path']); 
-                                        if(!empty($item['file_path']) && file_exists($file_path)): ?>
-                                            <a href="<?= $file_path ?>" target="_blank">
-                                                <img src="assets/img/pdf_icon.png" alt="PDF" class="pdf-icon">
-                                            </a>
-                                        <?php else: ?>
-                                            <span>Tidak ada</span>
-                                        <?php endif; ?>
-
-                                    </div>
-                                </td>
-                                <td><?= htmlspecialchars($item['user_id']) ?></td>
-                                <td>
-                                    <div class="action-buttons">
-                                        <a href="petaJalanEdit.php?peta_id=<?= $item['peta_id'] ?>" class="btn-edit">
-                                            <i class="fa-solid fa-pen"></i>
-                                        </a>
-                                        <a href="petaJalanHapus.php?peta_id=<?= $item['peta_id'] ?>" class="btn-delete" onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?');">
-                                            <i class="fa-solid fa-trash"></i>
-                                        </a>
-                                    </div>
-                                </td>
-                            </tr>
-                            <?php endforeach; ?>
-                        </tbody>
+<?php $no = 1; ?>
+<?php foreach($petaJalan as $item): ?>
+<tr>
+    <td><?= $no++ ?></td> <!-- Nomor urut -->
+    <td><?= htmlspecialchars($item['judul']) ?></td>
+    <td><?= htmlspecialchars($item['tahun']) ?></td>
+    <td><?= htmlspecialchars($item['deskripsi']) ?></td>
+    <td>
+        <div class="file-preview">
+            <?php 
+            $file_path = "uploads/" . basename($item['file_path']); 
+            if(!empty($item['file_path']) && file_exists($file_path)): ?>
+                <a href="<?= $file_path ?>" target="_blank">
+                    <img src="assets/img/pdf_icon.png" alt="PDF" class="pdf-icon">
+                </a>
+            <?php else: ?>
+                <span>Tidak ada</span>
+            <?php endif; ?>
+        </div>
+    </td>
+    <td><?= htmlspecialchars($item['user_id']) ?></td>
+    <td>
+        <div class="action-buttons">
+            <a href="petaJalanEdit.php?peta_id=<?= $item['peta_id'] ?>" class="btn-edit">
+                <i class="fa-solid fa-pen"></i>
+            </a>
+            <a href="petaJalanHapus.php?peta_id=<?= $item['peta_id'] ?>" class="btn-delete" onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?');">
+                <i class="fa-solid fa-trash"></i>
+            </a>
+        </div>
+    </td>
+</tr>
+<?php endforeach; ?>
+</tbody>
                     </table>
                 </div>
                 <div class="save-button-wrapper">

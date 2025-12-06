@@ -1,13 +1,26 @@
 <?php
-session_start(); 
-include("db.php"); 
+session_start();
+include("db.php");
 
+// ====== AMBIL DATA PROFIL ======
 $pengelola = [];
 $res = pg_query($conn, "SELECT * FROM pengelola_lab ORDER BY pengelola_id ASC");
 while ($r = pg_fetch_assoc($res)) {
     $pengelola[] = $r;
 }
+
+$profil = [];
+$q = pg_query($conn, "SELECT * FROM profil ORDER BY profil_id ASC");
+while ($p = pg_fetch_assoc($q)) {
+    $key = strtolower(trim($p['kategori']));
+    $profil[$key] = $p;
+}
+
+$tentangKami = $profil['sejarah']['isi'] ?? "";
+$visi        = $profil['visi']['isi'] ?? "";
+$misi        = $profil['misi']['isi'] ?? "";
 ?>
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -45,9 +58,7 @@ while ($r = pg_fetch_assoc($res)) {
 
             <div class="tentangKami-right">
                 <p>
-                    Lorem ipsum doo or sit amet, consectetur adipiscing elit. 
-                    Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
-                    Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                    <?= nl2br(htmlspecialchars($tentangKami)) ?>
                 </p>
 
                 <div class="btn-link">
@@ -63,22 +74,25 @@ while ($r = pg_fetch_assoc($res)) {
     <section class="visi-misi">
         <h2 class="vismis-title text-center mb-4">Visi Misi</h2>
         <hr class="vismis-line">
+
         <div class="card d-flex gap-5">
             <div class="card-visi">
                 <h3 class="text-center">Visi</h3>
                 <p>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet. Duis sagittis ipsum. Praesent mauris. Fusce nec tellus sed augue semper porta. Mauris massa. Vestibulum lacinia arcu eget nulla. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.
-
-                    urabitur sodales ligula in libero. Sed dignissim lacinia nunc. Curabitur tortor. Pellentesque nibh. Aenean quam. In scelerisque sem at dolor. Maecenas mattis. Sed convallis tristique sem. Proin ut ligula non nisi mattis auctor. Aliquam malesuada bibendum arcu. Maecenas non leo vel elit ornare gravida.
+                    <?= nl2br(htmlspecialchars($visi)) ?>
                 </p>
             </div>
 
             <div class="card-misi">
                 <h3 class="text-center">Misi</h3>
                 <ul>
-                    <li>Lorem ipsum dolor sit amet.</li>
-                    <li>Praesent libero. Sed cursus dapibus.</li>
-                    <li>Nulla quis sem at nibh elementum imperdiet.</li>
+                    <?php 
+                    $misiList = explode("\n", $misi);
+                    foreach ($misiList as $item):
+                        if (trim($item) == "") continue;
+                    ?>
+                        <li><?= htmlspecialchars($item) ?></li>
+                    <?php endforeach; ?>
                 </ul>
             </div>
         </div>
@@ -117,12 +131,10 @@ while ($r = pg_fetch_assoc($res)) {
     <div id="footer-placeholder"></div>
     <script src="assets/js/footer.js"></script>
 
-    <!-- Role session -->
     <script>
         window.userRole = '<?= $_SESSION['role'] ?? "user" ?>';
     </script>
 
-    <!-- Main JS -->
     <script type="module" src="assets/js/main.js"></script>
 </body>
 </html>
