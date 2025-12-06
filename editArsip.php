@@ -141,7 +141,8 @@ if (isset($_POST['submit'])) {
                         <label>Thumbnail</label>
 
                         <?php if ($data['thumbnail']): ?>
-                            <img src="upload/<?= $data['thumbnail'] ?>" class="thumb-preview">
+                            <img src="upload/<?= $data['thumbnail'] ?>" 
+                                style="max-width: 100px; max-height: 100px; object-fit: cover; border-radius: 6px; border: 2px solid #e6e6e6; margin: 10px 0;">
                         <?php endif; ?>
 
                         <input type="file" name="thumbnail">

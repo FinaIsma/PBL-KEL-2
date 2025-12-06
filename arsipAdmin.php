@@ -120,7 +120,7 @@ $totalPages = ceil($totalData / $limit);
                     <div class="arsip-content">
                         
                         <div class="arsip-text">
-                            <a href="arsipDetail.php?id=<?= $row['arsip_id'] ?>" class="arsip-title mb-3">
+                            <a href="arsipDetailAdmin.php?id=<?= $row['arsip_id'] ?>" class="arsip-title mb-3">
                                 <?= $row['judul']; ?>
                             </a>
 
