@@ -1,0 +1,181 @@
+/* ===== EDIT ARSIP PAGE STYLES ===== */
+
+/* Warna & Font */
+/* Layout wrapper biar konten center seperti createArsip */
+.layout {
+    justify-content: center;
+    width: 100%;
+}
+
+:root {
+    --color-primary: #0E1F43;
+    --color-secondary: #FEBE11;
+    --color-bg: #ffffff;
+    --color-text: #222;
+    
+    --ff-heading: 'Montserrat', sans-serif;
+    --ff-body: 'Poppins', sans-serif;
+    
+    --radius-4: 4px;
+    --radius-6: 6px;
+    --radius-8: 8px;
+    
+    --shadow-200: 2px 4px 10px rgba(0,0,0,0.08);
+    --transition-fast: all 0.2s ease;
+}
+
+/* Container utama */
+.arsip-main {
+    max-width: 1100px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background: var(--color-bg);
+    border-radius: var(--radius-8);
+    box-shadow: var(--shadow-200);
+    font-family: var(--ff-body);
+    flex: 1;                       /* biar area kanan fleksibel */
+}
+
+/* Judul halaman */
+.arsip-title {
+    font-family: var(--ff-heading);
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--color-primary);
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+/* Label dan input */
+form label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: var(--color-text);
+}
+
+form input[type="text"],
+form input[type="date"],
+form input[type="file"],
+form select,
+form textarea {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    margin-bottom: 1.5rem;
+    border: 1px solid #e6e6e6;
+    border-radius: var(--radius-6);
+    font-family: var(--ff-body);
+    font-size: 0.95rem;
+    transition: var(--transition-fast);
+}
+
+form input:focus,
+form select:focus,
+form textarea:focus {
+    outline: none;
+    border-color: var(--color-secondary);
+    background: #fff;
+}
+
+/* Textarea */
+form textarea {
+    resize: vertical;
+    min-height: 120px;
+}
+
+/* Tombol simpan */
+.button-footer {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.btn-simpan {
+    padding: 0.75rem 2.5rem;
+    background: var(--color-secondary);
+    color: var(--color-primary);
+    border: none;
+    border-radius: var(--radius-8);
+    font-family: var(--ff-body);
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: var(--transition-fast);
+    box-shadow: 0 2px 8px rgba(254, 190, 17, 0.3);
+}
+
+.btn-simpan:hover {
+    background: #e5aa10;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(254, 190, 17, 0.4);
+}
+
+/* Thumbnail preview */
+.thumb-preview {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: var(--radius-6);
+    margin-bottom: 1rem;
+    display: block;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .arsip-main {
+        padding: 1.5rem;
+        margin: 1rem;
+    }
+
+    .arsip-title {
+        font-size: 1.75rem;
+    }
+
+    .btn-simpan {
+        width: 100%;
+        padding: 0.75rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .arsip-main {
+        padding: 1rem;
+    }
+
+    .arsip-title {
+        font-size: 1.5rem;
+    }
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;   /* dua kolom */
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    font-weight: 600;
+    margin-bottom: 6px;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+}
+
+.form-group.full {
+    grid-column: span 2;  /* deskripsi jadi 1 baris penuh */
+}
+
+textarea {
+    min-height: 120px;
+    resize: vertical;
+}

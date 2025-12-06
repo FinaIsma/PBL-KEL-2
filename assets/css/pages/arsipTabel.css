@@ -30,6 +30,24 @@
     margin-bottom: 2rem;
 }
 
+.arsip-main, .content, main {
+    margin-left: 220px; /* sesuaikan dengan lebar sidebar */
+    padding: 20px;
+    min-height: 100vh;
+    background: #fff;
+}
+
+/* Sidebar */
+.sidebar {
+    width: 220px;
+    position: fixed; /* tetap di kiri */
+    top: 0;
+    left: 0;
+    height: 100%;
+    z-index: 1000; /* jangan terlalu tinggi agar tombol tidak tertutup */
+}
+
+
 .header-left {
     display: flex;
     align-items: center;
