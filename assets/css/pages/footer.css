@@ -1,21 +1,22 @@
 .lab-footer {
     background: var(--primary);
     color: #fff;
-    padding: 40px 60px 60px;
+    padding: 40px 50px 10px;
     width: 100%;
     font-family: var(--font-body);
 }
 
 .footer-top {
     display: grid;
-    grid-template-columns: 350px 1fr 250px;
-    gap: 40px;
+    grid-template-columns: 350px 400px 350px;
+    gap: 0px;
     align-items: flex-start;
     margin-bottom: 40px;
 }
 
 .footer-image img {
-    width: 100%;
+    width: 80%;          /* sebelumnya 100% */
+    max-width: 240px;    /* biar gak gede-gede */
     height: auto;
     border-radius: var(--radius-md);
 }
@@ -27,20 +28,22 @@
 }
 
 .footer-middle h2 {
-    font-size: 26px;
+    font-size: 24px;
     font-weight: 700;
     margin-bottom: -5px;
+    margin-left: -60px;
 }
 
 .footer-middle h3 {
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 600;
+    margin-left: -60px;
 }
 
 .footer-desc {
-    font-size: 14px;
+    font-size: 12px;
     color: #dcdcdc;
-    margin: 10px 0 18px;
+    margin-left: -60px;
     line-height: 1.6;
     max-width: 90%;
 }
@@ -56,18 +59,20 @@
     display: flex;
     align-items: center;
     gap: 10px;
+    font-size: 12px;
+    margin-left: -60px;
 }
 
 .footer-bullets i {
     color: var(--secondary);
-    font-size: 18px;
+    font-size: 14px;
 }
 
 .footer-right h4 {
     color: #fff;
     font-size: 16px;
     margin-bottom: 14px;
-    margin-top: 75px;
+    margin-top: 40px;
 }
 
 .footer-links {
@@ -80,13 +85,13 @@
 
 .footer-links li i {
     color: var(--secondary);
-    font-size: 18px;
+    font-size: 16px;
     margin-right: 5px;
 }
 
 .footer-links li a {
     color: #fff;
-    font-size: 14px;
+    font-size: 12px;
     transition: 0.2s ease;
 }
 
@@ -114,7 +119,7 @@
 
 .footer-center-icon i {
     color: var(--secondary);
-    font-size: 18px;
+    font-size: 12px;
     margin-right: 5px;
 }
 

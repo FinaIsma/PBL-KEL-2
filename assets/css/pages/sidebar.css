@@ -41,7 +41,8 @@ html, body {
 /* Main content dengan sidebar */
 .main,
 .arsip-main,
-.wrapper {
+.wrapper,
+.content { 
     margin-left: 220px !important;
     transition: margin-left 0.3s ease;
     width: calc(100% - 220px);
@@ -60,7 +61,7 @@ html, body {
     padding: 10px 14px;
     border-radius: var(--radius-md);
     color: white;
-    font-size: 15px;
+    font-size: 14px;
     opacity: 0.85;
     transition: 0.2s;
 }
