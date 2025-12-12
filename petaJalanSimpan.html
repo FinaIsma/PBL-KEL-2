@@ -4,15 +4,14 @@
     <meta charset="UTF-8">
     <title>Contoh Halaman</title>
 
-    <link rel="stylesheet" href="petaJalanSimpan.css">
+    <link rel="stylesheet" href="assets/css/pages/petaJalanSimpan.css?v=1">
 </head>
 
 <body>
 
-<form action="petaJalanSimpan.html" method="POST">
-
+<form action="petaJalanSimpan.php" method="POST">
     <div class="table-wrapper">
-        <table border="1" width="100%">
+        <table width="100%">
             <thead>
                 <tr>
                     <th>ID</th>
@@ -22,16 +21,17 @@
             </thead>
             <tbody>
                 <tr>
-                    <td>1</td>
-                    <td>Peta Jalan A</td>
-                    <td>2024</td>
+                    <td><input type="text" name="peta_id" value="1" readonly></td>
+                    <td><input type="text" name="judul" value="Peta Jalan A" required></td>
+                    <td><input type="number" name="tahun" value="2024" required></td>
                 </tr>
             </tbody>
         </table>
     </div>
 
-    <?php include("petaJalanSimpan.php"); ?>
-
+    <div class="save-button-wrapper">
+        <button type="submit" class="btn-save">Simpan</button>
+    </div>
 </form>
 
 </body>

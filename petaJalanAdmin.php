@@ -2,10 +2,8 @@
 session_start();
 include("koneksi.php");
 
-// Search
 $search = $_GET['search'] ?? '';
 
-// Query
 if ($search != '') {
     $query = "
         SELECT * FROM peta_jalan
@@ -40,18 +38,13 @@ while ($row = pg_fetch_assoc($res)) {
 </head>
 
 <body>
-
-    <!-- HEADER -->
     <div id="header-placeholder"></div>
-
     <div class="layout">
 
-        <!-- SIDEBAR -->
         <aside class="sidebar">
             <div id="sidebar-placeholder"></div>
         </aside>
 
-        <!-- CONTENT -->
         <main class="content">
 
             <section class="hero-section-admin">
@@ -103,7 +96,6 @@ while ($row = pg_fetch_assoc($res)) {
 
         </main>
     </div>
-
     <script src="assets/js/headerSidebar.js"></script>
 
 </body>

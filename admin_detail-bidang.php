@@ -156,9 +156,15 @@ $section3 = $others[1] ?? null;
 
 .detail-section.reverse {
     flex-direction: row-reverse;
+<<<<<<< HEAD
     margin-left: 5px; 
     padding: 20px;
     width: calc(80% - 100px);
+=======
+    margin-left: 100px; 
+    padding: 20px;
+    width: calc(100% - 220px);
+>>>>>>> a212e903ca5457e05e3ce3484cc3b1894b6a22e1
 }
 
 .detail-text {

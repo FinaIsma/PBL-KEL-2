@@ -1,129 +1,106 @@
 <?php
-session_start();
-include("koneksi.php"); 
+include 'koneksi.php';
 
-$agenda = [];
-$agendaQuery = pg_query($koneksi, "SELECT * FROM agenda ORDER BY hari_tgl ASC");
+// Pagination
+$page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+$limit = 4;
+$start = ($page - 1) * $limit;
 
+// Ambil agenda
+$agendaQuery = pg_query($conn, "SELECT agenda_id, hari_tgl, judul, deskripsi FROM agenda ORDER BY hari_tgl ASC");
 if (!$agendaQuery) {
-    die("Query agenda gagal: " . pg_last_error($koneksi));
+    die("Query agenda gagal: " . pg_last_error());
 }
 
-while ($a = pg_fetch_assoc($agendaQuery)) {
-    $agenda[] = $a;
+// Ambil dokumentasi sesuai page
+$dokumentasiQuery = pg_query($conn, "
+    SELECT dokumentasi_id, judul, media_path
+    FROM dokumentasi
+    ORDER BY dokumentasi_id ASC
+    OFFSET $start LIMIT $limit
+");
+if (!$dokumentasiQuery) {
+    die("Query dokumentasi gagal: " . pg_last_error());
 }
 
-$dokumentasi = [];
-$dokQuery = pg_query($koneksi, "SELECT * FROM dokumentasi ORDER BY dokumentasi_id DESC");
-
-if (!$dokQuery) {
-    die("Query dokumentasi gagal: " . pg_last_error($koneksi));
-}
-
-while ($d = pg_fetch_assoc($dokQuery)) {
-    $dokumentasi[] = $d;
-}
+// Hitung total halaman dokumentasi
+$totalResult = pg_query($conn, "SELECT COUNT(*) AS total FROM dokumentasi");
+$totalItems = pg_fetch_assoc($totalResult)['total'];
+$totalPages = ceil($totalItems / $limit);
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Galeri - Network & Cyber Security Lab</title>
-
-<link rel="stylesheet" href="assets/css/base.css">
-<link rel="stylesheet" href="assets/css/pages/navbar.css">
-<link rel="stylesheet" href="assets/css/pages/footer.css">
-<link rel="stylesheet" href="assets/css/pages/galeri.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-
+    <link rel="stylesheet" href="assets/css/base.css">
+    <link rel="stylesheet" href="assets/css/pages/navbar.css">
+    <link rel="stylesheet" href="assets/css/pages/footer.css">
+    <link rel="stylesheet" href="assets/css/pages/galeri.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body>
+    <div id="navbar-placeholder"></div>
+    <script src="assets/js/navbar.js"></script>
 
-<div id="navbar-placeholder"></div>
-<script src="assets/js/navbar.js"></script>
+    <section class="hero-section">
+        <h1>Galeri</h1>
+    </section>
 
-<section class="hero-section">
-    <h1>Galeri</h1>
-</section>
+    <section class="agenda-section">
+        <h2 class="section-title">Agenda Mendatang</h2>
+        <div class="agenda-wrapper">
+            <button class="scroll-btn left"><i class="fa-solid fa-chevron-left"></i></button>
+            <div class="agenda-container">
+                <?php while ($row = pg_fetch_assoc($agendaQuery)): ?>
+                    <div class="agenda-card">
+                        <h3><?= htmlspecialchars($row['judul']) ?></h3>
+                        <p><?= htmlspecialchars($row['deskripsi']) ?></p>
+                        <p><small>Tanggal: <?= htmlspecialchars($row['hari_tgl']) ?></small></p>
+                    </div>
+                <?php endwhile; ?>
+            </div>
+            <button class="scroll-btn right"><i class="fa-solid fa-chevron-right"></i></button>
+        </div>
+    </section>
 
-<section class="agenda-section">
-    <h2 class="section-title">Agenda Mendatang</h2>
-
-    <div class="agenda-wrapper">
-
-        <button class="scroll-btn left" onclick="scrollAgenda(-1)">
-            <i class="fa-solid fa-chevron-left"></i>
-        </button>
-
-        <div class="agenda-container">
-
-            <?php if (count($agenda) === 0): ?>
-                <p class="empty-text">Belum ada agenda.</p>
-            <?php endif; ?>
-
-            <?php foreach ($agenda as $ag): ?>
-                <div class="agenda-card">
-                    <h3><?= htmlspecialchars($ag['judul']); ?></h3>
-                    <p><?= htmlspecialchars($ag['deskripsi']); ?></p>
-                    <ul>
-                        <li>Tanggal: <?= htmlspecialchars($ag['hari_tgl']); ?></li>
-                        <li>Kegiatan oleh Lab NCS</li>
-                    </ul>
+    <section class="dokumentasi-section" id="dokumentasi">
+        <h2 class="section-title">Dokumentasi</h2>
+        <div class="dokumentasi-container">
+            <?php while ($row = pg_fetch_assoc($dokumentasiQuery)): ?>
+                <div class="dokumentasi-card">
+                    <div class="dokumentasi-image" style="background-image: url('assets/img/<?= htmlspecialchars($row['media_path']) ?>')"></div>
+                    <div class="dokumentasi-info">
+                        <h3><?= htmlspecialchars($row['judul']) ?></h3>
+                    </div>
                 </div>
-            <?php endforeach; ?>
-
+            <?php endwhile; ?>
         </div>
 
-        <button class="scroll-btn right" onclick="scrollAgenda(1)">
-            <i class="fa-solid fa-chevron-right"></i>
-        </button>
+        <div class="pagination">
+            <?php for ($i = 1; $i <= $totalPages; $i++): ?>
+                <a href="galeri.php?page=<?= $i ?>#dokumentasi" 
+                    class="pagination-btn <?= ($i==$page?'active':'') ?>">
+                    <?= $i ?>
+                </a>
 
-    </div>
-</section>
+            <?php endfor; ?>
+        </div>
+    </section>
 
-<section class="dokumentasi-section">
-    <h2 class="section-title">Dokumentasi</h2>
-    <div class="dokumentasi-container">
+    <div id="footer-placeholder"></div>
+    <script src="assets/js/footer.js"></script>
 
-        <?php if (count($dokumentasi) === 0): ?>
-            <p class="empty-text">Belum ada dokumentasi.</p>
-        <?php endif; ?>
-
-        <?php foreach ($dokumentasi as $dok): ?>
-            <div class="dokumentasi-card">
-
-                <div class="dokumentasi-image">
-                    <img src="assets/img/<?= htmlspecialchars($dok['media_path']); ?>" 
-                         alt="<?= htmlspecialchars($dok['judul']); ?>">
-                </div>
-
-                <div class="dokumentasi-info">
-                    <h3><?= htmlspecialchars($dok['judul']); ?></h3>
-                    <p>Dokumentasi kegiatan di Network & Cyber Security Lab</p>
-                </div>
-
-            </div>
-        <?php endforeach; ?>
-
-    </div>
-
-    <div class="pagination">
-        <button class="pagination-btn active">1</button>
-        <button class="pagination-btn">2</button>
-        <button class="pagination-btn">3</button>
-    </div>
-</section>
-
-<div id="footer-placeholder"></div>
-<script src="assets/js/footer.js"></script>
-<script>
-function scrollAgenda(direction) {
-    const container = document.querySelector('.agenda-container');
-    const cardWidth = container.querySelector('.agenda-card').offsetWidth + 20;
-    container.scrollLeft += direction * cardWidth;
-}
-</script>
+    <!-- Scroll tombol agenda -->
+    <script>
+        const agendaContainer = document.querySelector(".agenda-container");
+        document.querySelector(".scroll-btn.left").onclick = () => {
+            agendaContainer.scrollBy({ left: -300, behavior: "smooth" });
+        };
+        document.querySelector(".scroll-btn.right").onclick = () => {
+            agendaContainer.scrollBy({ left: 300, behavior: "smooth" });
+        };
+    </script>
 </body>
 </html>

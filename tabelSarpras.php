@@ -129,7 +129,6 @@ while ($row = pg_fetch_assoc($result)):
     <script type="module" src="assets/js/main.js"></script>
 </body>
 <?php if ($showConfirm && $confirmData): ?>
-<!-- Style modal -->
 <style>
 .modal-overlay {
     position: fixed;

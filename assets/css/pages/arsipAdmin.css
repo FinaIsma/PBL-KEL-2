@@ -1,36 +1,62 @@
 /* Wrapper Section */
 #arsip {
-    padding-top: 0;
-    padding:var(--space-6) 0;
+    padding: 0; /* Hilangkan padding atas */
 }
 
-.wrapper {
-padding-top: 0; /* sesuaikan tinggi header */
-}
-
-.arsip-title-header {
-    margin-left: 220px; /* Sama dengan width sidebar */
-    margin-top: 100px;  /* Atur sesuai tinggi header */
-    padding: 20px 0;
-    margin-bottom: 16px;
-}
-
-.arsip-title-header {
-    background: #0E1F43;
-    width: 100%;
-    padding: 60px 0;
-    margin: 0;
+/* === LAYOUT FIX SUPAYA RAPAT KE SIDEBAR === */
+.layout {
     display: flex;
-    align-items: center;
-    justify-content: center;
+    width: 100%;
+    min-height: 100vh;
+}
+
+/* Sidebar tetap di kiri */
+.sidebar {
+    width: 220px;
+    flex-shrink: 0;
+    background: var(--primary);
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    z-index: 1000;
+}
+
+/* KONTEN UTAMA FULL SISA LAYAR - NO PADDING TOP */
+.wrapper {
+    margin-left: 220px;
+    width: calc(100% - 220px);
+    padding: 0; /* Hilangkan padding */
+    box-sizing: border-box;
+}
+
+/* Header navbar - hilangkan margin top */
+#header-placeholder {
+    margin-left: 220px;
+    width: calc(100% - 220px);
+}
+
+/* Arsip Title Header - Full Width dengan Background */
+.arsip-title-header {
+    background: var(--primary);
+    padding: 3rem;
+    margin: 0; /* No margin */
+    width: 100%;
 }
 
 .arsip-title-header h1 {
     color: white;
-    font-size: 36px;
+    font-family: var(--font-title);
+    font-size: 2.5rem;
+    font-weight: 700;
     margin: 0;
+    text-align: center;
 }
 
+/* Section Content - Padding hanya di konten */
+.wrapper .section {
+    padding: 2rem 3rem;
+}
 
 /* Controls: Filter + Search */
 .arsip-controls {
@@ -38,15 +64,9 @@ padding-top: 0; /* sesuaikan tinggi header */
     justify-content: space-between;
     align-items: center;
     gap: var(--space-4);
-    
+    margin-bottom: 2rem;
 }
 
-/* Biar konten geser karena sidebar */
-.main {
-    margin-left: 220px;
-    margin-top: 0;
-
-}
 .btn-filter {
     padding: var(--space-2) var(--space-4);
     border-radius: var(--radius-lg);
@@ -58,6 +78,7 @@ padding-top: 0; /* sesuaikan tinggi header */
     transition: all 0.3s ease;
     background: var(--primary);
     color: white;
+    text-decoration: none;
 }
 
 .btn-filter.active {
@@ -68,6 +89,7 @@ padding-top: 0; /* sesuaikan tinggi header */
 .btn-filter:hover {
     opacity: 0.9;
 }
+
 .search-box {
     position: relative;
     width: 280px;
@@ -81,6 +103,7 @@ padding-top: 0; /* sesuaikan tinggi header */
     font-family: var(--font-body);
     font-size: var(--body-size);
     background: #f5f5f5;
+    box-sizing: border-box;
 }
 
 .search-input::placeholder {
@@ -101,6 +124,7 @@ padding-top: 0; /* sesuaikan tinggi header */
     pointer-events: none;
     color: #555;
 }
+
 .arsip-list {
     display: flex;
     flex-direction: column;
@@ -114,10 +138,11 @@ padding-top: 0; /* sesuaikan tinggi header */
     padding: var(--space-5);
     border-bottom: 3px solid var(--secondary);
     transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
 }
 
 .arsip-card:hover {
-    box-shadow: var(--shadow);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.12);
     transform: translateY(-2px);
 }
 
@@ -138,6 +163,13 @@ padding-top: 0; /* sesuaikan tinggi header */
     font-weight: 700;
     color: var(--primary);
     line-height: 1.4;
+    text-decoration: none;
+    display: block;
+    margin-bottom: 1rem;
+}
+
+.arsip-title:hover {
+    color: var(--secondary);
 }
 
 .arsip-desc {
@@ -145,6 +177,7 @@ padding-top: 0; /* sesuaikan tinggi header */
     font-size: var(--body-size);
     color: var(--gray-700);
     line-height: 1.6;
+    margin-bottom: 1rem;
 }
 
 /* Meta Info */
@@ -174,6 +207,13 @@ padding-top: 0; /* sesuaikan tinggi header */
     background: var(--gray-200);
     border-radius: var(--radius-md);
     flex-shrink: 0;
+    overflow: hidden;
+}
+
+.arsip-thumbnail img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
 /* Download Button */
@@ -192,12 +232,14 @@ padding-top: 0; /* sesuaikan tinggi header */
     align-items: center;
     gap: var(--space-2);
     white-space: nowrap;
+    text-decoration: none;
 }
 
 .btn-download:hover {
     background: #0a1730;
     transform: translateY(-1px);
 }
+
 .kelola-wrapper {
     display: flex;
     justify-content: flex-end;
@@ -223,9 +265,7 @@ padding-top: 0; /* sesuaikan tinggi header */
     box-shadow: 0 5px 12px rgba(0,0,0,0.2);
 }
 
-/* -------------------------------------------------------
-   PAGINATION
--------------------------------------------------------- */
+/* PAGINATION */
 .pagination {
     display: flex;
     justify-content: center;
@@ -246,6 +286,10 @@ padding-top: 0; /* sesuaikan tinggi header */
     font-weight: 600;
     cursor: pointer;
     transition: all 0.3s ease;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .page-btn.active {
@@ -257,12 +301,56 @@ padding-top: 0; /* sesuaikan tinggi header */
     opacity: 0.8;
 }
 
-/* =======================================================
-   RESPONSIVE STYLES
-======================================================== */
+/* Helper classes */
+.d-flex {
+    display: flex;
+}
 
-/* ========= TABLET (768px) ========= */
+.gap-2 {
+    gap: 0.5rem;
+}
+
+.mb-3 {
+    margin-bottom: 1rem;
+}
+
+.mb-4 {
+    margin-bottom: 1.5rem;
+}
+
+.mb-5 {
+    margin-bottom: 2rem;
+}
+
+/* RESPONSIVE STYLES */
+
+/* Mobile mode sidebar mengecil */
+@media(max-width:900px){
+    .sidebar {
+        position: relative;
+        width: 100%;
+        height: auto;
+    }
+    .wrapper, #header-placeholder {
+        margin-left: 0;
+        width: 100%;
+    }
+}
+
+/* TABLET (768px) */
 @media (max-width: 768px) {
+    .wrapper .section {
+        padding: 1.5rem;
+    }
+    
+    .arsip-title-header {
+        padding: 2rem 1.5rem;
+    }
+    
+    .arsip-title-header h1 {
+        font-size: 2rem;
+    }
+    
     .arsip-controls {
         flex-direction: column;
         align-items: stretch;
@@ -288,8 +376,20 @@ padding-top: 0; /* sesuaikan tinggi header */
     }
 }
 
-/* ========= MOBILE (480px) ========= */
+/* MOBILE (480px) */
 @media (max-width: 480px) {
+    .wrapper .section {
+        padding: 1rem;
+    }
+    
+    .arsip-title-header {
+        padding: 1.5rem 1rem;
+    }
+    
+    .arsip-title-header h1 {
+        font-size: 1.5rem;
+    }
+    
     .arsip-card {
         padding: var(--space-4);
     }
@@ -313,9 +413,8 @@ padding-top: 0; /* sesuaikan tinggi header */
     }
 
     .search-box {
-        width: 250px;
+        width: 100%;
     }
-
     .search-input {
         padding: 10px 40px 10px 15px;
         border-radius: 8px;
@@ -328,38 +427,3 @@ padding-top: 0; /* sesuaikan tinggi header */
         transform: translateY(-2px);
     }
 }
-
-.bg-pattern {
-    background-image: 
-        url("/assets/img/aura.png"),
-        url("/assets/img/aura.png");
-
-    background-repeat: no-repeat, no-repeat;
-    background-position: top left, bottom right;
-    background-size: 35%, 40%;
-    min-height: 100vh;
-    width: 100%;
-}
-
-.navbar {
-    background-color: #0E1F43 !important;
-}
-
-.navbar .nav-brand span,
-.navbar .nav-menu a,
-.navbar .dropdown-btn {
-    color: #ffffff !important;
-}
-
-.navbar .nav-menu a:hover {
-    color: #FFB84D !important;
-}
-.navbar .dropdown-menu,
-.navbar .dropdown-menu a {
-    color: var(--gray-900) !important;
-}
-
-body {
-    padding-top: 70px !important ;
-}
-

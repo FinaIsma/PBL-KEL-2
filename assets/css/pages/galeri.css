@@ -196,7 +196,6 @@
     font-size: 18px;
 }
 
-/* Posisi tombol kiri & kanan */
 .scroll-btn.left {
     position: absolute;
     left: 10px;
@@ -313,6 +312,14 @@
     margin-top: 50px;
     position: relative;
     z-index: 1;
+}
+
+.pagination a,
+.pagination-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
 }
 
 .pagination-btn {
