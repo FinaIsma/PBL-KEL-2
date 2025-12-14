@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Peta Jalan</title>
+    <link rel="stylesheet" href="assets/css/base.css">
+    <link rel="stylesheet" href="assets/css/pages/navbar.css">
+    <link rel="stylesheet" href="assets/css/pages/sidebar.css">
+    <link rel="stylesheet" href="assets/css/pages/petaJalanTambah.css">
+</head>
+
+<body>
+    <div id="header-placeholder"></div>
+    <div class="layout">
+        <aside class="sidebar">
+            <div id="sidebar-placeholder"></div>
+        </aside>
+
+    <main class="content">
+        <section class="hero-section-admin">
+            <h1>Edit Peta Jalan</h1>
+        </section>
+
+        <section class="form-section">
+            <form action="#" method="POST" enctype="multipart/form-data" class="form-peta-jalan">
+
+                <label for="judul">Judul</label>
+                <input type="text" id="judul" name="judul" value="Contoh Judul" required>
+
+                <label for="tahun">Tahun</label>
+                <input type="number" id="tahun" name="tahun" value="2025" required>
+
+                <label for="deskripsi">Deskripsi</label>
+                <textarea id="deskripsi" name="deskripsi" rows="4" required>Contoh deskripsi peta jalan.</textarea>
+
+                <label for="file">Upload File (PDF)</label>
+                <p>File saat ini: <a href="uploads/contoh.pdf" target="_blank">Lihat File</a></p>
+                <input type="file" id="file" name="file" accept="application/pdf">
+
+                <input type="hidden" name="user_id" value="1">
+
+                <button type="submit" name="submit" class="btn-submit">Simpan</button>
+                <a href="petaJalanTabel.html" class="btn-cancel">Batal</a>
+
+            </form>
+        </section>
+    </main>
+</div>
+
+<script src="assets/js/headerSidebar.js"></script>
+
+</body>
+</html>

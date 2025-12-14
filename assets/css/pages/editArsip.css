@@ -1,0 +1,276 @@
+/* ===== EDIT ARSIP PAGE STYLES ===== */
+
+:root {
+    --color-primary: #0E1F43;
+    --color-secondary: #FEBE11;
+    --color-bg: #ffffff;
+    --color-text: #222;
+    
+    --ff-heading: 'Montserrat', sans-serif;
+    --ff-body: 'Poppins', sans-serif;
+    
+    --radius-4: 4px;
+    --radius-6: 6px;
+    --radius-8: 8px;
+    
+    --shadow-200: 2px 4px 10px rgba(0,0,0,0.08);
+    --transition-fast: all 0.2s ease;
+    
+    --sidebar-width: 220px;
+}
+
+/* Layout */
+.layout {
+    display: flex;
+    min-height: 100vh;
+}
+
+.sidebar {
+    width: var(--sidebar-width);
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    z-index: 1000;
+    background: var(--color-primary);
+}
+
+/* Main Content */
+.content {
+    flex: 1;
+    margin-left: var(--sidebar-width);
+    width: calc(100% - var(--sidebar-width));
+    box-sizing: border-box;
+    background: #f5f5f5;
+}
+
+/* Hero Section */
+.hero-section-admin {
+    background: var(--color-primary);
+    padding: 2rem;
+    margin-bottom: 2rem;
+}
+
+.hero-section-admin h1 {
+    font-family: var(--ff-heading);
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: white;
+    margin: 0;
+    text-align: center;
+}
+
+/* Form Section */
+.form-section {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+.form-arsip {
+    background: white;
+    padding: 2rem;
+    border-radius: var(--radius-8);
+    box-shadow: var(--shadow-200);
+}
+
+/* Form Grid */
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group.full {
+    grid-column: span 2;
+}
+
+/* Form Labels */
+.form-group label {
+    font-family: var(--ff-body);
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: var(--color-text);
+    margin-bottom: 0.5rem;
+}
+
+/* Form Inputs */
+.form-group input[type="text"],
+.form-group input[type="date"],
+.form-group input[type="file"],
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1px solid #e6e6e6;
+    border-radius: var(--radius-6);
+    font-family: var(--ff-body);
+    font-size: 0.95rem;
+    background: #f7f7f7;
+    transition: var(--transition-fast);
+    box-sizing: border-box;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: var(--color-secondary);
+    background: white;
+}
+
+/* Textarea */
+.form-group textarea {
+    resize: vertical;
+    min-height: 120px;
+}
+
+/* === THUMBNAIL PREVIEW - PERBAIKAN DI SINI === */
+.thumb-preview {
+    width: 150px !important;
+    height: 150px !important;
+    object-fit: cover !important;
+    border-radius: var(--radius-6);
+    border: 2px solid #e6e6e6;
+    margin-bottom: 1rem;
+    display: block;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* Info Text untuk PDF */
+.form-group p {
+    font-size: 0.9rem;
+    color: #666;
+    margin-bottom: 0.5rem;
+}
+
+.form-group p strong {
+    color: var(--color-primary);
+}
+
+/* Button Container */
+.form-arsip > .btn-submit,
+.form-arsip > .btn-cancel {
+    padding: 0.75rem 2rem;
+    border: none;
+    border-radius: var(--radius-8);
+    font-family: var(--ff-body);
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: var(--transition-fast);
+    text-decoration: none;
+    display: inline-block;
+    margin-right: 1rem;
+}
+
+.btn-submit {
+    background: var(--color-secondary);
+    color: var(--color-primary);
+    box-shadow: 0 2px 8px rgba(254, 190, 17, 0.3);
+}
+
+.btn-submit:hover {
+    background: #e5aa10;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(254, 190, 17, 0.4);
+}
+
+.btn-cancel {
+    background: #e6e6e6;
+    color: var(--color-text);
+}
+
+.btn-cancel:hover {
+    background: #d0d0d0;
+    transform: translateY(-2px);
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+    :root {
+        --sidebar-width: 180px;
+    }
+    
+    .hero-section-admin h1 {
+        font-size: 2rem;
+    }
+}
+
+@media (max-width: 768px) {
+    :root {
+        --sidebar-width: 0px;
+    }
+    
+    .sidebar {
+        transform: translateX(-100%);
+        transition: transform 0.3s ease;
+    }
+    
+    .sidebar.active {
+        transform: translateX(0);
+    }
+    
+    .content {
+        margin-left: 0;
+        width: 100%;
+    }
+    
+    .form-section {
+        padding: 1.5rem;
+    }
+    
+    .form-arsip {
+        padding: 1.5rem;
+    }
+    
+    .form-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    
+    .form-group.full {
+        grid-column: span 1;
+    }
+    
+    .hero-section-admin {
+        padding: 1.5rem;
+    }
+    
+    .hero-section-admin h1 {
+        font-size: 1.75rem;
+    }
+    
+    .btn-submit,
+    .btn-cancel {
+        width: 100%;
+        margin-right: 0;
+        margin-bottom: 0.5rem;
+        text-align: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .form-section {
+        padding: 1rem;
+    }
+    
+    .form-arsip {
+        padding: 1rem;
+    }
+    
+    .hero-section-admin h1 {
+        font-size: 1.5rem;
+    }
+    
+    .thumb-preview {
+        width: 120px !important;
+        height: 120px !important;
+    }
+}

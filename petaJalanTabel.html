@@ -32,9 +32,10 @@
 
                 <div class="title-row">
                     <h1>Peta Jalan</h1>
-                    <button class="add-button">
+                    <a href="petaJalanTambah.html" class="add-button" style="text-decoration:none;">
                         <i class="fa-solid fa-plus"></i>
-                    </button>
+                    </a>
+
                 </div>
             </div>
 
@@ -70,15 +71,17 @@
                                 </td>
                                 <td>1</td>
                                 <td>
-                                    <div class="action-buttons">
-                                        <button class="btn-edit">
-                                            <i class="fa-solid fa-pen"></i>
-                                        </button>
-                                        <button class="btn-delete">
-                                            <i class="fa-solid fa-trash"></i>
-                                        </button>
-                                    </div>
+                                <div class="action-buttons">
+                                <a href="petaJalanEdit.html?peta_id=1" class="btn-edit">
+                                    <i class="fa-solid fa-pen"></i>
+                                </a>
+
+                                <a href="petaJalanHapus.html?peta_id=1" class="btn-delete">
+                                    <i class="fa-solid fa-trash"></i>
+                                </a>
+                                </div>
                                 </td>
+
                             </tr>
                             <tr>
                                 <td>2</td>
@@ -92,12 +95,14 @@
                                 <td>1</td>
                                 <td>
                                     <div class="action-buttons">
-                                        <button class="btn-edit">
+                                        <a href="petaJalanEdit.html?id=2" class="btn-edit">
                                             <i class="fa-solid fa-pen"></i>
-                                        </button>
-                                        <button class="btn-delete">
+                                        </a>
+
+                                        <a href="petaJalanHapus.html?id=2" class="btn-delete">
                                             <i class="fa-solid fa-trash"></i>
-                                        </button>
+                                        </a>
+
                                     </div>
                                 </td>
                             </tr>
@@ -112,12 +117,14 @@
                                 <td>1</td>
                                 <td>
                                     <div class="action-buttons">
-                                        <button class="btn-edit">
+                                        <a href="petaJalanEdit.html?id=3" class="btn-edit">
                                             <i class="fa-solid fa-pen"></i>
-                                        </button>
-                                        <button class="btn-delete">
+                                        </a>
+
+                                        <a href="petaJalanHapus.html?id=3" class="btn-delete">
                                             <i class="fa-solid fa-trash"></i>
-                                        </button>
+                                        </a>
+
                                     </div>
                                 </td>
                             </tr>
@@ -132,5 +139,18 @@
     </div>
 
     <script src="assets/js/headerSidebar.js"></script>
+
+    <script>
+    document.querySelector(".search-box input").addEventListener("keyup", function() {
+    let filter = this.value.toLowerCase();
+    let rows = document.querySelectorAll(".data-table tbody tr");
+
+    rows.forEach(row => {
+        let text = row.innerText.toLowerCase();
+        row.style.display = text.includes(filter) ? "" : "none";
+    });
+});
+</script>
+
 </body>
 </html>

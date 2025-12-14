@@ -3,19 +3,24 @@
     background: var(--primary);
     color: #fff;
     padding: var(--space-6);
-    padding-top: 130px; /* tambah ruang atas supaya konten tidak ketutupan navbar */
+    padding-top: 80px; /* tambah ruang atas supaya konten tidak ketutupan navbar */
     position: relative;
     margin-top: 0; /* jangan pakai negatif */
 }
-
 
 .tentangKami-container{
     display: flex;
     position: relative;
     justify-content: space-between;
-    align-items: flex-start;
+    align-items: center; /* 🔥 Bikin kiri & kanan sejajar tengah */
     gap: var(--space-7);   
     margin-right: 0;
+}
+.tentangKami-left {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    margin-top: -150px;
 }
 
 .tentangKami-left h1{
@@ -38,7 +43,8 @@
 }
 
 .tentangKami-right p{
-    margin-bottom: var(--space-7);
+    margin-bottom: var(--space-4);
+    color: #fff;
 }
 
 .btn-link{
@@ -182,8 +188,41 @@
     display: flex;
     gap: 30px ; 
     transition: transform 0.4s ease-in-out;
-    
+    justify-content: flex-start;
+    overflow:visible;
 }
+
+.card-name .foto {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    background-size: cover;
+    background-position: center;
+    margin-top: 20px;    /* jarak foto ke nama */
+}
+
+.card-info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;               /* jarak antar teks */
+}
+
+.card-header {
+    font-weight: bold;
+    font-size: 1rem;
+}
+
+.card-body {
+    font-size: 0.85rem;
+    color: var(--gray-200);
+}
+
+.card-contact {
+    font-size: 0.8rem;
+    color: var(--gray-200);
+}
+
+
 .card-name {
     background: var(--primary);
     width: 250px;  
@@ -194,16 +233,20 @@
     padding: var(--space-4);
     display: flex;
     flex-direction: column;
+    text-align: center;
     align-items: center;
     cursor: pointer;
     flex-shrink: 0;
+    margin-top: 20px;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    
 }
 
 .card-name:hover {
-    transform: translateY(-10px);  /* Naik ke atas */
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+    transform: translateY(-10px);
+    border-radius: var(--space-5); 
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2); /* shadow lebih lembut */
+    z-index: 2; /* pastikan di atas kartu lain */
 }
 
 .foto {
@@ -390,4 +433,148 @@
 }
 body:not(.no-header) {
     padding-top: 83px !important;
+}
+
+/* responsif */
+@media (max-width: 1024px) {
+    .tentangKami-container {
+        flex-direction: column;
+        gap: var(--space-5);
+    }
+
+    .tentangKami-left h1 {
+        font-size: 40px;
+        padding-right: var(--space-4);
+        padding-left: var(--space-4);
+    }
+
+    .tentangKami-right p {
+        font-size: 0.95rem;
+    }
+
+    .visiMisi-container {
+        flex-direction: column;
+        gap: var(--space-5);
+    }
+
+    .card-visi, .card-misi {
+        width: 100%;
+    }
+
+    .pengelolaLab-card {
+        gap: 20px;
+    }
+
+    .card-name {
+        width: 200px;
+        height: 280px;
+    }
+
+    .foto, .foto-1 {
+        height: 180px;
+    }
+
+    .arrow {
+        width: 40px;
+        height: 40px;
+        font-size: 20px;
+    }
+
+    .btn-edit-tenkam, .btn-edit-vismis {
+        width: 35px;
+        height: 35px;
+        font-size: 0.85rem;
+    }
+}
+
+/* ================= Mobile (≤768px) ================= */
+@media (max-width: 768px) {
+    .tentangKami {
+        padding-top: 100px;
+    }
+
+    .tentangKami-left h1 {
+        font-size: 32px;
+    }
+
+    .tentangKami-right {
+        padding-bottom: 50px;
+    }
+
+    .tentangKami-container {
+        gap: var(--space-4);
+    }
+
+    .visiMisi-container {
+        gap: var(--space-4);
+    }
+
+    .card-name {
+        width: 100%;
+        max-width: 220px;
+        height: auto;
+    }
+
+    .foto, .foto-1 {
+        height: 150px;
+    }
+
+    .arrow-left {
+        left: 5px;
+    }
+
+    .arrow-right {
+        right: 5px;
+    }
+
+    .btn-edit-tenkam, .btn-edit-vismis {
+        width: 30px;
+        height: 30px;
+        font-size: 0.8rem;
+    }
+
+    .btn-simpan, .btn-simpan2, .btn-kelola {
+        bottom: 10px;
+        right: 10px;
+        font-size: 0.8rem;
+        padding: 5px 10px;
+    }
+}
+
+/* ================= Extra small (≤480px) ================= */
+@media (max-width: 480px) {
+    .tentangKami-left h1 {
+        font-size: 28px;
+    }
+
+    .card-header {
+        font-size: 0.9rem;
+    }
+
+    .card-body {
+        font-size: 0.8rem;
+    }
+
+    .foto, .foto-1 {
+        height: 120px;
+    }
+
+    .arrow {
+        width: 35px;
+        height: 35px;
+        font-size: 18px;
+    }
+
+    .btn-edit-tenkam, .btn-edit-vismis {
+        width: 28px;
+        height: 28px;
+        font-size: 0.75rem;
+    }
+
+    .btn-simpan, .btn-simpan2, .btn-kelola {
+        bottom: 5px;
+        right: 5px;
+        font-size: 0.75rem;
+        padding: 4px 8px;
+    }
 }

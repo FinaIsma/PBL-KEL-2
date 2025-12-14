@@ -1,8 +1,10 @@
-// Import Header
 fetch("header.html")
     .then(res => res.text())
-    .then(data => {
-        document.getElementById("header").innerHTML = data;
+    .then(html => {
+        document.getElementById("header-placeholder").innerHTML = html;
+
+        const navbar = document.querySelector(".navbar");
+        if (navbar) navbar.classList.add("navbar-ready");
     });
 
 // Import Sidebar

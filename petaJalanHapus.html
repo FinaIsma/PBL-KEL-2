@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menghapus...</title>
+
+    <script>
+        // Ambil peta_id dari URL lalu langsung proses hapus
+        window.onload = function () {
+            const params = new URLSearchParams(window.location.search);
+            const id = params.get("peta_id");
+
+            if (!id) {
+                alert("ID tidak ditemukan!");
+                window.location.href = "petaJalanTabel.html";
+                return;
+            }
+
+            // Langsung arahkan ke PHP penghapus
+            window.location.href = "petaJalanHapus.php?peta_id=" + id;
+        };
+    </script>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f6f6f6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .loading-box {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+            text-align: center;
+            width: 300px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="loading-box">
+        <h2>Menghapus Data...</h2>
+        <p>Mohon tunggu sebentar.</p>
+    </div>
+
+</body>
+</html>

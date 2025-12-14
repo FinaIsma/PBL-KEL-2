@@ -1,26 +1,54 @@
-export function initPengelolaSlider() {
-    const slider = document.querySelector(".pengelolaLab-card");
+
+// === SLIDER ===
+export function initPengelolaSlider(sliderSelector = ".pengelolaLab-card", visibleCount = 3) {
+    const slider = document.querySelector(sliderSelector);
     const btnLeft = document.querySelector("[data-arrow='left']");
     const btnRight = document.querySelector("[data-arrow='right']");
 
-    let cards = Array.from(slider.querySelectorAll(".card-name"));
+    if (!slider) return;
+
+    const cards = Array.from(slider.querySelectorAll(".card-name"));
+    let startIndex = 0;
+
+    slider.style.display = "flex";
+    slider.style.overflow = "hidden";
+    slider.style.justifyContent = "center";
 
     function render() {
         slider.innerHTML = "";
-        cards.forEach(card => slider.appendChild(card));
+        for (let i = 0; i < visibleCount; i++) {
+            const index = (startIndex + i) % cards.length;
+            slider.appendChild(cards[index]);
+        }
     }
 
-    // ROTASI KANAN
     btnRight.addEventListener("click", () => {
-        const first = cards.shift(); // ambil kartu pertama
-        cards.push(first);           // taruh di akhir
-        render();                     // tampilkan ulang
+        startIndex = (startIndex + 1) % cards.length;
+        render();
     });
 
-    // ROTASI KIRI
     btnLeft.addEventListener("click", () => {
-        const last = cards.pop();    // ambil kartu terakhir
-        cards.unshift(last);         // taruh di awal
-        render();                     // tampilkan ulang
+        startIndex = (startIndex - 1 + cards.length) % cards.length;
+        render();
+    });
+
+    render();
+}
+
+
+// === SEARCH TABLE ===
+export function initSearchProfil() {
+    const searchInput = document.querySelector("[data-search]");
+    const tableRows = document.querySelectorAll("#table-body tr");
+
+    if (!searchInput) return;
+
+    searchInput.addEventListener("keyup", function() {
+        const keyword = this.value.toLowerCase();
+
+        tableRows.forEach(row => {
+            const rowText = row.innerText.toLowerCase();
+            row.style.display = rowText.includes(keyword) ? "" : "none";
+        });
     });
 }
