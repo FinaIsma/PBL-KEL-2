@@ -1,0 +1,32 @@
+
+<nav class="navbar">
+    <div class="nav-container">
+
+        <div class="nav-left">
+            <img src="assets/img/Logo JTI.png" alt="Logo" class="nav-logo">
+
+            <div class="nav-brand">
+                <span class="brand-title">Network & Cyber Security</span>
+                <span class="brand-sub">Laboratorium</span>
+            </div>
+        </div>
+
+        <ul class="nav-menu">
+            <li class="nav-profile">
+                <i class="fa-solid fa-user"></i>
+                <span>
+                    <?php echo $_SESSION['username'] ?? 'admin1'; ?>
+                </span>
+            </li>
+
+            <li class="nav-logout">
+                <a href="backend/auth/logout.php">
+                    <i class="fa-solid fa-right-from-bracket"></i> Logout
+                </a>
+            </li>
+        </ul>
+
+    </div>
+</nav>
+<div id="header-placeholder"></div>
+
