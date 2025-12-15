@@ -1,70 +1,78 @@
-<?php 
-include("db.php");
+<?php
+session_start();
+require_once "db.php";
 
-$success = "";
-$error = "";
-$mediaName = null;  // wajib ada sebelum dipakai
+/* ===== CEK LOGIN ===== */
+if (!isset($_SESSION['logged_in']) || !isset($_SESSION['user_id'])) {
+    header("Location: login.php");
+    exit;
+}
+
+$error   = "";
+$mediaDB = null;
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
-    $judul       = trim($_POST['judul']);
-    $deskripsi   = trim($_POST['deskripsi']);
-    $editor      = 1; // bisa diganti session
+    $judul     = trim($_POST['judul']);
+    $deskripsi = trim($_POST['deskripsi']);
+    $editor    = $_SESSION['user_id'];
 
-    // ---------- PROSES UPLOAD ----------
-
+    /* ===== UPLOAD GAMBAR SAJA ===== */
     if (!empty($_FILES['media']['name'])) {
 
         if ($_FILES['media']['error'] === UPLOAD_ERR_OK) {
 
             $ext = strtolower(pathinfo($_FILES['media']['name'], PATHINFO_EXTENSION));
-            $allowed = ['jpg','jpeg','png','webp','gif','pdf','mp4','mp3'];
+            $allowed = ['jpg', 'jpeg', 'png', 'webp'];
 
             if (!in_array($ext, $allowed)) {
-                $error = "Format file tidak diizinkan.";
+                $error = "Format gambar tidak diizinkan. Gunakan JPG, PNG, atau WEBP.";
             } else {
-                $uploadDir = __DIR__ . '/assets/img/media/';  // folder baru di img
 
-if (!is_dir($uploadDir)) {
-    mkdir($uploadDir, 0755, true); // buat folder jika belum ada
-}
+                $uploadDir = __DIR__ . "/assets/img/media/";
+                if (!is_dir($uploadDir)) {
+                    mkdir($uploadDir, 0755, true);
+                }
 
-$mediaName = "sarpras_" . time() . "." . $ext;
-$targetPath = $uploadDir . $mediaName;
+                $mediaName  = "sarpras_" . time() . "_" . rand(100,999) . "." . $ext;
+                $targetPath = $uploadDir . $mediaName;
 
-if (!move_uploaded_file($_FILES['media']['tmp_name'], $targetPath)) {
-    $error = "Gagal mengupload media!";
-}
-
-// Path untuk database relatif ke folder project
-$mediaDB = "assets/img/media/" . $mediaName;
-
+                if (move_uploaded_file($_FILES['media']['tmp_name'], $targetPath)) {
+                    $mediaDB = "assets/img/media/" . $mediaName;
+                } else {
+                    $error = "Gagal mengupload gambar!";
+                }
             }
 
         } else {
-            $error = "Upload error code: " . $_FILES['media']['error'];
+            $error = "Terjadi kesalahan saat upload gambar.";
         }
-
+    } else {
+        $error = "Gambar wajib diupload!";
     }
 
-    // ---------- INSERT DATABASE ----------
+    /* ===== INSERT DATABASE ===== */
     if ($error === "") {
 
-        $mediaDB = $mediaDB ?? null; // jika tidak upload file, null
+        $sql = "
+            INSERT INTO sarana_prasarana (judul, deskripsi, media_path, user_id)
+            VALUES ($1, $2, $3, $4)
+        ";
 
-        $sql = "INSERT INTO sarana_prasarana (judul, deskripsi, media_path, user_id)
-                VALUES ('$judul', '$deskripsi', '$mediaDB', $editor)";
+        $result = pg_query_params($conn, $sql, [
+            $judul,
+            $deskripsi,
+            $mediaDB,
+            $editor
+        ]);
 
-        $query = pg_query($conn, $sql);
-
-        if ($query) {
+        if ($result) {
             header("Location: tabelSarpras.php");
             exit;
         } else {
             $error = "Gagal menambahkan data ke database!";
         }
     }
-
 }
 ?>
 <!DOCTYPE html>
@@ -75,153 +83,127 @@ $mediaDB = "assets/img/media/" . $mediaName;
 
 <link rel="stylesheet" href="assets/css/base.css">
 <link rel="stylesheet" href="assets/css/pages/navbar.css">
-<link rel="stylesheet" href="assets/css/pages/sidebar.css">
+<link rel="stylesheet" href="assets/css/pages/sidebarr.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
 <style>
+main, .content { margin-top: 100px; }
 
-/* ====== LAYOUT ====== */
-.content {
-    margin-left: 220px;
-    padding: 0;
-    width: calc(100% - 220px);
-    min-height: 100vh;
+.sidebar {
+    width: 220px;
+    position: fixed;
+    top: 83.5px;
+    left: 0;
+    height: calc(100vh - 83.5px);
+}
+
+.navbar {
+    box-shadow: 3px 5px 10px rgba(0,0,0,.15);
     background: #fff;
 }
 
-.hero-section-admin {
-    padding-left: 80px; /* Geser ke kanan */
+.content {
+    margin-left: 220px;
+    padding-top: 100px;
+    transform: scale(.8);
+    transform-origin: top left;
+    width: calc((100% - 220px) / .8);
+    margin-top: -110px;
 }
 
-.form-section {
-    padding: 20px 60px;
+.hero-section-admin { padding-left: 80px; }
+
+.form-section { padding: 20px 60px; }
+
+.form-wrapper {
+    background: #fff;
+    border-radius: 12px;
+    padding: 30px 40px;
+    box-shadow: 0 5px 20px rgba(10,6,1,.15);
+    border: 1px solid #ddd;
 }
 
-/* ====== FORM ELEMENTS ====== */
 .form-add label {
-    font-family: var(--font-body);
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 600;
     margin-bottom: 6px;
     display: block;
-    color: #000;
 }
 
 .form-add input,
-.form-add textarea,
-.form-add select {
+.form-add textarea {
     width: 100%;
     padding: 12px 15px;
     border-radius: 8px;
     border: 1px solid #999;
-    font-size: 16px;
-    font-family: var(--font-body);
-    color: #000;
-    background: #f9f9f9;
-    outline: none;
     margin-bottom: 22px;
 }
 
-.form-add input:focus,
-.form-add textarea:focus {
-    border-color: #FFB84D;
-    box-shadow: 0 0 4px rgba(255, 184, 77, 0.6);
-}
-
-.form-add textarea {
-    resize: vertical;
-}
-
-/* ====== BUTTONS ====== */
 .btn-submit {
-    background: #FFB84D;
-    color: #000;
-    border: none;
+    background: var(--secondary);
     padding: 14px 40px;
     border-radius: 8px;
     font-weight: 700;
-    font-size: 16px;
     cursor: pointer;
-    box-shadow: 0 3px 10px rgba(255, 184, 77, 0.3);
-    transition: 0.3s ease;
-}
-
-.btn-submit:hover {
-    background: #FF9A3D;
-    transform: translateY(-2px);
 }
 
 .btn-cancel {
     margin-left: 12px;
     padding: 12px 30px;
     background: #e0e0e0;
-    color: #000;
     border-radius: 8px;
-    font-size: 16px;
     text-decoration: none;
-    font-family: var(--font-body);
-    transition: 0.2s;
 }
 
-.btn-cancel:hover {
-    background: #ccc;
+.alert-error {
+    padding: 14px 20px;
+    background: #ffdddd;
+    border-left: 5px solid #e74c3c;
+    border-radius: 6px;
+    margin-bottom: 20px;
 }
-
 </style>
-
 </head>
 
 <body>
 
-<div id="header-placeholder"></div>
+<div id="header"></div>
+<div id="sidebar"></div>
 
-<div class="layout">
+<main class="content">
 
-    <aside class="sidebar">
-        <div id="sidebar-placeholder"></div>
-    </aside>
+    <section class="hero-section-admin">
+        <h1>Tambah Sarana & Prasarana</h1>
+    </section>
 
-    <main class="content">
+    <?php if (!empty($error)): ?>
+        <div class="alert-error"><?= htmlspecialchars($error) ?></div>
+    <?php endif; ?>
 
-        <section class="hero-section-admin">
-            <h1>Tambah Sarana & Prasarana</h1>
-        </section>
+    <section class="form-section">
+        <div class="form-wrapper">
 
-        <!-- Alert -->
-        <?php if (!empty($success)): ?>
-            <div class="alert-success"><?= $success ?></div>
-        <?php endif; ?>
+            <form method="POST" enctype="multipart/form-data" class="form-add">
 
-        <?php if (!empty($error)): ?>
-            <div class="alert-error"><?= $error ?></div>
-        <?php endif; ?>
+                <label>Judul</label>
+                <input type="text" name="judul" required>
 
-        <section class="form-section">
+                <label>Deskripsi</label>
+                <textarea name="deskripsi"></textarea>
 
-                <form method="POST" enctype="multipart/form-data" class="form-add">
+                <label>Gambar</label>
+                <input type="file" name="media" accept=".jpg,.jpeg,.png,.webp" required>
 
-                    <label>Judul</label>
-                    <input type="text" name="judul" required>
+                <button type="submit" class="btn-submit">Simpan</button>
+                <a href="tabelSarpras.php" class="btn-cancel">Batal</a>
 
-                    <label>Deskripsi</label>
-                    <textarea name="deskripsi"></textarea>
+            </form>
 
-                    <label>Media (Gambar/Video/PDF)</label>
-                    <input type="file" name="media">
+        </div>
+    </section>
 
-                    <button class="btn-submit" type="submit">Simpan</button>
-                    <a href="tabelSarpras.php" class="btn-cancel">Batal</a>
+</main>
 
-                </form>
-
-
-        </section>
-
-    </main>
-
-</div>
-
-<script src="assets/js/headerSidebar.js"></script>
-
+<script src="assets/js/sidebarHeader.js"></script>
 </body>
 </html>
-

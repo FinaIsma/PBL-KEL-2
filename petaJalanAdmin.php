@@ -1,28 +1,42 @@
 <?php
 session_start();
-include("koneksi.php");
+if (!isset($_SESSION['logged_in'])) {
+    header("Location: login.php");
+    exit;
+}
+require_once "backend/config.php"; // ini harus berisi $db (PDO)
 
 $search = $_GET['search'] ?? '';
 
-if ($search != '') {
-    $query = "
-        SELECT * FROM peta_jalan
-        WHERE judul ILIKE '%$search%'
-           OR deskripsi ILIKE '%$search%'
-           OR CAST(tahun AS TEXT) ILIKE '%$search%'
-        ORDER BY tahun ASC
-    ";
-} else {
-    $query = "SELECT * FROM peta_jalan ORDER BY tahun ASC";
-}
+try {
+    if ($search !== '') {
+        // Pakai prepared statement biar aman
+        $sql = "
+            SELECT * 
+            FROM peta_jalan
+            WHERE judul ILIKE :search
+               OR deskripsi ILIKE :search
+               OR CAST(tahun AS TEXT) ILIKE :search
+            ORDER BY tahun ASC
+        ";
 
-$peta = [];
-$res = pg_query($koneksi, $query);
+        $stmt = $db->prepare($sql);
+        $stmt->execute([
+            ':search' => "%" . $search . "%"
+        ]);
+    } else {
+        $sql = "SELECT * FROM peta_jalan ORDER BY tahun ASC";
+        $stmt = $db->query($sql);
+    }
 
-while ($row = pg_fetch_assoc($res)) {
-    $peta[] = $row;
+    // Ambil semua data
+    $peta = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+} catch (PDOException $e) {
+    die("Query gagal: " . $e->getMessage());
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -32,18 +46,14 @@ while ($row = pg_fetch_assoc($res)) {
 
     <link rel="stylesheet" href="assets/css/base.css">
     <link rel="stylesheet" href="assets/css/pages/navbar.css">
-    <link rel="stylesheet" href="assets/css/pages/sidebar.css">
+    <link rel="stylesheet" href="assets/css/pages/sidebarr.css">
     <link rel="stylesheet" href="assets/css/pages/petaJalanAdmin.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 
 <body>
-    <div id="header-placeholder"></div>
-    <div class="layout">
-
-        <aside class="sidebar">
-            <div id="sidebar-placeholder"></div>
-        </aside>
+    <div id="header"></div>
+    <div id="sidebar"></div>
 
         <main class="content">
 
@@ -95,8 +105,8 @@ while ($row = pg_fetch_assoc($res)) {
             </section>
 
         </main>
-    </div>
-    <script src="assets/js/headerSidebar.js"></script>
+    
+    <script src="assets/js/sidebarHeader.js"></script>
 
 </body>
 </html>

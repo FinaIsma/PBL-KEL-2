@@ -1,26 +1,46 @@
 .navbar {
-    background-color: #0E1F43 !important;
+    background: var(--primary) !important;
 }
 
-.navbar .nav-brand span,
+.navbar.scrolled {
+    background: rgba(255, 255, 255, 0.98) !important;
+    backdrop-filter: blur(6px) !important;
+    box-shadow: 3px 5px 10px rgba(0, 0, 0, 0.15) !important;
+}
+
 .navbar .nav-menu a,
-.navbar .dropdown-btn {
-    color: #ffffff !important;
+.navbar .dropdown-btn,
+.navbar .brand-title,
+.navbar .brand-sub {
+    color: #fff !important;
 }
 
-.navbar .nav-menu a:hover {
-    color: #FFB84D !important;
+.navbar .nav-menu a:hover,
+.navbar .dropdown-btn:hover {
+    color: var(--secondary) !important;
 }
-.navbar .dropdown-menu,
-.navbar .dropdown-menu a {
-    color: var(--gray-900) !important;
+
+.navbar .dropdown-menu li a {
+    color: #000 !important;
+}
+
+.navbar.scrolled .nav-menu a,
+.navbar.scrolled .dropdown-btn,
+.navbar.scrolled .brand-title,
+.navbar.scrolled .brand-sub {
+    color: #000 !important;
+}
+
+.navbar.scrolled .nav-menu a:hover,
+.navbar.scrolled .dropdown-btn:hover {
+    color: var(--primary) !important;
 }
 
 .hero-section {
-    background: #0E1F43 !important;
+    background: #0E1F43;
     color: white;
     text-align: center;
-    padding: 90px 50px !important;
+    padding: 50px 50px !important;
     margin: 0 !important;
     border: none !important;
 }
@@ -34,12 +54,11 @@
 }
 
 .agenda-wrapper {
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-top: 30px;
     width: 100%;
+    max-width: 950px;
+    margin: 0 auto;
+    position: relative;
+    top: 20px;
 }
 
 .agenda-section {
@@ -95,24 +114,19 @@
     content: '';
     display: block;
     width: 1070px;
-    height: 3px;
+    height: 2px;
     background: linear-gradient(90deg, #ffd700 0%, #ffb800 100%);
     margin: 15px auto 0;
 }
 
 .agenda-container {
-    max-width: 100%;
-    margin: 50px auto 0;
-    position: relative;
-    z-index: 1;
-
     display: flex;
-    gap: 20px;
+    gap: 15px;
     overflow: hidden;
     scroll-behavior: smooth;
     padding: 10px 0;
-    flex-wrap: nowrap;
-    width: 900px;
+    width: 100%;
+    justify-content: center;
 }
 
 .agenda-container::-webkit-scrollbar {
@@ -122,16 +136,21 @@
 
 .agenda-card {
     background: #0E1F43;
-    color: white;
-    padding: 30px;
-    border-radius: 15px;
-    min-width: 280px; 
-    max-width: 280px; 
-    flex: 0 0 auto; 
+    padding: 18px;
+    border-radius: 12px;
+    min-width: 220px;
+    max-width: 220px;
+    flex: 0 0 auto;
+    transition: .3s ease;
+}
+
+.agenda-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.25);
 }
 
 .agenda-card h3 {
-    font-size: 22px;
+    font-size: 16px;
     font-weight: 700;
     margin-bottom: 15px;
     color: white;
@@ -140,10 +159,14 @@
 }
 
 .agenda-card p {
-    font-size: 14px;
+    font-size: 12px;
     line-height: 1.6;
     margin-bottom: 15px;
     opacity: 0.9;
+}
+
+.agenda-card p small {
+    color: #ffffff !important;
 }
 
 .agenda-card ul {
@@ -153,7 +176,7 @@
 }
 
 .agenda-card ul li {
-    font-size: 14px;
+    font-size: 12px;
     line-height: 1.8;
     padding-left: 20px;
     position: relative;
@@ -170,20 +193,20 @@
 }
 
 .scroll-btn {
-    width: 45px;
-    height: 45px;
-    border: none;
+    width: 35px;
+    height: 35px;
     background: #0E1F43;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    transition: all 0.3s ease;;
+    transition: 0.3s ease;
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
     z-index: 10;
+    padding: 0;
 }
 
 .scroll-btn:hover {
@@ -192,20 +215,31 @@
 }
 
 .scroll-btn i {
+    font-size: 14px;
     color: #ffffff;
-    font-size: 18px;
+    width: auto !important;
+    height: auto !important;
+    position: static !important;
+    line-height: 1 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+   
 }
 
+.agenda-card h3,
+.agenda-card p,
+.agenda-card small,
+.agenda-card ul li {
+    color: #ffffff !important;
+}
 .scroll-btn.left {
-    position: absolute;
-    left: 10px;
+    left: -5px;
     top: 50%;
     transform: translateY(-50%);
 }
 
 .scroll-btn.right {
-    position: absolute;
-    right: 10px;
+    right: -5px;
     top: 50%;
     transform: translateY(-50%);
 }
@@ -213,11 +247,6 @@
 .scroll-btn:hover {
     background: #1a2f4f;
     transform: translateY(-50%) scale(1.1);
-}
-
-.scroll-btn i {
-    color: #ffffff;
-    font-size: 18px;
 }
 
 .dokumentasi-section {
@@ -242,56 +271,62 @@
 }
 
 .dokumentasi-container {
-    max-width: 1200px;
-    margin: 50px auto 0;
+    max-width: 1050px;
+    margin: 40px auto 0;
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 30px;
-    padding: 0px;
+    grid-template-columns: repeat(3, 1fr);   /* 3 per halaman */
+    gap: 20px;
+    padding: 10px;
     position: relative;
     z-index: 1;
 }
 
 .dokumentasi-card {
     background: #0E1F43;
-    border-radius: 15px;
+    border-radius: 10px;
     overflow: hidden;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    border: none;
-    display: flex;
-    align-items: center;
-    text-align: center; 
-    flex-direction: column;
-    height: 80%;
+    text-align: center;
+    padding: 8px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.12);
+    transition: .3s ease;
 }
 
 .dokumentasi-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
 }
 
 .dokumentasi-image {
-    width: 65%;
-    height: 350px;
-    background-color: #c4c4c4;
+    width: 93% !important;
+    aspect-ratio: 4 / 3;
     background-size: cover;
     background-position: center;
-    margin: 20px;
-    border-radius: 15px;
+    border-radius: 8px;
+    margin: 10px !important;
+}
+
+
+.dokumentasi-card {
+    padding: 5px 0;
+    border-radius: 12px;
 }
 
 .dokumentasi-info {
-    padding: 20px;
+    padding: 15px;
+}
+
+.dokumentasi-info {
+    padding: 12px 12px 14px;;
     background: #0E1F43;
     color: white;
     flex-grow: 1;
     display: flex;
     flex-direction: column;
+    text-align: center;
 }
 
 .dokumentasi-info h3 {
-    font-size: 18px;
+    font-size: 13px;
     font-weight: 700;
     margin-bottom: 8px;
     color: white;
@@ -299,7 +334,7 @@
 }
 
 .dokumentasi-info p {
-    font-size: 14px;
+    font-size: 11px;
     margin: 0;
     opacity: 0.9;
 }

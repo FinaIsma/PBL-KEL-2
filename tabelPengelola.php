@@ -1,4 +1,10 @@
-<?php include("db.php"); 
+<?php
+session_start();
+if (!isset($_SESSION['logged_in'])) {
+    header("Location: login.php");
+    exit;
+}
+include("db.php"); 
 
 $showConfirm = false;
 $confirmData = null;
@@ -26,21 +32,16 @@ if (isset($_GET['delete_id'])) {
     <link rel="stylesheet" href="assets/css/utils.css">
     <link rel="stylesheet" href="assets/css/components.css">
     <link rel="stylesheet" href="assets/css/responsive.css">
-    <link rel="stylesheet" href="assets/css/pages/tabelCRUD.css">
     <link rel="stylesheet" href="assets/css/pages/navbar.css">
-    <link rel="stylesheet" href="assets/css/pages/sidebar.css">
+    <link rel="stylesheet" href="assets/css/pages/sidebarr.css">
+    <link rel="stylesheet" href="assets/css/pages/tabelCRUD.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 
 <body>
 
-    <div id="header-placeholder"></div>
-
-    <div class="layout">
-
-        <aside class="sidebar">
-            <div id="sidebar-placeholder"></div>
-        </aside>
+    <div id="header"></div>
+            <div id="sidebar"></div>
 
         <main class="content">
 
@@ -117,9 +118,9 @@ while ($row = pg_fetch_assoc($result)):
             </div>
 
         </main>
-    </div>
 
-    <script src="assets/js/headerSidebar.js"></script>
+
+    <script src="assets/js/sidebarHeader.js"></script>
     <script type="module" src="assets/js/main.js"></script>
 </body>
 <?php if ($showConfirm && $confirmData): ?>

@@ -1,138 +1,226 @@
 <?php
-include "koneksi.php";
+session_start();
+if (!isset($_SESSION['logged_in'])) {
+    header("Location: login.php");
+    exit;
+}
+include("backend/config.php");
 
+$showConfirm = false;
+$confirmData = null;
+
+// Modal hapus
+if (isset($_GET['delete_id'])) {
+    $delete_id = intval($_GET['delete_id']);
+
+    $stmt = $db->prepare("SELECT judul FROM dokumentasi WHERE dokumentasi_id = ?");
+    $stmt->execute([$delete_id]);
+    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if ($row) {
+        $showConfirm = true;
+        $confirmData = $row;
+        $confirmData['id'] = $delete_id;
+    }
+}
+
+// Search
 $search = isset($_GET['search']) ? $_GET['search'] : "";
 
 if ($search != "") {
-    $query = "
+    $stmt = $db->prepare("
         SELECT * FROM dokumentasi
-        WHERE judul ILIKE $1 
-        OR media_path ILIKE $1
-        OR user_id::text ILIKE $1
+        WHERE judul ILIKE :search
+           OR media_path ILIKE :search
+           OR user_id::text ILIKE :search
         ORDER BY dokumentasi_id ASC
-    ";
-
-    $result = pg_query_params($conn, $query, ['%' . $search . '%']);
+    ");
+    $stmt->execute([
+        ':search' => '%' . $search . '%'
+    ]);
 } else {
-    $query = "SELECT * FROM dokumentasi ORDER BY dokumentasi_id ASC";
-    $result = pg_query($conn, $query);
+    $stmt = $db->prepare("SELECT * FROM dokumentasi ORDER BY dokumentasi_id ASC");
+    $stmt->execute();
 }
 
-if (!$result) {
-    die("Query failed: " . pg_last_error($conn));
-}
+$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kelola Dokumentasi</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kelola Dokumentasi</title>
 
-    <link rel="stylesheet" href="assets/css/base.css">
-    <link rel="stylesheet" href="assets/css/pages/arsipTabel.css">
-    <link rel="stylesheet" href="assets/css/pages/navbar.css">
-    <link rel="stylesheet" href="assets/css/pages/sidebar.css">
+<link rel="stylesheet" href="assets/css/base.css">
+<link rel="stylesheet" href="assets/css/utils.css">
+<link rel="stylesheet" href="assets/css/components.css">
+<link rel="stylesheet" href="assets/css/responsive.css">
+<link rel="stylesheet" href="assets/css/pages/navbar.css">
+<link rel="stylesheet" href="assets/css/pages/sidebarr.css">
+<link rel="stylesheet" href="assets/css/pages/tabelCRUD.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
-    <style>
-        .thumb-preview {
-            width: 60px;
-            height: 60px;
-            object-fit: cover;
-            border-radius: 6px;
-        }
-    </style>
+<style>
+.thumb-preview {
+    width: 150px;
+    height: 100px;
+    object-fit: cover;
+}
+</style>
 </head>
 
 <body>
 
-<div id="header-placeholder"></div>
+<div id="header"></div>
+<div id="sidebar"></div>
 
-<div class="layout">
-    <aside class="sidebar">
-        <div id="sidebar-placeholder"></div>
-    </aside>
+<main class="content">
 
-    <main class="arsip-main">
+<div class="top-bar-page">
+    <a href="galeriAdmin.php" class="btn-back">
+        <i class="fa-solid fa-arrow-left"></i>
+    </a>
 
-        <div class="arsip-header">
-            <div class="header-left">
-                <a href="galeriAdmin.php" class="btn-back"></a>
-                <h1 class="arsip-title">Dokumentasi</h1>
-                <a href="createDokumentasi.php" class="btn-add"></a>
-            </div>
+    <div class="title-container">
+        <div class="title-row">
+            <h1 class="title-page">Dokumentasi</h1>
+            <a href="createDokumentasi.php" class="btn-add">
+                <i class="fa-solid fa-plus"></i>
+            </a>
+        </div>
 
+        <div class="search-row">
             <div class="search-wrapper">
-                <form method="GET" action="">
-                    <input 
-                        type="text" 
-                        name="search" 
-                        placeholder="Search"
-                        value="<?= htmlspecialchars($search); ?>"
-                    >
-                </form>
+                <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                <input
+                    type="text"
+                    class="search-input"
+                    placeholder="Search"
+                    value="<?= htmlspecialchars($search) ?>"
+                    oninput="window.location='?search=' + this.value"
+                >
             </div>
         </div>
-
-        <div class="arsip-table-wrapper">
-            <table class="arsip-table">
-                <thead>
-                    <tr>
-                        <th>No</th>
-                        <th>Gambar</th>
-                        <th>Judul</th>
-                        <th>Editor ID</th>
-                        <th>Aksi</th>
-                    </tr>
-                </thead>
-
-                <tbody>
-                <?php 
-                $no = 1; 
-                while ($row = pg_fetch_assoc($result)) : 
-                ?>
-                    <tr>
-                        <td><?= $no; ?></td>
-
-                        <td>
-                            <?php if ($row['media_path']) : ?>
-                                <img src="upload/<?= $row['media_path']; ?>" class="thumb-preview">
-                            <?php else : ?>
-                                <span>Tidak ada</span>
-                            <?php endif; ?>
-                        </td>
-
-                        <td><?= $row['judul']; ?></td>
-                        <td><?= $row['user_id']; ?></td>
-
-                        <td>
-                            <div class="action-buttons">
-                                <a href="editDokumentasi.php?id=<?= $row['dokumentasi_id']; ?>" class="btn-action btn-edit"></a>
-
-                                <a onclick="return confirm('Hapus data ini?')"
-                                   href="deleteDokumentasi.php?dokumentasi_id=<?= $row['dokumentasi_id']; ?>"
-                                   class="btn-action btn-delete"></a>
-                            </div>
-                        </td>
-                    </tr>
-
-                <?php 
-                $no++; 
-                endwhile; 
-                ?>
-                </tbody>
-            </table>
-        </div>
-
-        <div class="button-footer">
-            <a href="galeriAdmin.php" class="btn-simpan">Simpan</a>
-        </div>
-
-    </main>
+    </div>
 </div>
 
-<script src="assets/js/headerSidebar.js"></script>
+<div class="table-wrapper">
+<table class="table">
+<thead>
+<tr>
+    <th>No</th>
+    <th>Gambar</th>
+    <th>Judul</th>
+    <th>User ID</th>
+    <th>Aksi</th>
+</tr>
+</thead>
+
+<tbody>
+<?php
+$no = 1;
+foreach ($result as $row):
+?>
+<tr>
+    <td><?= $no++ ?></td>
+    <td class="td-image">
+        <?php if (!empty($row['media_path'])): ?>
+            <div class="image-wrapper">
+                <img 
+                    src="<?= htmlspecialchars($row['media_path']); ?>" 
+                    class="thumb-preview"
+                >
+            </div>
+        <?php else: ?>
+            <span>Tidak ada</span>
+        <?php endif; ?>
+    </td>
+    <td><?= htmlspecialchars($row['judul']) ?></td>
+    <td><?= htmlspecialchars($row['user_id']) ?></td>
+    <td>
+        <div class="action-buttons">
+            <a href="editDokumentasi.php?id=<?= $row['dokumentasi_id'] ?>" class="btn-action btn-edit">
+                <i class="fa-solid fa-pen"></i>
+            </a>
+            <a href="tabelDokumentasi.php?delete_id=<?= $row['dokumentasi_id'] ?>"
+               class="btn-action btn-delete">
+                <i class="fa-solid fa-trash"></i>
+            </a>
+        </div>
+    </td>
+</tr>
+<?php endforeach; ?>
+</tbody>
+</table>
+</div>
+
+<div class="btn-save-wrapper">
+    <a href="galeriAdmin.php" class="btn-save">Simpan</a>
+</div>
+
+</main>
+
+<script src="assets/js/sidebarHeader.js"></script>
+
+<?php if ($showConfirm && $confirmData): ?>
+<style>
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+}
+.modal-box {
+    background: #fff;
+    padding: 30px 40px;
+    border-radius: 12px;
+    text-align: center;
+    min-width: 320px;
+}
+.modal-form {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+}
+.btn {
+    padding: 10px 20px;
+    border-radius: 6px;
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
+}
+.btn-delete {
+    background: #e74c3c;
+    color: #fff;
+}
+.btn-cancel {
+    background: #95a5a6;
+    color: #fff;
+    text-decoration: none;
+    line-height: 38px;
+}
+</style>
+
+<div class="modal-overlay">
+<div class="modal-box">
+    <p>
+        Yakin ingin menghapus dokumentasi<br>
+        <strong><?= htmlspecialchars($confirmData['judul']) ?></strong>?
+    </p>
+
+    <form method="POST" action="deleteDokumentasi.php" class="modal-form">
+        <input type="hidden" name="id" value="<?= $confirmData['id'] ?>">
+        <button type="submit" class="btn btn-delete">Ya, Hapus</button>
+        <a href="tabelDokumentasi.php" class="btn btn-cancel">Batal</a>
+    </form>
+</div>
+</div>
+<?php endif; ?>
 
 </body>
 </html>

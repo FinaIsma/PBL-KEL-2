@@ -15,14 +15,13 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $kategori   = trim($_POST['kategori']);
     $judul      = trim($_POST['judul']);
     $isi        = trim($_POST['isi']);
-    $editor    = 1; // bisa diganti session
+    $editor     = 1; // session nantinya
 
     $sql = "UPDATE profil 
             SET kategori='$kategori', judul='$judul', isi='$isi', user_id=$editor
             WHERE profil_id=$id";
 
     if (pg_query($conn, $sql)) {
-        // Setelah update berhasil, langsung kembali ke tabel
         header("Location: tabelProfil.php");
         exit;
     } else {
@@ -38,17 +37,36 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
 <link rel="stylesheet" href="assets/css/base.css">
 <link rel="stylesheet" href="assets/css/pages/navbar.css">
-<link rel="stylesheet" href="assets/css/pages/sidebar.css">
+<link rel="stylesheet" href="assets/css/pages/sidebarr.css">
+<link rel="stylesheet" href="assets/css/CRUDTable.css">
 
 <style>
 
-/* ====== LAYOUT ====== */
+/* ====== LAYOUT DARI KODE 2 ====== */
+main, .content {
+    margin-top: 100px;
+}
+
+.sidebar {
+    width: 220px;
+    position: fixed;
+    top: 83.5px;
+    left: 0;
+    height: calc(100vh - 83.5px);
+}
+
+.navbar {
+    box-shadow: 3px 5px 10px rgba(0, 0, 0, 0.15) !important;
+    background-color: #fff;
+}
+
 .content {
     margin-left: 220px;
-    padding: 0;
-    width: calc(100% - 220px);
-    min-height: 100vh;
-    background: #fff;
+    padding-top: 100px;
+    transform: scale(0.8);
+    transform-origin: top left;
+    width: calc((100% - 220px) / 0.8);
+    margin-top: -110px !important;
 }
 
 .hero-section-admin {
@@ -60,44 +78,46 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     padding: 20px 60px;
 }
 
-/* ====== FORM FIELDS ====== */
-.form-peta-jalan label {
+.form-wrapper {
+    background: #fff;
+    border-radius: 12px;
+    padding: 30px 40px;
+    box-shadow: 0 5px 20px rgba(10, 6, 1, 0.15);
+    border: 1px solid #ddd;
+}
+
+/* ====== FORM ELEMENTS ====== */
+.form-add label {
     font-family: var(--font-body);
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 600;
     margin-bottom: 6px;
     display: block;
     color: #000;
 }
 
-.form-peta-jalan input,
-.form-peta-jalan textarea,
-.form-peta-jalan select {
+.form-add input,
+.form-add textarea,
+.form-add select {
     width: 100%;
     padding: 12px 15px;
     border-radius: 8px;
     border: 1px solid #999;
-    font-size: 16px;
+    font-size: 13px;
     font-family: var(--font-body);
     background: #f9f9f9;
+    color: #000;
     outline: none;
     margin-bottom: 22px;
 }
 
-.form-peta-jalan input:focus,
-.form-peta-jalan textarea:focus {
-    border-color: #FFB84D;
-    box-shadow: 0 0 4px rgba(255, 184, 77, 0.6);
-}
-
-.form-peta-jalan textarea {
+.form-add textarea {
     resize: vertical;
-    min-height: 120px;
 }
 
-/* ====== BUTTONS ====== */
+/* ====== BUTTON ====== */
 .btn-submit {
-    background: #FFB84D;
+    background: var(--secondary);
     color: #000;
     border: none;
     padding: 14px 40px;
@@ -123,13 +143,13 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     font-size: 16px;
     text-decoration: none;
     font-family: var(--font-body);
-    transition: 0.2s;
 }
 
 .btn-cancel:hover {
     background: #ccc;
 }
 
+/* ====== ALERT ====== */
 .alert-error {
     padding: 12px;
     border-radius: 8px;
@@ -138,40 +158,36 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     margin-bottom: 15px;
     font-size: 15px;
 }
-
 </style>
 
 </head>
 <body>
 
-<div id="header-placeholder"></div>
+<div id="header"></div>
+<div id="sidebar"></div>
 
-<div class="layout">
+<main class="content">
 
-    <aside class="sidebar">
-        <div id="sidebar-placeholder"></div>
-    </aside>
+    <section class="hero-section-admin">
+        <h1>Edit Profil</h1>
+    </section>
 
-    <main class="content">
+    <?php if (!empty($error)): ?>
+        <div class="alert-error"><?= $error ?></div>
+    <?php endif; ?>
 
-        <section class="hero-section-admin">
-            <h1>Edit Profil</h1>
-        </section>
+    <section class="form-section">
 
-        <section class="form-section">
+        <div class="form-wrapper">
 
-            <?php if ($error): ?>
-                <div class="alert-error"><?= $error ?></div>
-            <?php endif; ?>
-
-            <form method="POST" class="form-peta-jalan">
+            <form method="POST" class="form-add">
 
                 <label>Jenis Kategori</label>
                 <select name="kategori" required>
                     <option value="">-- Pilih Jenis --</option>
-                    <option value="Sejarah" <?= ($editData['kategori'] === 'Sejarah') ? 'selected' : '' ?>>Sejarah</option>
-                    <option value="Visi" <?= ($editData['kategori'] === 'Visi') ? 'selected' : '' ?>>Visi</option>
-                    <option value="Misi" <?= ($editData['kategori'] === 'Misi') ? 'selected' : '' ?>>Misi</option>
+                    <option value="Sejarah" <?= ($editData['kategori']==='Sejarah')?'selected':'' ?>>Sejarah</option>
+                    <option value="Visi"     <?= ($editData['kategori']==='Visi')?'selected':'' ?>>Visi</option>
+                    <option value="Misi"     <?= ($editData['kategori']==='Misi')?'selected':'' ?>>Misi</option>
                 </select>
 
                 <label>Nama Judul</label>
@@ -185,14 +201,13 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
             </form>
 
-        </section>
+        </div>
 
-    </main>
+    </section>
 
-</div>
+</main>
 
-<script src="assets/js/headerSidebar.js"></script>
+<script src="assets/js/sidebarHeader.js"></script>
 
 </body>
 </html>
-

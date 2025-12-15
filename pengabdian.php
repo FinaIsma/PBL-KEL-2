@@ -1,36 +1,51 @@
 <?php
-include "koneksi.php";
+require_once __DIR__ . "/backend/config.php";
 
 // ==== CONFIG PAGINATION ====
-$limit = 2; // jumlah data per halaman
-$page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+$limit  = 2;
+$page   = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 $offset = ($page - 1) * $limit;
 
-// ==== FILTER UTAMA (Kategori Wajib 'Pengabdian') ====
-$where = ["kategori = 'Pengabdian'"];
+// ==== FILTER (Kategori wajib Penelitian) ====
+$where  = ["kategori = :kategori"];
+$params = [':kategori' => 'Pengabdian'];
 
 // Search
 if (!empty($_GET['search'])) {
-    $search = pg_escape_string($conn, $_GET['search']);
-    $where[] = "(judul ILIKE '%$search%' OR deskripsi ILIKE '%$search%')";
+    $where[] = "(judul ILIKE :search OR deskripsi ILIKE :search)";
+    $params[':search'] = "%" . $_GET['search'] . "%";
 }
 
 $whereSQL = "WHERE " . implode(" AND ", $where);
 
-// ==== Hitung total data ====
-$countQuery = "SELECT COUNT(*) AS total FROM arsip $whereSQL";
-$countResult = pg_query($conn, $countQuery);
-$totalData = pg_fetch_assoc($countResult)['total'];
-$totalPages = ceil($totalData / $limit);
+try {
+    // ==== HITUNG TOTAL DATA ====
+    $countStmt = $db->prepare("SELECT COUNT(*) FROM arsip $whereSQL");
+    $countStmt->execute($params);
+    $totalData  = $countStmt->fetchColumn();
+    $totalPages = ceil($totalData / $limit);
 
-// ==== Ambil data ====
-$query = "
-    SELECT * FROM arsip 
-    $whereSQL 
-    ORDER BY tanggal DESC 
-    LIMIT $limit OFFSET $offset
-";
-$result = pg_query($conn, $query);
+    // ==== AMBIL DATA ====
+    $stmt = $db->prepare("
+        SELECT * FROM arsip
+        $whereSQL
+        ORDER BY tanggal DESC
+        LIMIT :limit OFFSET :offset
+    ");
+
+    foreach ($params as $key => $val) {
+        $stmt->bindValue($key, $val);
+    }
+
+    $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
+    $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
+
+    $stmt->execute();
+    $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+} catch (PDOException $e) {
+    die("Query gagal: " . $e->getMessage());
+}
 ?>
 <!DOCTYPE html>
 <html lang="id">
@@ -39,12 +54,31 @@ $result = pg_query($conn, $query);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <link rel="stylesheet" href="assets/css/base.css">
-    <link rel="stylesheet" href="assets/css/pages/arsip.css">
     <link rel="stylesheet" href="assets/css/pages/navbar.css">
+    <link rel="stylesheet" href="assets/css/pages/arsip.css">
     <link rel="stylesheet" href="assets/css/pages/footer.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
+    <!-- PDF.JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
+
     <title>Arsip Pengabdian</title>
+
+    <style>
+        .arsip-thumbnail {
+            width: 80px;
+            flex-shrink: 0;
+            overflow: hidden;
+        }
+
+        .pdf-thumb {
+            width: 100%;
+            height: auto;
+            display: block;
+            background: #f1f1f1;
+            border-radius: 4px;
+        }
+    </style>
 </head>
 
 <body>
@@ -59,6 +93,7 @@ $result = pg_query($conn, $query);
 
     <main class="wrapper">
         <section class="section" id="arsip">
+            <div class="arsip-container">
 
             <!-- FILTER + SEARCH -->
             <div class="arsip-controls mb-5">
@@ -87,14 +122,12 @@ $result = pg_query($conn, $query);
                 <?php if ($totalData == 0): ?>
                     <p>Tidak ada arsip kategori Pengabdian ditemukan.</p>
                 <?php endif; ?>
-
-                <?php while ($row = pg_fetch_assoc($result)): ?>
-                <!-- ITEM -->
+                
+                <?php foreach ($result as $row): ?>
                 <div class="arsip-card" data-category="pengabdian">
                     <div class="arsip-content">
                         
                         <div class="arsip-text">
-
                             <a href="arsipDetail.php?id=<?= $row['arsip_id'] ?>" class="arsip-title mb-3">
                                 <?= $row['judul']; ?>
                             </a>
@@ -113,8 +146,12 @@ $result = pg_query($conn, $query);
                         </div>
 
                         <div class="arsip-side">
+                            <!-- AUTO PDF THUMBNAIL -->
                             <div class="arsip-thumbnail">
-                                <img src="upload/<?= $row['thumbnail']; ?>" alt="">
+                                <canvas 
+                                    class="pdf-thumb"
+                                    data-pdf="upload/<?= htmlspecialchars($row['file_path']) ?>">
+                                </canvas>
                             </div>
 
                             <a href="upload/<?= $row['file_path']; ?>" 
@@ -126,7 +163,7 @@ $result = pg_query($conn, $query);
 
                     </div>
                 </div>
-                <?php endwhile; ?>
+                <?php endforeach; ?>
 
             </div>
 
@@ -141,12 +178,40 @@ $result = pg_query($conn, $query);
                 <?php endfor; ?>
             </div>
 
+            </div>
         </section>
     </main>
 
     <!-- FOOTER -->
     <div id="footer-placeholder"></div>
     <script src="assets/js/footer.js"></script>
+
+    <!-- PDF THUMBNAIL SCRIPT -->
+    <script>
+        pdfjsLib.GlobalWorkerOptions.workerSrc =
+        "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js";
+
+        document.querySelectorAll(".pdf-thumb").forEach(canvas => {
+            const pdfUrl = canvas.dataset.pdf;
+
+            pdfjsLib.getDocument(pdfUrl).promise.then(pdf => {
+                pdf.getPage(1).then(page => {
+                    const viewport = page.getViewport({ scale: 0.35 });
+                    const context = canvas.getContext("2d");
+
+                    canvas.width  = viewport.width;
+                    canvas.height = viewport.height;
+
+                    page.render({
+                        canvasContext: context,
+                        viewport: viewport
+                    });
+                });
+            }).catch(err => {
+                console.error("PDF error:", err);
+            });
+        });
+    </script>
 
 </body>
 </html>

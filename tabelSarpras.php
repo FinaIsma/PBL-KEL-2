@@ -1,4 +1,10 @@
-<?php include("db.php"); 
+<?php 
+session_start();
+if (!isset($_SESSION['logged_in'])) {
+    header("Location: login.php");
+    exit;
+}
+include("db.php"); 
 
 $showConfirm = false;
 $confirmData = null;
@@ -12,80 +18,73 @@ if (isset($_GET['delete_id'])) {
         $confirmData['id'] = $delete_id;
     }
 }
-
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tentang Kami</title>
+    <title>Sarana & Prasarana</title>
 
+    <!-- FIXED PATH — SAMA DENGAN REFERENSI -->
     <link rel="stylesheet" href="assets/css/base.css">
     <link rel="stylesheet" href="assets/css/utils.css">
     <link rel="stylesheet" href="assets/css/components.css">
-    <!-- <link rel="stylesheet" href="assets/css/layout.css"> -->
     <link rel="stylesheet" href="assets/css/responsive.css">
-    <link rel="stylesheet" href="assets/css/pages/tabelCRUD.css">
     <link rel="stylesheet" href="assets/css/pages/navbar.css">
-    <link rel="stylesheet" href="assets/css/pages/sidebar.css">
-    <!-- <link rel="stylesheet" href="assets/css/pages/footer.css"> -->
+    <link rel="stylesheet" href="assets/css/pages/sidebarr.css">
+    <link rel="stylesheet" href="assets/css/pages/tabelCRUD.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 
 <body>
-    
-    <!-- Header -->
-    <div id="header-placeholder"></div>
-    
-    <!-- Layout dengan Sidebar -->
-    <div class="layout">
-        <!-- Sidebar -->
-        <aside class="sidebar">
-            <div id="sidebar-placeholder"></div>
-        </aside>
 
-        <!-- Main Content -->
-       <main class="content">
+    <div id="header"></div>
+        <div id="sidebar"></div>
 
-    <div class="top-bar-page">
-        <a href="layanan-admin.php" class="btn-back">
-            <i class="fa-solid fa-arrow-left"></i>
-        </a>
+    <main class="content">
 
-        <div class="title-container">
-            <div class="title-row">
-                <h1 class="title-page">Sarana dan Prasarana</h1>
+        <!-- TOP BAR -->
+        <div class="top-bar-page">
+            <a href="layanan-admin.php" class="btn-back">
+                <i class="fa-solid fa-arrow-left"></i>
+            </a>
 
-                <a href="addSarpras.php" class="btn-add" data-add>
-                    <i class="fa-solid fa-plus"></i>
-                </a>
-            </div>
+            <div class="title-container">
 
-            <div class="search-row">
-                <div class="search-wrapper">
-                    <i class="fa-solid fa-magnifying-glass search-icon"></i>
-                    <input type="text" class="search-input" placeholder="Search" data-search>
+                <div class="title-row">
+                    <h1 class="title-page">Sarana & Prasarana</h1>
+
+                    <a href="addSarpras.php" class="btn-add" data-add>
+                        <i class="fa-solid fa-plus"></i>
+                    </a>
                 </div>
+
+                <div class="search-row">
+                    <div class="search-wrapper">
+                        <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                        <input type="text" class="search-input" placeholder="Search" data-search>
+                    </div>
+                </div>
+
             </div>
         </div>
-    </div>
 
-    <div class="table-wrapper">
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>No</th>
-                    <th>Judul</th>
-                    <th>Deskripsi</th>
-                    <th>Media</th>
-                    <th>User ID</th>
-                    <th>Aksi</th>
-                </tr>
-            </thead>
+        <!-- TABEL -->
+        <div class="table-wrapper">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>Judul</th>
+                        <th>Deskripsi</th>
+                        <th>Media</th>
+                        <th>User ID</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
 
-            <tbody id="table-body">
+                <tbody id="table-body">
 <?php
 $result = pg_query($conn, "SELECT * FROM sarana_prasarana ORDER BY sarpras_id ASC");
 $no = 1;
@@ -96,38 +95,37 @@ while ($row = pg_fetch_assoc($result)):
     <td><?= htmlspecialchars($row['judul']) ?></td>
     <td><?= htmlspecialchars($row['deskripsi']) ?></td>
     <td>
-        <?php if($row['media_path']): ?>
+        <?php if ($row['media_path']): ?>
             <img src="<?= htmlspecialchars($row['media_path']) ?>" alt="" style="width:70px;">
         <?php endif; ?>
     </td>
     <td><?= htmlspecialchars($row['user_id']) ?></td>
     <td>
         <div class="action-buttons">
-            <a href="editSarpras.php?id=<?= $row['sarpras_id'] ?>" class="btn-action btn-edit" title="Edit">
+            <a href="editSarpras.php?id=<?= $row['sarpras_id'] ?>" class="btn-action btn-edit">
                 <i class="fa-solid fa-pen"></i>
             </a>
-            <a href="tabelSarpras.php?delete_id=<?= $row['sarpras_id'] ?>" class="btn-action btn-delete" title="Delete">
+            <a href="tabelSarpras.php?delete_id=<?= $row['sarpras_id'] ?>" class="btn-action btn-delete">
                 <i class="fa-solid fa-trash"></i>
             </a>
         </div>
     </td>
 </tr>
 <?php endwhile; ?>
-            </tbody>
-        </table>
-    </div>
+                </tbody>
+            </table>
+        </div>
 
-    <div class="btn-save-wrapper">
-        <a href="layanan-admin.php" class="btn-save" data-save>Simpan</a>
-    </div>
+        <div class="btn-save-wrapper">
+            <a href="layanan-admin.php" class="btn-save" data-save>Simpan</a>
+        </div>
 
-</main>
+    </main>
 
-    </div>
-
-    <script src="assets/js/headerSidebar.js"></script>
+    <script src="assets/js/sidebarHeader.js"></script>
     <script type="module" src="assets/js/main.js"></script>
 </body>
+
 <?php if ($showConfirm && $confirmData): ?>
 <style>
 .modal-overlay {
@@ -156,11 +154,10 @@ while ($row = pg_fetch_assoc($result)):
     margin-bottom: 25px;
 }
 
-/* Tombol */
 .modal-form {
     display: flex;
     justify-content: center;
-    gap: 10px; /* jarak tombol */
+    gap: 10px;
 }
 
 .btn {
@@ -168,16 +165,11 @@ while ($row = pg_fetch_assoc($result)):
     border-radius: 6px;
     font-weight: bold;
     font-size: 14px;
-    line-height: 1.4;
-    display: inline-block;
-    text-align: center;
     cursor: pointer;
-    transition: background-color 0.2s;
     text-decoration: none;
     border: none;
 }
 
-/* Tombol hapus */
 .btn-delete {
     background-color: #e74c3c;
     color: #fff;
@@ -187,7 +179,6 @@ while ($row = pg_fetch_assoc($result)):
     background-color: #c0392b;
 }
 
-/* Tombol batal */
 .btn-cancel {
     background-color: #95a5a6;
     color: #fff;
@@ -201,15 +192,14 @@ while ($row = pg_fetch_assoc($result)):
 <div class="modal-overlay">
     <div class="modal-box">
         <p>Yakin ingin menghapus <strong><?= htmlspecialchars($confirmData['judul']) ?></strong>?</p>
+
         <form method="POST" action="deleteSarpras.php" class="modal-form">
-            <input type="hidden" name="id" value="<?= $confirmData['sarpras_id'] ?>">
+            <input type="hidden" name="id" value="<?= $confirmData['id'] ?>">
             <button type="submit" class="btn btn-delete">Ya, hapus</button>
             <a href="tabelSarpras.php" class="btn btn-cancel">Batal</a>
         </form>
     </div>
 </div>
 <?php endif; ?>
-
-
 
 </html>

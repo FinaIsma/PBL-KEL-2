@@ -1,27 +1,26 @@
-document.getElementById("loginForm").addEventListener("submit", function(e) {
-    e.preventDefault();
+document.addEventListener("DOMContentLoaded", function () {
 
-    const user = document.getElementById("username").value.trim();
-    const pass = document.getElementById("password").value.trim();
+    const form = document.getElementById("loginForm");
+    const username = form.querySelector("input[name='username']");
+    const password = document.getElementById("password");
+    const togglePassword = document.getElementById("togglePassword");
+    const icon = togglePassword.querySelector("i");
 
-    if (user === "" || pass === "") {
-        alert("Masukkan username dan password.");
-        return;
-    }
+    // VALIDASI FORM
+    form.addEventListener("submit", function (e) {
+        if (username.value.trim() === "" || password.value.trim() === "") {
+            e.preventDefault();
+            alert("Username dan password wajib diisi.");
+        }
+    });
 
-    // Contoh redirect
-    window.location.href = "../../index.html";
+    // SHOW / HIDE PASSWORD
+    togglePassword.addEventListener("click", function () {
+        const show = password.type === "password";
+        password.type = show ? "text" : "password";
+        icon.className = show
+            ? "fa-solid fa-eye-slash"
+            : "fa-solid fa-eye";
+    });
+
 });
-
-// SHOW / HIDE PASSWORD
-const passwordInput = document.getElementById("password");
-const togglePassword = document.getElementById("togglePassword");
-
-togglePassword.addEventListener("click", () => {
-    const type = passwordInput.type === "password" ? "text" : "password";
-    passwordInput.type = type;
-
-    togglePassword.textContent = 
-        type === "password" ? "👁" : "🙈";
-});
-

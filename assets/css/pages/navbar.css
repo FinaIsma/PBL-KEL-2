@@ -62,8 +62,8 @@
     color: var(--primary);
     display: block;
     margin-bottom: -10px !important;
-    color: #fff !important;
-    margin-right: 420px;
+    color: black !important;
+    margin-right: 20px;
 }
 
 .nav-brand .brand-sub {
@@ -72,19 +72,19 @@
     font-weight: 800;
     color: var(--primary);
     margin-top: -10px !important;
-    color: #fff !important;
+    color: black !important;
 }
 
 .nav-menu {
     display: flex;
     align-items: center;
     gap: 40px;
-    color: #fff !important;
+    color: black !important;
 }
 
 .nav-menu li {
     list-style: none;
-    color: white !important;
+    color: black !important;
 }
 
 .nav-menu a,
@@ -94,7 +94,7 @@
     color: var(--gray-900);
     cursor: pointer;
     transition: 0.2s;
-    color: #fff !important;
+    color: black !important;
 }
 
 .nav-menu a:hover,

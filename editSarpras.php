@@ -7,7 +7,6 @@ if (!$id) {
     die("ID sarpras tidak ditemukan");
 }
 
-// Ambil data lama
 $result = pg_query($conn, "SELECT * FROM sarana_prasarana WHERE sarpras_id = $id");
 if (!$row = pg_fetch_assoc($result)) {
     die("Data tidak ditemukan");
@@ -15,41 +14,54 @@ if (!$row = pg_fetch_assoc($result)) {
 
 $success = "";
 $error = "";
-$mediaName = $row['media_path']; // default media lama
+$mediaName = $row['media_path'];
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
-    $judul       = trim($_POST['judul']);
-    $deskripsi   = trim($_POST['deskripsi']);
-    $editor      = 1; // bisa diganti session
 
-    // ---------- UPDATE MEDIA ----------
+    $judul     = trim($_POST['judul']);
+    $deskripsi = trim($_POST['deskripsi']);
+    $editor    = 1;
+
+    // === UPLOAD MEDIA BARU ===
     if (!empty($_FILES['media']['name'])) {
+
         $ext = strtolower(pathinfo($_FILES['media']['name'], PATHINFO_EXTENSION));
-        $allowed = ['jpg','jpeg','png','webp','gif','pdf','mp4','mp3'];
+        $allowed = ['jpg','jpeg','png','webp'];
 
         if (!in_array($ext, $allowed)) {
             $error = "Format file tidak diizinkan.";
         } else {
+
             $uploadDir = __DIR__ . '/assets/img/media/';
-            if (!is_dir($uploadDir)) mkdir($uploadDir, 0755, true);
+
+            if (!is_dir($uploadDir)) {
+                mkdir($uploadDir, 0755, true);
+            }
 
             $newMediaName = "sarpras_" . time() . "." . $ext;
-            $targetPath = $uploadDir . $newMediaName;
+            $targetPath   = $uploadDir . $newMediaName;
 
             if (move_uploaded_file($_FILES['media']['tmp_name'], $targetPath)) {
-                if ($mediaName && file_exists($mediaName)) unlink($mediaName);
+
+                if ($mediaName && file_exists($mediaName)) {
+                    unlink($mediaName);
+                }
+
                 $mediaName = "assets/img/media/" . $newMediaName;
+
             } else {
                 $error = "Gagal mengupload media!";
             }
         }
     }
 
-    // ---------- UPDATE DATABASE ----------
+    // === UPDATE DATA ===
     if ($error === "") {
+
         $sql = "UPDATE sarana_prasarana 
                 SET judul='$judul', deskripsi='$deskripsi', media_path='$mediaName', user_id=$editor
                 WHERE sarpras_id=$id";
+
         if (pg_query($conn, $sql)) {
             header("Location: tabelSarpras.php");
             exit;
@@ -67,67 +79,140 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
 <link rel="stylesheet" href="assets/css/base.css">
 <link rel="stylesheet" href="assets/css/pages/navbar.css">
-<link rel="stylesheet" href="assets/css/pages/sidebar.css">
+<link rel="stylesheet" href="assets/css/pages/sidebarr.css">
+<link rel="stylesheet" href="assets/css/CRUDTable.css">
 
 <style>
 
 /* ====== LAYOUT ====== */
+main, .content {
+    margin-top: 100px; /* tinggi navbar */
+}
+
+/* POSISI SIDEBAR */
+.sidebar {
+    width: 220px;
+    position: fixed;
+    top: 83.5px;
+    left: 0;
+    height: calc(100vh - 83.5px);
+
+}
+
+.navbar {
+    box-shadow: 3px 5px 10px rgba(0, 0, 0, 0.15) !important;
+    background-color: #fff;
+}
+
+
+.logo-area { 
+    display: flex; 
+    align-items: center; 
+    gap: 10px; 
+    margin-bottom: 40px; 
+}
+
+.lab-title { 
+    font-size: 14px; 
+    line-height: 1.3; 
+}
+.lab-title span { font-weight: 400; }
+
+.menu a { 
+    display: block; 
+    padding: 12px; 
+    color: #fff; 
+    opacity: .85; 
+    margin-bottom: 6px; 
+    border-radius: 6px; 
+}
+
+.menu a.active, .menu a:hover { 
+    background: rgba(255,255,255,.15); 
+    opacity: 1; 
+}
+
+.topbar { 
+    background: #fff; 
+    border-bottom: 1px solid var(--gray-200); 
+    display: flex; 
+    align-items: center; 
+    justify-content: space-between; 
+    padding: 0 24px; 
+}
+
+.top-right { 
+    font-size: 14px; 
+    color: var(--gray-700); 
+}
+
 .content {
-    margin-left: 220px;
-    padding: 0;
-    width: calc(100% - 220px);
-    min-height: 100vh;
-    background: #fff;
+    margin-left: 220px;  /* sama seperti lebar sidebar */
+    padding-top: 100px;
+    transform: scale(0.8);
+    transform-origin: top left;
+    width: calc((100% - 220px) / 0.8); 
+    margin-top: -110px !important; /* opsional kalau memang dibutuhkan */
 }
 
 .hero-section-admin {
     padding-left: 80px;
 }
 
+
 /* ====== FORM SECTION ====== */
 .form-section {
     padding: 20px 60px;
 }
 
-/* ====== FORM FIELDS ====== */
-.form-peta-jalan label {
+.form-wrapper {
+    background: #fff;
+    border-radius: 12px;
+    padding: 30px 40px;
+    box-shadow: 0 5px 20px rgba(10, 6, 1, 0.15);
+    border: 1px solid #ddd;
+}
+
+
+/* ====== FORM ELEMENTS ====== */
+.form-add label {
     font-family: var(--font-body);
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 600;
     margin-bottom: 6px;
     display: block;
     color: #000;
 }
 
-.form-peta-jalan input,
-.form-peta-jalan textarea,
-.form-peta-jalan select,
-.form-peta-jalan input[type="file"] {
+.form-add input,
+.form-add textarea,
+.form-add select {
     width: 100%;
     padding: 12px 15px;
     border-radius: 8px;
     border: 1px solid #999;
-    font-size: 16px;
+    font-size: 13px;
     font-family: var(--font-body);
+    color: #000;
     background: #f9f9f9;
     outline: none;
     margin-bottom: 22px;
 }
 
-.form-peta-jalan input:focus,
-.form-peta-jalan textarea:focus {
-    border-color: #FFB84D;
+.form-add input:focus,
+.form-add textarea:focus {
+    border-color: var(--secondary);
     box-shadow: 0 0 4px rgba(255, 184, 77, 0.6);
 }
 
-.form-peta-jalan textarea {
+.form-add textarea {
     resize: vertical;
-    min-height: 120px;
 }
+
 
 /* ====== BUTTONS ====== */
 .btn-submit {
-    background: #FFB84D;
+    background: var(--secondary);
     color: #000;
     border: none;
     padding: 14px 40px;
@@ -160,59 +245,29 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     background: #ccc;
 }
 
-.alert-error, .alert-success {
-    padding: 12px;
-    border-radius: 8px;
-    margin-bottom: 15px;
-    font-size: 15px;
-}
-
-.alert-error {
-    background: #ffdddd;
-    border-left: 6px solid #e74c3c;
-}
-
-.alert-success {
-    background: #c8f7c5;
-    border-left: 6px solid #27ae60;
-}
-
-.media-preview img {
-    width: 150px;
-    border-radius: 8px;
-    margin-bottom: 15px;
-}
-
 </style>
 
 </head>
+
 <body>
 
-<div id="header-placeholder"></div>
+<div id="header"></div>
+<div id="sidebar"></div>
 
-<div class="layout">
+<main class="content">
 
-    <aside class="sidebar">
-        <div id="sidebar-placeholder"></div>
-    </aside>
+    <section class="hero-section-admin">
+        <h1>Edit Sarana & Prasarana</h1>
+    </section>
 
-    <main class="content">
+    <?php if ($error): ?>
+        <div style="padding: 10px 80px; color: red; font-weight: bold;"><?= $error ?></div>
+    <?php endif; ?>
 
-        <section class="hero-section-admin">
-            <h1>Edit Sarana & Prasarana</h1>
-        </section>
+    <section class="form-section">
+        <div class="form-wrapper">
 
-        <section class="form-section">
-
-            <?php if ($success): ?>
-                <div class="alert-success"><?= $success ?></div>
-            <?php endif; ?>
-
-            <?php if ($error): ?>
-                <div class="alert-error"><?= $error ?></div>
-            <?php endif; ?>
-
-            <form method="POST" enctype="multipart/form-data" class="form-peta-jalan">
+            <form method="POST" enctype="multipart/form-data" class="form-add">
 
                 <label>Judul</label>
                 <input type="text" name="judul" value="<?= htmlspecialchars($row['judul']) ?>" required>
@@ -231,22 +286,20 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 <?php endif; ?>
                 </div>
 
-                <label>Upload Media Baru (opsional)</label>
+                <label>Upload Media Baru (Opsional)</label>
                 <input type="file" name="media">
 
-                <button type="submit" class="btn-submit">Simpan</button>
+                <button class="btn-submit" type="submit">Simpan</button>
                 <a href="tabelSarpras.php" class="btn-cancel">Batal</a>
 
             </form>
 
-        </section>
+        </div>
+    </section>
 
-    </main>
+</main>
 
-</div>
-
-<script src="assets/js/headerSidebar.js"></script>
+<script src="assets/js/sidebarHeader.js"></script>
 
 </body>
 </html>
-

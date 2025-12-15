@@ -1,33 +1,36 @@
+.sidebar {
+    width: 220px;
+    position: fixed;
+    top: 83.5px;
+    left: 0;
+    height: calc(100vh - 83.5px);
+
+}
+
+.navbar {
+    box-shadow: 3px 5px 10px rgba(0, 0, 0, 0.15) !important;
+    background-color: #fff;
+}
+
 /* Wrapper Section */
 #arsip {
     padding: 0; /* Hilangkan padding atas */
-}
+} 
 
-/* === LAYOUT FIX SUPAYA RAPAT KE SIDEBAR === */
+/* === LAYOUT FIX SUPAYA RAPAT KE SIDEBAR ===
 .layout {
     display: flex;
     width: 100%;
     min-height: 100vh;
-}
-
-/* Sidebar tetap di kiri */
-.sidebar {
-    width: 220px;
-    flex-shrink: 0;
-    background: var(--primary);
-    position: fixed;
-    top: 0;
-    left: 0;
-    height: 100vh;
-    z-index: 1000;
-}
+} */
 
 /* KONTEN UTAMA FULL SISA LAYAR - NO PADDING TOP */
 .wrapper {
     margin-left: 220px;
     width: calc(100% - 220px);
-    padding: 0; /* Hilangkan padding */
+    padding: 0;
     box-sizing: border-box;
+    margin-top: -122px !important
 }
 
 /* Header navbar - hilangkan margin top */
@@ -39,9 +42,10 @@
 /* Arsip Title Header - Full Width dengan Background */
 .arsip-title-header {
     background: var(--primary);
-    padding: 3rem;
-    margin: 0; /* No margin */
+    padding: 3rem 3rem 3rem 3rem;
+    margin: 0;
     width: 100%;
+    box-sizing: border-box;
 }
 
 .arsip-title-header h1 {
@@ -55,7 +59,8 @@
 
 /* Section Content - Padding hanya di konten */
 .wrapper .section {
-    padding: 2rem 3rem;
+    padding: 2rem 3rem;         /* default */
+    padding-top: 3rem;          /* FIX: tambahkan jarak dari title */
 }
 
 /* Controls: Filter + Search */
@@ -64,8 +69,14 @@
     justify-content: space-between;
     align-items: center;
     gap: var(--space-4);
+    margin-top: 2rem !important;
     margin-bottom: 2rem;
 }
+
+section#arsip > *:not(.arsip-title-header) {
+   margin: 60px !important;
+}
+
 
 .btn-filter {
     padding: var(--space-2) var(--space-4);
@@ -165,7 +176,7 @@
     line-height: 1.4;
     text-decoration: none;
     display: block;
-    margin-bottom: 1rem;
+    margin-bottom: 5px !important;
 }
 
 .arsip-title:hover {
@@ -174,17 +185,17 @@
 
 .arsip-desc {
     font-family: var(--font-body);
-    font-size: var(--body-size);
+    font-size: 13px;
     color: var(--gray-700);
     line-height: 1.6;
-    margin-bottom: 1rem;
+    margin-bottom: 10px !important;
 }
 
 /* Meta Info */
 .arsip-meta {
     display: flex;
     flex-direction: column;
-    gap: var(--space-1);
+    gap: 2px;
 }
 
 .meta-item {
@@ -202,18 +213,17 @@
 }
 
 .arsip-thumbnail {
-    width: 120px;
-    height: 120px;
-    background: var(--gray-200);
-    border-radius: var(--radius-md);
+    width: 80px;
     flex-shrink: 0;
     overflow: hidden;
 }
 
-.arsip-thumbnail img {
+.pdf-thumb {
     width: 100%;
-    height: 100%;
-    object-fit: cover;
+    height: auto;
+    display: block;
+    background: #f1f1f1;
+    border-radius: 4px;
 }
 
 /* Download Button */
@@ -240,10 +250,13 @@
     transform: translateY(-1px);
 }
 
+.pagination {
+    margin-top: 3rem !important; /* FIX jadi lebih dekat */
+}
+
 .kelola-wrapper {
     display: flex;
     justify-content: flex-end;
-    margin-top: 25px;
 }
 
 .btn-kelola {
@@ -370,10 +383,6 @@
         justify-content: space-between;
     }
 
-    .arsip-thumbnail {
-        width: 100px;
-        height: 100px;
-    }
 }
 
 /* MOBILE (480px) */
@@ -405,11 +414,6 @@
 
     .arsip-desc {
         font-size: var(--small-size);
-    }
-
-    .arsip-thumbnail {
-        width: 80px;
-        height: 80px;
     }
 
     .search-box {

@@ -1,75 +1,114 @@
 <?php
-include("koneksi-bidang.php");
+include("db.php");
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $judul = $_POST['judul'];
-    $deskripsi = $_POST['deskripsi'];
-    $user_id = $_POST['user_id'];
+$error = "";
 
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+
+    $judul     = trim($_POST['judul']);
+    $deskripsi = trim($_POST['deskripsi']);
+    $user_id   = 1; // sementara (samakan dengan referensi)
+
+    /* ===== UPLOAD GAMBAR ===== */
     $gambar = "";
     if (!empty($_FILES['gambar']['name'])) {
+
         $target_dir = "uploads/";
-        if (!is_dir($target_dir)) mkdir($target_dir, 0777, true);
-        $file_name = basename($_FILES["gambar"]["name"]);
+        if (!is_dir($target_dir)) {
+            mkdir($target_dir, 0777, true);
+        }
+
+        $file_name = time() . "_" . basename($_FILES["gambar"]["name"]);
         $target_file = $target_dir . $file_name;
+
         if (move_uploaded_file($_FILES["gambar"]["tmp_name"], $target_file)) {
             $gambar = $target_file;
+        } else {
+            $error = "Gagal upload gambar!";
         }
     }
 
-    $insertQuery = "INSERT INTO bidang_fokus (judul, deskripsi, gambar, user_id) VALUES ($1, $2, $3, $4)";
-    $insertResult = pg_query_params($koneksi, $insertQuery, [$judul, $deskripsi, $gambar, $user_id]);
+    if (empty($error)) {
+        $sql = "INSERT INTO bidang_fokus (judul, deskripsi, gambar, user_id)
+                VALUES ($1, $2, $3, $4)";
 
-    if ($insertResult) {
-        header("Location: tabelBidang.php");
-        exit;
-    } else {
-        echo "Gagal tambah: " . pg_last_error($koneksi);
+        $result = pg_query_params($conn, $sql, [
+            $judul,
+            $deskripsi,
+            $gambar,
+            $user_id
+        ]);
+
+        if ($result) {
+            header("Location: tabelBidang.php");
+            exit;
+        } else {
+            $error = "Gagal menambahkan data ke database!";
+        }
     }
 }
 ?>
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tambah Bidang Fokus</title>
+<meta charset="UTF-8">
+<title>Tambah Bidang Fokus</title>
 
-    <link rel="stylesheet" href="assets/css/base.css">
-    <link rel="stylesheet" href="assets/css/pages/navbar.css">
-    <link rel="stylesheet" href="assets/css/pages/sidebar.css">
+<link rel="stylesheet" href="assets/css/base.css">
+<link rel="stylesheet" href="assets/css/pages/navbar.css">
+<link rel="stylesheet" href="assets/css/pages/sidebarr.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
 <style>
+
+/* ===== LAYOUT SAMA DENGAN TAMBAH PROFIL ===== */
+main, .content {
+    margin-top: 100px;
+}
+
+.sidebar {
+    width: 220px;
+    position: fixed;
+    top: 83.5px;
+    left: 0;
+    height: calc(100vh - 83.5px);
+}
+
 .navbar {
-background-color: #fff;
+    box-shadow: 3px 5px 10px rgba(0,0,0,0.15) !important;
+    background: #fff;
 }
-.navbar a,
-.navbar span,
-.navbar i,
-.navbar .brand-title,
-.navbar .brand-sub {
-    color: #000 !important;
-}
+
 .content {
     margin-left: 220px;
-    padding: 0;
-    width: calc(100% - 220px);
-    min-height: 100vh;
-    background: #fff;
+    padding-top: 100px;
+    transform: scale(0.8);
+    transform-origin: top left;
+    width: calc((100% - 220px) / 0.8);
+    margin-top: -110px !important;
 }
 
 .hero-section-admin {
     padding-left: 80px;
 }
 
+/* ===== FORM WRAPPER ===== */
 .form-section {
     padding: 20px 60px;
 }
 
-/* ====== FORM ELEMENTS ====== */
+.form-wrapper {
+    background: #fff;
+    border-radius: 12px;
+    padding: 30px 40px;
+    box-shadow: 0 5px 20px rgba(10, 6, 1, 0.15);
+    border: 1px solid #ddd;
+}
+
+/* ===== FORM ELEMENTS ===== */
 .form-add label {
     font-family: var(--font-body);
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 600;
     margin-bottom: 6px;
     display: block;
@@ -77,13 +116,12 @@ background-color: #fff;
 }
 
 .form-add input,
-.form-add textarea,
-.form-add select {
+.form-add textarea {
     width: 100%;
     padding: 12px 15px;
     border-radius: 8px;
     border: 1px solid #999;
-    font-size: 16px;
+    font-size: 13px;
     font-family: var(--font-body);
     color: #000;
     background: #f9f9f9;
@@ -93,17 +131,18 @@ background-color: #fff;
 
 .form-add input:focus,
 .form-add textarea:focus {
-    border-color: #FFB84D;
+    border-color: var(--secondary);
     box-shadow: 0 0 4px rgba(255, 184, 77, 0.6);
 }
 
 .form-add textarea {
     resize: vertical;
+    min-height: 100px;
 }
 
-/* ====== BUTTONS ====== */
+/* ===== BUTTONS ===== */
 .btn-submit {
-    background: #FFB84D;
+    background: var(--secondary);
     color: #000;
     border: none;
     padding: 14px 40px;
@@ -111,7 +150,7 @@ background-color: #fff;
     font-weight: 700;
     font-size: 16px;
     cursor: pointer;
-    box-shadow: 0 3px 10px rgba(255, 184, 77, 0.3);
+    box-shadow: 0 3px 10px rgba(255,184,77,0.3);
     transition: 0.3s ease;
 }
 
@@ -135,23 +174,39 @@ background-color: #fff;
 .btn-cancel:hover {
     background: #ccc;
 }
+
+/* ALERT ERROR */
+.alert-error {
+    padding: 14px 20px;
+    background: #ffdddd;
+    border-left: 5px solid #e74c3c;
+    margin-bottom: 20px;
+    border-radius: 6px;
+}
+
 </style>
 </head>
+
 <body>
-<div id="header-placeholder"></div>
-<div class="layout">
-    <aside class="sidebar">
-        <div id="sidebar-placeholder"></div>
-    </aside>
 
-    <main class="content">
-        <section class="hero-section-admin">
-            <h1>Tambah Bidang Fokus</h1>
-        </section>
+<div id="header"></div>
+<div id="sidebar"></div>
 
-        <section class="form-section">
-            <!-- Form asli bidangTambah.php tetap dipakai -->
+<main class="content">
+
+    <section class="hero-section-admin">
+        <h1>Tambah Bidang Fokus</h1>
+    </section>
+
+    <section class="form-section">
+        <div class="form-wrapper">
+
+            <?php if (!empty($error)): ?>
+                <div class="alert-error"><?= $error ?></div>
+            <?php endif; ?>
+
             <form method="POST" enctype="multipart/form-data" class="form-add">
+
                 <label for="judul">Judul</label>
                 <input type="text" id="judul" name="judul" required>
 
@@ -161,14 +216,17 @@ background-color: #fff;
                 <label for="gambar">Upload Gambar</label>
                 <input type="file" id="gambar" name="gambar">
 
-                <input type="hidden" name="user_id" value="1"><!-- Sesuaikan dengan user aktif -->
+                <button class="btn-submit" type="submit">Simpan</button>
+                <a href="tabelBidang.php" class="btn-cancel">Batal</a>
 
-                <button type="submit" class="btn-submit">Tambah</button>
-                <a href="tabelBidang.php" class="btn-cancel">Kembali</a>
             </form>
-        </section>
-    </main>
-</div>
-<script src="assets/js/headerSidebar.js"></script>
+
+        </div>
+    </section>
+
+</main>
+
+<script src="assets/js/sidebarHeader.js"></script>
+
 </body>
 </html>

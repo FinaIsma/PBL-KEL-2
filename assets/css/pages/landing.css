@@ -14,6 +14,8 @@ body {
 
 section {
     padding: var(--space-7) 0;
+    margin-top: 50px;
+    margin-bottom: 200px !important;
 }
 
 section h3 {
@@ -113,14 +115,15 @@ section, .container, .wrapper {
 .hero p {
     margin-top: 20px;
     max-width: 480px;
+    margin-bottom: 20px;
 }
-.hero button {
+.hero-btn {
     background: var(--secondary);
     padding: 10px 20px;
     border-radius: var(--radius-md);
     border: none;
     font-weight: 550;
-    margin-top: 10px;
+    margin-top: 30px !important;
 }
 .hero-image {
     margin-right: 25px;
@@ -199,14 +202,14 @@ section, .container, .wrapper {
     padding: 10px;
 }
 
-.bidang-fokus button {
+.focus-btn {
     background: var(--secondary);
     padding: 10px 20px;
     border-radius: var(--radius-md);
     border: none;
     font-weight: 550;
     margin-top: 10px;
-    margin-right: 270px;
+    margin-right: 0px !important;
 }
 
 .peta-jalan {
@@ -557,8 +560,10 @@ section, .container, .wrapper {
 
 /* Isi teks */
 .arsip-text h4 {
-    margin: 0 0 6px 0;
-    font-size: 12px;
+    margin-left: 5px;
+    margin-top: -10px !important;
+    margin-bottom: 15px;
+    font-size: 15px;
     font-weight: 650;
     color: white;
     text-align: left;
@@ -566,6 +571,7 @@ section, .container, .wrapper {
 
 .arsip-text p {
     margin: 0;
+    margin-left: 5px;
     font-size: 11px;
     color: white;
     line-height: 1.35;

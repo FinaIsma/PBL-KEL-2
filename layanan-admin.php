@@ -1,4 +1,10 @@
 <?php
+session_start();
+if (!isset($_SESSION['logged_in'])) {
+    header("Location: login.php");
+    exit;
+}
+
 include("db.php");
 
 // Ambil data Sarpras
@@ -29,20 +35,20 @@ while ($row = pg_fetch_assoc($res)) {
     <link rel="stylesheet" href="assets/css/responsive.css">
     <link rel="stylesheet" href="assets/css/pages/layanan-admin.css">
     <link rel="stylesheet" href="assets/css/pages/navbar.css">
-    <link rel="stylesheet" href="assets/css/pages/sidebar.css">
+    <link rel="stylesheet" href="assets/css/pages/sidebarr.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 
 <body>
 
     <!-- Header -->
-    <div id="header-placeholder"></div>
+    <div id="header"></div>
 
     <div class="layout">
         
         <!-- Sidebar -->
         <aside class="sidebar">
-            <div id="sidebar-placeholder"></div>
+            <div id="sidebar"></div>
         </aside>
 
         <!-- Main Content -->
@@ -104,7 +110,7 @@ while ($row = pg_fetch_assoc($res)) {
         </main>
     </div>
 
-    <script src="assets/js/headerSidebar.js"></script>
+    <script src="assets/js/sidebarHeader.js"></script>
     <script>
         window.allSarpras = <?= json_encode($sarpras) ?>;
     </script>

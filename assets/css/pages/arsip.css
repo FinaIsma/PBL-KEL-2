@@ -1,18 +1,46 @@
 /* ===== ARSIP PAGE STYLES ===== */
+.navbar .nav-menu a,
+.navbar .dropdown-btn,
+.navbar .brand-title,
+.navbar .brand-sub {
+    color: #fff !important;
+}
+
+.navbar .nav-menu a:hover,
+.navbar .dropdown-btn:hover {
+    color: var(--secondary) !important;
+}
+
+.navbar .dropdown-menu li a {
+    color: #000 !important;
+}
+
+.navbar.scrolled .nav-menu a,
+.navbar.scrolled .dropdown-btn,
+.navbar.scrolled .brand-title,
+.navbar.scrolled .brand-sub {
+    color: #000 !important;
+}
+
+.navbar.scrolled .nav-menu a:hover,
+.navbar.scrolled .dropdown-btn:hover {
+    color: var(--primary) !important;
+}
 
 #arsip {
-    padding: var(--space-6) 0;
+    padding: 50px;
 }
+
 .arsip-hero {
     width: 100%;
     background: #0E1F43;      /* navy sesuai screenshot */
     text-align: center;
-    padding: 100px 0 50px;     /* tinggi sama seperti gambar */
+    padding-top: 150px !important;     /* tinggi sama seperti gambar */
     display: flex;
     justify-content: center;
     align-items: center;
     padding: 70px 0;
-    margin-top: 0 !important;
+    margin-top: -100px !important;
 }
 
 .arsip-hero h1 {
@@ -144,12 +172,12 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: var(--space-3);
+    gap: 16px !important;
 }
 
 .arsip-thumbnail {
-    width: 120px;
-    height: 120px;
+    width: 80px;
+    height: 80px;
     background: var(--gray-200);
     border-radius: var(--radius-md);
     flex-shrink: 0;
@@ -169,8 +197,11 @@
     transition: all 0.3s ease;
     display: flex;
     align-items: center;
-    gap: var(--space-2);
+    gap: 10px;
     white-space: nowrap;
+    max-width: 120px;
+    text-align: center;
+    margin-top: 10px;
 }
 
 .btn-download:hover {
@@ -307,4 +338,11 @@
     opacity: 0.55;
     pointer-events: none;
     z-index: -1;}
+}
+
+.arsip-container {
+    max-width: 1000px;      /* ubah 800–1000 sesuai selera */
+    margin: 0 auto;
+    padding: 20px 0;
+    margin-bottom: 150px;  /* biar jarak ke footer besar */
 }

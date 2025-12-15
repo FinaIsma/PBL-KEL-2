@@ -1,19 +1,22 @@
 <?php
 session_start();
-include("koneksi.php");
+require_once __DIR__ . "/backend/config.php";
 
-$peta = [];
-$query = "SELECT * FROM peta_jalan ORDER BY tahun ASC";
-$res = pg_query($koneksi, $query);
+try {
+    $stmt = $db->prepare("
+        SELECT *
+        FROM peta_jalan
+        ORDER BY tahun ASC
+    ");
+    $stmt->execute();
 
-if (!$res) {
-    die("Query gagal: " . pg_last_error($koneksi));
-}
+    $peta = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-while ($row = pg_fetch_assoc($res)) {
-    $peta[] = $row;
+} catch (PDOException $e) {
+    die("Query gagal: " . $e->getMessage());
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="id">
 <head>

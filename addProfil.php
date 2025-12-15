@@ -1,19 +1,35 @@
-<?php 
-include("db.php");
+<?php
+session_start();
+require_once "db.php";
+
+/* ===== CEK LOGIN ADMIN ===== */
+if (!isset($_SESSION['logged_in']) || !isset($_SESSION['user_id'])) {
+    header("Location: login.php");
+    exit;
+}
+
+$error = "";
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
-    // Nama input disesuaikan dengan form
-    $kategori   = trim($_POST['kategori']);
-    $judul      = trim($_POST['judul']);
-    $isi        = trim($_POST['isi']);
-    $editor     = 1; // bisa diganti session login
+    $kategori = trim($_POST['kategori']);
+    $judul    = trim($_POST['judul']);
+    $isi      = trim($_POST['isi']);
+    $editor   = $_SESSION['user_id'];
 
-    // INSERT ke tabel PROFIL (bukan layanan)
-    $sql = "INSERT INTO profil (kategori, judul, isi, user_id)
-            VALUES ('$kategori', '$judul', '$isi', $editor)";
+    $sql = "
+        INSERT INTO profil (kategori, judul, isi, user_id)
+        VALUES ($1, $2, $3, $4)
+    ";
 
-    if (pg_query($conn, $sql)) {
+    $result = pg_query_params($conn, $sql, [
+        $kategori,
+        $judul,
+        $isi,
+        $editor
+    ]);
+
+    if ($result) {
         header("Location: tabelProfil.php");
         exit;
     } else {
@@ -29,39 +45,51 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
 <link rel="stylesheet" href="assets/css/base.css">
 <link rel="stylesheet" href="assets/css/pages/navbar.css">
-<link rel="stylesheet" href="assets/css/pages/sidebar.css">
+<link rel="stylesheet" href="assets/css/pages/sidebarr.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
 <style>
+main, .content { margin-top: 100px; }
 
-/* ====== LAYOUT ====== */
-body {
+.sidebar {
+    width: 220px;
+    position: fixed;
+    top: 83.5px;
+    left: 0;
+    height: calc(100vh - 83.5px);
+}
+
+.navbar {
+    box-shadow: 3px 5px 10px rgba(0,0,0,.15);
     background: #fff;
 }
 
 .content {
     margin-left: 220px;
-    padding: 0;
-    width: calc(100% - 220px);
-    min-height: 100vh;
+    padding-top: 100px;
+    transform: scale(.8);
+    transform-origin: top left;
+    width: calc((100% - 220px) / .8);
+    margin-top: -110px;
 }
 
-.hero-section-admin {
-    padding-left: 80px;
+.hero-section-admin { padding-left: 80px; }
+
+.form-section { padding: 20px 60px; }
+
+.form-wrapper {
+    background: #fff;
+    border-radius: 12px;
+    padding: 30px 40px;
+    box-shadow: 0 5px 20px rgba(10,6,1,.15);
+    border: 1px solid #ddd;
 }
 
-/* ====== FORM SECTION ====== */
-.form-section {
-    padding: 20px 60px;
-}
-
-/* ====== FORM ELEMENTS (DISAMAKAN DENGAN PENGELOLA) ====== */
 .form-add label {
-    font-family: var(--font-body);
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 600;
     margin-bottom: 6px;
     display: block;
-    color: #000;
 }
 
 .form-add input,
@@ -71,94 +99,56 @@ body {
     padding: 12px 15px;
     border-radius: 8px;
     border: 1px solid #999;
-    font-size: 16px;
-    font-family: var(--font-body);
-    color: #000;
-    background: #f9f9f9;
-    outline: none;
     margin-bottom: 22px;
 }
 
-.form-add input:focus,
-.form-add textarea:focus,
-.form-add select:focus {
-    border-color: #FFB84D;
-    box-shadow: 0 0 4px rgba(255, 184, 77, 0.6);
-}
-
-.form-add  textarea {
+.form-add textarea {
     resize: vertical;
-    min-height: 100px;
+    min-height: 120px;
 }
 
-/* ====== BUTTONS (SAMA PERSIS) ====== */
 .btn-submit {
-    background: #FFB84D;
-    color: #000;
-    border: none;
+    background: var(--secondary);
     padding: 14px 40px;
     border-radius: 8px;
     font-weight: 700;
-    font-size: 16px;
     cursor: pointer;
-    box-shadow: 0 3px 10px rgba(255, 184, 77, 0.3);
-    transition: 0.3s ease;
-}
-
-.btn-submit:hover {
-    background: #FF9A3D;
-    transform: translateY(-2px);
 }
 
 .btn-cancel {
     margin-left: 12px;
     padding: 12px 30px;
     background: #e0e0e0;
-    color: #000;
     border-radius: 8px;
-    font-size: 16px;
     text-decoration: none;
-    font-family: var(--font-body);
-    transition: 0.2s;
 }
 
-.btn-cancel:hover {
-    background: #ccc;
-}
-
-/* ALERT ERROR */
 .alert-error {
     padding: 14px 20px;
     background: #ffdddd;
     border-left: 5px solid #e74c3c;
-    margin-bottom: 20px;
     border-radius: 6px;
+    margin-bottom: 20px;
 }
-
 </style>
-
 </head>
 
 <body>
 
-<div id="header-placeholder"></div>
+<div id="header"></div>
+<div id="sidebar"></div>
 
-<div class="layout">
+<main class="content">
 
-    <aside class="sidebar">
-        <div id="sidebar-placeholder"></div>
-    </aside>
+    <section class="hero-section-admin">
+        <h1>Tambah Profil</h1>
+    </section>
 
-    <main class="content">
-
-        <section class="hero-section-admin">
-            <h1>Tambah Profil</h1>
-        </section>
-
-        <section class="form-section">
+    <section class="form-section">
+        <div class="form-wrapper">
 
             <?php if (!empty($error)): ?>
-                <div class="alert-error"><?= $error ?></div>
+                <div class="alert-error"><?= htmlspecialchars($error) ?></div>
             <?php endif; ?>
 
             <form method="POST" class="form-add">
@@ -177,19 +167,16 @@ body {
                 <label>Isi</label>
                 <textarea name="isi"></textarea>
 
-                <button class="btn-submit" type="submit">Simpan</button>
+                <button type="submit" class="btn-submit">Simpan</button>
                 <a href="tabelProfil.php" class="btn-cancel">Batal</a>
 
             </form>
 
-        </section>
+        </div>
+    </section>
 
-    </main>
+</main>
 
-</div>
-
-<script src="assets/js/headerSidebar.js"></script>
-
+<script src="assets/js/sidebarHeader.js"></script>
 </body>
 </html>
-

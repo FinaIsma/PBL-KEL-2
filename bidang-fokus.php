@@ -1,21 +1,21 @@
 <?php
-include("koneksi-bidang.php");
-$result = pg_query($koneksi, "SELECT * FROM bidang_fokus ORDER BY bidangfokus_id ASC");
-if (!$result) {
-    die("Query gagal: " . pg_last_error($koneksi));
+require_once __DIR__ . "/backend/config.php";
+
+try {
+    $stmt = $db->prepare("
+        SELECT * 
+        FROM bidang_fokus 
+        ORDER BY bidangfokus_id ASC
+    ");
+    $stmt->execute();
+    $bidang = $stmt->fetchAll(PDO::FETCH_ASSOC);
+} catch (PDOException $e) {
+    die("Query gagal: " . $e->getMessage());
 }
 
-$bidang = [];
-while ($row = pg_fetch_assoc($result)) {
-    $bidang[] = $row;
-}
 function pathGambar($gambar) {
     if (!$gambar) return 'assets/img/default-image.jpg';
-
-    // Jika sudah lengkap path-nya
-    if (str_starts_with($gambar, 'uploads/')) {
-        return $gambar;
-    }
+    if (str_starts_with($gambar, 'uploads/')) return $gambar;
     return 'uploads/' . $gambar;
 }
 ?>
@@ -23,295 +23,199 @@ function pathGambar($gambar) {
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <title>Bidang Fokus - Network & Cyber Security Laboratory</title>
-    
+    <meta charset="UTF-8">
+    <title>Bidang Fokus</title>
+
+    <!-- BASE -->
     <link rel="stylesheet" href="assets/css/base.css">
     <link rel="stylesheet" href="assets/css/utils.css">
     <link rel="stylesheet" href="assets/css/components.css">
-    <!-- <link rel="stylesheet" href="assets/css/layout.css"> -->
     <link rel="stylesheet" href="assets/css/responsive.css">
+
+    <!-- PAGE -->
     <link rel="stylesheet" href="assets/css/pages/navbar.css">
     <link rel="stylesheet" href="assets/css/pages/footer.css">
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    
-    <style>
-        body:not(.no-header) {
-            padding-top: 80px;
-        }
-        
-        body {
-            background: white url('assets/img/aura.png');
-            background-repeat: space;
-            background-size: 500px 500px;
-            background-position: center;
-            margin: 0;
-            padding: 0;
-            font-family: Arial, sans-serif;
-        }
-        
-        .header-section {
-            background: #0E1F43;
-            color: white;
-            padding: 0 2rem;
-            text-align: center;
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 450px;
-        }
-        
-        .header-section h1 {
-            font-size: 60px !important;
-            margin: 0 0 1rem 0;
-            text-align: center;
-            font-weight: 700;
-            color: #fff;
-        }
-        
-        .divider {
-            height: 3px;
-            width: 100px;
-            margin: 2rem auto;
-        }
-        
-        /* Content Wrapper */
-        .content-wrapper {
-            width: auto;
-            margin-right: 40px;
-            margin-left: 40px;
-            margin-top: 20px;
-            margin-bottom: 50px;
-            padding: 3rem 2rem;
-            display: flex;
-            flex-direction: column;
-            gap: 2rem;
-            box-sizing: border-box;
-        }
-        
-        /* Fokus Kolom */
-        .focus-column {
-            display: flex;
-            gap: 2rem;
-            padding: 2rem;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            border: 1px solid #fff;
-            align-items: flex-start;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            background: #0E1F43;
-            box-sizing: border-box;
-        }
-        
-        .focus-column:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
-        }
-        
-        .focus-image {
-            flex: 0 0 300px;
-            position: relative;
-        }
-        
-        .focus-image img {
-            width: 100%;
-            height: 200px;
-            object-fit: cover;
-            border-radius: 8px;
-            border: 3px solid #3498db;
-            box-shadow: 0 4px 12px rgba(154, 142, 142, 0.15);
-            background: white !important;
-        }
-        
-        .focus-content {
-            flex: 1;
-            color: #fff;
-        }
-        
-        .focus-content h2 {
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-            color: #fff;
-        }
-        
-        .focus-content p {
-            line-height: 1.6;
-            margin-bottom: 1.5rem;
-            color: #fff;
-        }
-        
-        .focus-btn {
-            display: inline-block;
-            padding: 0.5rem 1rem;
-            border-radius: 8px;
-            background: #FEBE11;
-            color: #0E1F43;
-            font-weight: 600;
-            text-decoration: none;
-            transition: transform 0.3s ease, background 0.3s ease;
-        }
-        
-        .focus-btn:hover {
-            transform: translateX(4px);
-            background: #FFD633;
-        }
-        
-        /* Wrapper untuk paragraf dan tombol */
-        .paragraph-btn-wrapper {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 1rem;
-        }
-        
-        .paragraph-btn-wrapper p {
-            flex: 1;
-            margin: 0;
-            color: #fff;
-        }
-        
-        /* Responsive */
-        @media (max-width: 992px) {
-            .focus-column {
-                flex-direction: column;
-                gap: 1.5rem;
-            }
-            
-            .focus-image {
-                width: 100%;
-                flex: none;
-            }
-            
-            .paragraph-btn-wrapper {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 0.5rem;
-            }
-            
-            .header-section {
-                min-height: 300px;
-                padding: 2rem;
-            }
-            
-            .header-section h1 {
-                font-size: 40px !important;
-            }
-            
-            .content-wrapper {
-                margin: 0 20px 30px;
-                padding: 2rem;
-            }
-        }
-        
-        @media (max-width: 768px) {
-            .content-wrapper {
-                margin: 0 15px 20px;
-                padding: 1.5rem;
-            }
-            
-            .focus-column {
-                padding: 1.5rem;
-            }
-            
-            .focus-image img {
-                height: 180px;
-            }
-        }
-        
-        @media (max-width: 576px) {
-            .header-section {
-                min-height: 250px;
-                padding: 1.5rem;
-            }
-            
-            .header-section h1 {
-                font-size: 32px !important;
-            }
-            
-            .content-wrapper {
-                margin: 0 10px 15px;
-                padding: 1rem;
-            }
-            
-            .focus-column {
-                padding: 1rem;
-            }
-            
-            .focus-image img {
-                height: 150px;
-            }
-            
-            .focus-content h2 {
-                font-size: 1.25rem;
-            }
-        }
-        .navbar {
-        background-color: #0E1F43; /* biru */
-        transition: background-color 0.3s ease, box-shadow 0.3s ease;
-        }
 
-.navbar.scrolled {
-    background-color: #ffffff !important; 
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-    color: #000;
+<style>
+/* ================= HERO ================= */
+.bidangHero{
+    background: var(--primary);
+    color: #fff;
+    padding: var(--space-7);
+    padding-top: 150px;
+    padding-bottom: 120px;
+    margin-top: -120px;
 }
 
-.navbar a {
+.bidangHero-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.bidangHero-left{
+    padding-left: 0;
+}
+
+.bidangHero-left h1{
+    font-size: 50px;
+    line-height: 1.1;
+    font-weight: 800;
     color: white;
-    transition: color 0.3s ease;
 }
 
-.navbar.scrolled a {
-    color: #0E1F43; 
+
+/* ================= CONTENT ================= */
+.bidang-wrapper{
+    padding: var(--space-7);
+    padding-top: 120px;
+    padding-bottom: 140px;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+    margin-left: 50px !important;
+    margin-right: 50px !important;
 }
-    </style>
+
+.focus-column{
+    display: flex;
+    gap: var(--space-6);
+    background: var(--primary);
+    border-radius: var(--radius-lg);
+    padding: var(--space-6);
+    color: white;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    transition: .3s ease;
+}
+
+.focus-column:hover{
+    transform: translateY(-6px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+}
+
+.focus-image{
+    width: 300px;
+    flex-shrink: 0;
+}
+
+.focus-image img{
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: var(--radius-md);
+    background: #fff;
+}
+
+.focus-content{
+    flex: 1;
+}
+
+.focus-content h2{
+    font-size: 1.6rem;
+    margin-bottom: var(--space-3);
+}
+
+.paragraph-btn-wrapper{
+    display: flex;
+    justify-content: space-between;
+    gap: var(--space-4);
+}
+
+.focus-btn{
+    background: var(--secondary);
+    padding: 10px 14px;
+    border-radius: var(--radius-md);
+    color: var(--primary);
+    font-weight: 600;
+    text-decoration: none;
+    transition: .3s ease;
+}
+
+.focus-btn:hover{
+    background: #e0a800;
+    transform: translateX(4px);
+}
+
+/* ================= NAVBAR ================= */
+.navbar:not(.scrolled) .nav-menu a,
+.navbar:not(.scrolled) .nav-brand span,
+.navbar:not(.scrolled) .dropdown-btn{
+    color: #fff !important;
+}
+
+.navbar:not(.scrolled) .dropdown-menu a{
+    color: #000 !important;
+}
+
+.navbar.scrolled{
+    background: rgba(255,255,255,0.98) !important;
+    backdrop-filter: blur(6px);
+}
+
+.navbar.scrolled .nav-menu a,
+.navbar.scrolled .nav-brand span,
+.navbar.scrolled .dropdown-btn{
+    color: var(--primary) !important;
+}
+
+/* ================= RESPONSIVE ================= */
+@media(max-width: 992px){
+    .focus-column{
+        flex-direction: column;
+    }
+    .focus-image{
+        width: 100%;
+    }
+}
+</style>
 </head>
+
 <body>
-    <!-- Navbar Placeholder -->
-    <div id="navbar-placeholder"></div>
-    
-    <!-- Header Section -->
-    <div class="header-section">
-        <div class="header-content">
+
+<!-- NAVBAR -->
+<div id="navbar-placeholder"></div>
+<script src="assets/js/navbar.js"></script>
+
+<!-- HERO -->
+<section class="bidangHero">
+    <div class="bidangHero-container">
+        <div class="bidangHero-left">
             <h1>Bidang Fokus</h1>
-            <div class="divider"></div>
         </div>
     </div>
-    
-    <!-- Main Content -->
-    <main class="content-wrapper">
-        <?php if (!empty($bidang)): ?>
-            <?php foreach ($bidang as $row): ?>
-                <div class="focus-column">
-                    <!-- Gambar -->
-                    <div class="focus-image"><img src="<?= htmlspecialchars(pathGambar($row['gambar'])) ?>"
-         alt="<?= htmlspecialchars($row['judul']) ?>"></div>
-                    
-                    <!-- Konten -->
-                    <div class="focus-content">
-                        <h2><?= htmlspecialchars($row['judul']) ?></h2>
-                        <div class="paragraph-btn-wrapper">
-                            <p><?= htmlspecialchars(substr($row['deskripsi'], 0, 120)) ?>...</p>
-                            <!-- Detail link -->
-                             <a href="guestDetail-bidang.php?id=<?= $row['bidangfokus_id'] ?>" class="focus-btn">
-                               <i class="fa-solid fa-arrow-right"></i></a>
-                        </div>
-                    </div>
-                </div>
-            <?php endforeach; ?>
-        <?php else: ?>
-        <?php endif; ?>
-    </main>
-    
-    <!-- Footer Placeholder -->
-    <div id="footer-placeholder"></div>
-    
-            <!-- JavaScript -->
-   <!-- Load navbar.js dan footer.js eksternal -->
-    <script src="assets/js/navbar.js"></script>
-    <script src="assets/js/footer.js"></script>
-    <script type="module" src="assets/js/main.js"></script>
+</section>
+
+<!-- CONTENT -->
+<main class="bidang-wrapper">
+<?php foreach ($bidang as $row): ?>
+    <div class="focus-column">
+        <div class="focus-image">
+            <img src="<?= htmlspecialchars(pathGambar($row['gambar'])) ?>"
+                 alt="<?= htmlspecialchars($row['judul']) ?>">
+        </div>
+
+        <div class="focus-content">
+            <h2><?= htmlspecialchars($row['judul']) ?></h2>
+
+            <div class="paragraph-btn-wrapper">
+                <p><?= htmlspecialchars(substr($row['deskripsi'], 0, 140)) ?>...</p>
+                <!-- <a href="guestDetail-bidang.php?id=<?= $row['bidangfokus_id'] ?>"
+                   class="focus-btn">
+                    <i class="fa-solid fa-arrow-right"></i>
+                </a> -->
+            </div>
+        </div>
+    </div>
+<?php endforeach; ?>
+</main>
+
+<!-- FOOTER -->
+<div id="footer-placeholder"></div>
+<script src="assets/js/footer.js"></script>
+<script type="module" src="assets/js/main.js"></script>
 
 </body>
 </html>

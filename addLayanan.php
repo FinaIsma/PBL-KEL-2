@@ -1,21 +1,36 @@
-<?php 
-include("db.php");
+<?php
+session_start();
+require_once "db.php";
 
-// Variabel untuk menyimpan pesan kesalahan jika ada
+/* ===== CEK LOGIN ===== */
+if (!isset($_SESSION['logged_in'])) {
+    header("Location: login.php");
+    exit;
+}
+
 $error = "";
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
-    // Ambil data dari form
-    $jenis       = trim($_POST['jenis']);
-    $nama        = trim($_POST['nama']);
-    $deskripsi   = trim($_POST['deskripsi']);
-    $editor      = 1;
+    $jenis     = trim($_POST['jenis']);
+    $nama      = trim($_POST['nama']);
+    $deskripsi = trim($_POST['deskripsi']);
 
-    $sql = "INSERT INTO layanan (jenis, nama, deskripsi, user_id)
-            VALUES ('$jenis', '$nama', '$deskripsi', $editor)";
+    $editor = $_SESSION['user_id'];
 
-    if (pg_query($conn, $sql)) {
+    $sql = "
+        INSERT INTO layanan (jenis, nama, deskripsi, user_id)
+        VALUES ($1, $2, $3, $4)
+    ";
+
+    $result = pg_query_params($conn, $sql, [
+        $jenis,
+        $nama,
+        $deskripsi,
+        $editor
+    ]);
+
+    if ($result) {
         header("Location: tabelLayanan.php");
         exit;
     } else {
@@ -23,40 +38,71 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     }
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tambah Layanan</title>
 
     <link rel="stylesheet" href="assets/css/base.css">
     <link rel="stylesheet" href="assets/css/pages/navbar.css">
-    <link rel="stylesheet" href="assets/css/pages/sidebar.css">
+    <link rel="stylesheet" href="assets/css/pages/sidebarr.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
 
 <style>
 
-/* ====== LAYOUT SAMAKAN DENGAN TABEL ====== */
+/* ====== LAYOUT (SAMA DENGAN TAMBAH PENGELOLA) ====== */
+main, .content {
+    margin-top: 100px;
+}
+
+.sidebar {
+    width: 220px;
+    position: fixed;
+    top: 83.5px;
+    left: 0;
+    height: calc(100vh - 83.5px);
+}
+
+.navbar {
+    box-shadow: 3px 5px 10px rgba(0, 0, 0, 0.15) !important;
+    background-color: #fff;
+}
+
 .content {
     margin-left: 220px;
-    padding: 0;
-    width: calc(100% - 220px);
-    min-height: 100vh;
-    background: #fff;
+    padding-top: 100px;
+    transform: scale(0.8);
+    transform-origin: top left;
+    width: calc((100% - 220px) / 0.8);
+    margin-top: -110px !important;
 }
 
 .hero-section-admin {
-    padding-left: 80px; /* Geser ke kanan */
+    padding-left: 80px;
 }
 
+
+/* ====== FORM WRAPPER ====== */
 .form-section {
     padding: 20px 60px;
 }
 
+.form-wrapper {
+    background: #fff;
+    border-radius: 12px;
+    padding: 30px 40px;
+    box-shadow: 0 5px 20px rgba(10, 6, 1, 0.15);
+    border: 1px solid #ddd;
+}
+
+
 /* ====== FORM ELEMENTS ====== */
 .form-add label {
     font-family: var(--font-body);
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 600;
     margin-bottom: 6px;
     display: block;
@@ -70,7 +116,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     padding: 12px 15px;
     border-radius: 8px;
     border: 1px solid #999;
-    font-size: 16px;
+    font-size: 13px;
     font-family: var(--font-body);
     color: #000;
     background: #f9f9f9;
@@ -79,18 +125,20 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 }
 
 .form-add input:focus,
-.form-add textarea:focus {
-    border-color: #FFB84D;
+.form-add textarea:focus,
+.form-add select:focus {
+    border-color: var(--secondary);
     box-shadow: 0 0 4px rgba(255, 184, 77, 0.6);
 }
 
-.form-peta-jalan textarea {
+.form-add textarea {
     resize: vertical;
 }
 
+
 /* ====== BUTTONS ====== */
 .btn-submit {
-    background: #FFB84D;
+    background: var(--secondary);
     color: #000;
     border: none;
     padding: 14px 40px;
@@ -129,55 +177,48 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
 <body>
 
-<div id="header-placeholder"></div>
-<div class="layout">
+<div id="header"></div>
+<div id="sidebar"></div>
 
-    <aside class="sidebar">
-        <div id="sidebar-placeholder"></div>
-    </aside>
+<main class="content">
 
-    <main class="content">
+    <section class="hero-section-admin">
+        <h1>Tambah Layanan</h1>
+    </section>
 
-        <section class="hero-section-admin">
-            <h1>Tambah Layanan</h1>
-        </section>
+    <?php if (!empty($error)): ?>
+        <div style="padding: 10px 80px; color: red; font-weight: bold;"><?= $error ?></div>
+    <?php endif; ?>
 
-        <?php if (!empty($error)): ?>
-            <div style="padding: 10px 80px; color: red; font-weight: bold;"><?php echo $error; ?></div>
-        <?php endif; ?>
+    <section class="form-section">
+        <div class="form-wrapper">
 
-        <section class="form-section">
+        <form action="" method="POST" class="form-add">
 
-            <form action="layananTambah.php" method="POST" enctype="multipart/form-data" class="form-add">
+            <label for="jenis">Jenis Layanan</label>
+            <select name="jenis" id="jenis" required>
+                <option value="" disabled selected>-- Pilih Jenis --</option>
+                <option value="Konsultasi">Konsultasi</option>
+                <option value="Peminjaman">Peminjaman</option>
+            </select>
 
-    <!-- Jenis Layanan -->
-    <label for="jenis">Jenis Layanan</label>
-    <select name="jenis" id="jenis" required>
-        <option value="" disabled selected>-- Pilih Jenis --</option>
-        <option value="Konsultasi">Konsultasi</option>
-        <option value="Peminjaman">Peminjaman</option>
-    </select>
+            <label for="nama">Nama Layanan</label>
+            <input type="text" id="nama" name="nama" required>
 
-    <!-- Nama Layanan -->
-    <label for="nama">Nama Layanan</label>
-    <input type="text" id="nama" name="nama" placeholder="Masukkan nama layanan..." required>
+            <label for="deskripsi">Deskripsi</label>
+            <textarea id="deskripsi" name="deskripsi" rows="4" required></textarea>
 
-    <!-- Deskripsi -->
-    <label for="deskripsi">Deskripsi</label>
-    <textarea id="deskripsi" name="deskripsi" rows="4" placeholder="Masukkan deskripsi layanan..." required></textarea>
+            <button type="submit" class="btn-submit">Simpan</button>
+            <a href="tabelLayanan.php" class="btn-cancel">Batal</a>
 
-    <!-- Tombol -->
-    <button type="submit" name="submit" class="btn-submit">Simpan</button>
-    <a href="tabelLayanan.php" class="btn-cancel">Batal</a>
+        </form>
 
-</form>
+        </div>
+    </section>
 
-        </section>
+</main>
 
-    </main>
-</div>
-
-<script src="assets/js/headerSidebar.js"></script>
+<script src="assets/js/sidebarHeader.js"></script>
 
 </body>
 </html>

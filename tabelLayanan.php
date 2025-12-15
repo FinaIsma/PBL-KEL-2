@@ -1,4 +1,10 @@
 <?php 
+session_start();
+if (!isset($_SESSION['logged_in'])) {
+    header("Location: login.php");
+    exit;
+}
+
 include("db.php"); 
 
 $showConfirm = false;
@@ -25,21 +31,20 @@ if (isset($_GET['delete_id'])) {
 <link rel="stylesheet" href="assets/css/utils.css">
 <link rel="stylesheet" href="assets/css/components.css">
 <link rel="stylesheet" href="assets/css/responsive.css">
-<link rel="stylesheet" href="assets/css/pages/tabelCRUD.css">
 <link rel="stylesheet" href="assets/css/pages/navbar.css">
-<link rel="stylesheet" href="assets/css/pages/sidebar.css">
+<link rel="stylesheet" href="assets/css/pages/sidebarr.css">
+<link rel="stylesheet" href="assets/css/pages/tabelCRUD.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
+
 <body>
 
-<div id="header-placeholder"></div>
-
-<div class="layout">
-    <aside class="sidebar">
-        <div id="sidebar-placeholder"></div>
-    </aside>
+    <!-- EXACT SAMA REFERENSI -->
+    <div id="header"></div>
+    <div id="sidebar"></div>
 
     <main class="content">
+
         <div class="top-bar-page">
             <a href="layanan-admin.php" class="btn-back">
                 <i class="fa-solid fa-arrow-left"></i>
@@ -74,6 +79,7 @@ if (isset($_GET['delete_id'])) {
                         <th>Aksi</th>
                     </tr>
                 </thead>
+
                 <tbody id="table-body">
 <?php
 $result = pg_query($conn, "SELECT * FROM layanan ORDER BY layanan_id ASC");
@@ -99,16 +105,17 @@ while ($row = pg_fetch_assoc($result)):
 </tr>
 <?php endwhile; ?>
                 </tbody>
+
             </table>
         </div>
 
         <div class="btn-save-wrapper">
             <a href="layanan-admin.php" class="btn-save" data-save>Simpan</a>
         </div>
-    </main>
-</div>
 
-<script src="assets/js/headerSidebar.js"></script>
+    </main>
+
+<script src="assets/js/sidebarHeader.js"></script>
 <script type="module" src="assets/js/main.js"></script>
 </body>
 
@@ -152,10 +159,7 @@ while ($row = pg_fetch_assoc($result)):
     font-weight: bold;
     font-size: 14px;
     line-height: 1.4;
-    display: inline-block;
-    text-align: center;
     cursor: pointer;
-    transition: background-color 0.2s;
     text-decoration: none;
     border: none;
 }
@@ -165,17 +169,9 @@ while ($row = pg_fetch_assoc($result)):
     color: #fff;
 }
 
-.btn-delete:hover {
-    background-color: #c0392b;
-}
-
 .btn-cancel {
     background-color: #95a5a6;
     color: #fff;
-}
-
-.btn-cancel:hover {
-    background-color: #7f8c8d;
 }
 </style>
 

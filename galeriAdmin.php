@@ -1,126 +1,169 @@
-<?php 
-include "koneksi.php";
+<?php
+session_start();
+if (!isset($_SESSION['logged_in'])) {
+    header("Location: login.php");
+    exit;
+}
 
-// Query Agenda
-$q_agenda = pg_query($conn, "SELECT agenda_id, hari_tgl, judul, deskripsi FROM agenda ORDER BY hari_tgl DESC");
+require_once __DIR__ . "/backend/config.php";
 
-// Query Dokumentasi
-$q_dok = pg_query($conn, "SELECT dokumentasi_id, judul, media_path FROM dokumentasi ORDER BY dokumentasi_id DESC");
+try {
+    /* ===================== AGENDA ===================== */
+    $agendaStmt = $db->prepare("
+        SELECT agenda_id, hari_tgl, judul, deskripsi
+        FROM agenda
+        ORDER BY hari_tgl DESC
+    ");
+    $agendaStmt->execute();
+    $agendaData = $agendaStmt->fetchAll(PDO::FETCH_ASSOC);
+
+    /* ===================== PAGINATION DOKUMENTASI ===================== */
+    $limit  = 6;
+    $page   = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+    $page   = max($page, 1);
+    $offset = ($page - 1) * $limit;
+
+    $totalStmt = $db->query("SELECT COUNT(*) FROM dokumentasi");
+    $totalData = (int) $totalStmt->fetchColumn();
+    $totalPage = ceil($totalData / $limit);
+
+    $dokStmt = $db->prepare("
+        SELECT dokumentasi_id, judul, media_path
+        FROM dokumentasi
+        ORDER BY dokumentasi_id DESC
+        LIMIT :limit OFFSET :offset
+    ");
+    $dokStmt->bindValue(':limit', $limit, PDO::PARAM_INT);
+    $dokStmt->bindValue(':offset', $offset, PDO::PARAM_INT);
+    $dokStmt->execute();
+    $dokData = $dokStmt->fetchAll(PDO::FETCH_ASSOC);
+
+} catch (PDOException $e) {
+    die("Query gagal: " . $e->getMessage());
+}
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Galeri Admin - Network & Cyber Security Lab</title>
+<meta charset="UTF-8">
+<title>Galeri Admin</title>
 
-    <link rel="stylesheet" href="assets/css/base.css">
-    <link rel="stylesheet" href="assets/css/pages/navbar.css">
-    <link rel="stylesheet" href="assets/css/pages/sidebar.css">
-    <link rel="stylesheet" href="assets/css/pages/galeriAdmin.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link rel="stylesheet" href="assets/css/base.css">
+<link rel="stylesheet" href="assets/css/pages/navbar.css">
+<link rel="stylesheet" href="assets/css/pages/sidebarr.css">
+<link rel="stylesheet" href="assets/css/pages/galeriAdmin.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 
 <body>
 
-    <div id="header-placeholder"></div>
+<div id="header"></div>
+<div id="sidebar"></div>
 
-    <div class="layout">
-        <aside class="sidebar">
-            <div id="sidebar-placeholder"></div>
-        </aside>
+<main class="content">
 
-        <main class="content">
+    <!-- ===================== AGENDA ===================== -->
+    <section class="hero-section-admin">
+        <h1>Galeri</h1>
+    </section>
 
-            <!-- ===================== AGENDA ===================== -->
-            <section class="hero-section-admin">
-                <h1>Galeri</h1>
-            </section>
+    <section class="agenda-section-admin">
+        <h2 class="section-title">Agenda Mendatang</h2>
 
-            <section class="agenda-section-admin">
-                <h2 class="section-title">Agenda Mendatang</h2>
-                <div class="agenda-wrapper">
+        <div class="agenda-wrapper">
+            <button class="agenda-nav agenda-prev">
+                <i class="fa-solid fa-chevron-left"></i>
+            </button>
 
-                    <button class="agenda-nav agenda-prev"><i class="fa-solid fa-chevron-left"></i></button>
-
-                    <div class="agenda-container">
-                        
-                        <?php while($row = pg_fetch_assoc($q_agenda)) : ?>
-                        <div class="agenda-card">
-                            <h3><?= htmlspecialchars($row['judul']) ?></h3>
-                            <p><?= htmlspecialchars($row['deskripsi']) ?></p>
-                            <ul>
-                                <li>Tanggal: <?= date("d M Y", strtotime($row['hari_tgl'])) ?></li>
-                            </ul>
-                        </div>
-                        <?php endwhile; ?>
-
+            <div class="agenda-container">
+                <?php foreach ($agendaData as $row): ?>
+                    <div class="agenda-card">
+                        <h3><?= htmlspecialchars($row['judul']) ?></h3>
+                        <p><?= htmlspecialchars($row['deskripsi']) ?></p>
+                        <ul>
+                            <li>Tanggal: <?= date("d M Y", strtotime($row['hari_tgl'])) ?></li>
+                        </ul>
                     </div>
+                <?php endforeach; ?>
+            </div>
 
-                    <button class="agenda-nav agenda-next"><i class="fa-solid fa-chevron-right"></i></button>
-                </div>
+            <button class="agenda-nav agenda-next">
+                <i class="fa-solid fa-chevron-right"></i>
+            </button>
+        </div>
 
-                <div class="agenda-button-wrapper">
-                    <a href="tabelAgenda.php">
-                        <button class="kelola-button">Kelola</button>
-                    </a>
-                </div>
-            </section>
+        <div class="agenda-button-wrapper">
+            <a href="tabelAgenda.php">
+                <button class="kelola-button">Kelola</button>
+            </a>
+        </div>
+    </section>
 
+    <!-- ===================== DOKUMENTASI ===================== -->
+    <section class="dokumentasi-section-admin">
+        <h2 class="section-title">Dokumentasi</h2>
 
-            <!-- ===================== DOKUMENTASI ===================== -->
-            <section class="dokumentasi-section-admin">
-                <h2 class="section-title">Dokumentasi</h2>
-                <div class="dokumentasi-container">
-
-                    <?php while($dok = pg_fetch_assoc($q_dok)) : ?>
-                    <div class="dokumentasi-card">
-                        <div class="dokumentasi-image" 
-                             style="background-image: url('uploads/<?= htmlspecialchars($dok['media_path']) ?>');">
-                        </div>
-
-                        <div class="dokumentasi-info">
-                            <h3><?= htmlspecialchars($dok['judul']) ?></h3>
-                            <p>Dokumentasi kegiatan terbaru</p>
-                        </div>
+        <div class="dokumentasi-container">
+            <?php foreach ($dokData as $dok): ?>
+                <div class="dokumentasi-card">
+                    <div class="dokumentasi-image"
+                         style="background-image:url('<?= htmlspecialchars($dok['media_path']) ?>');">
                     </div>
-                    <?php endwhile; ?>
-
+                    <div class="dokumentasi-info">
+                        <h3><?= htmlspecialchars($dok['judul']) ?></h3>
+                        <p>Dokumentasi kegiatan terbaru</p>
+                    </div>
                 </div>
+            <?php endforeach; ?>
+        </div>
 
-                <div class="pagination">
-                    <button class="pagination-btn active">1</button>
-                    <button class="pagination-btn">2</button>
-                    <button class="pagination-btn">3</button>
-                </div>
+        <!-- ===================== PAGINATION ===================== -->
+        <?php if ($totalPage > 1): ?>
+        <div class="pagination">
 
-                <div class="dokumentasi-button-wrapper">
-                    <a href="tabelDokumentasi.php">
-                        <button class="kelola-button">Kelola</button>
-                    </a>
-                </div>
-            </section>
+            <?php if ($page > 1): ?>
+                <a href="?page=<?= $page - 1 ?>" class="pagination-btn">«</a>
+            <?php endif; ?>
 
-        </main>
-    </div>
+            <?php for ($i = 1; $i <= $totalPage; $i++): ?>
+                <a href="?page=<?= $i ?>"
+                   class="pagination-btn <?= ($i == $page) ? 'active' : '' ?>">
+                    <?= $i ?>
+                </a>
+            <?php endfor; ?>
 
-    <script src="assets/js/headerSidebar.js"></script>
+            <?php if ($page < $totalPage): ?>
+                <a href="?page=<?= $page + 1 ?>" class="pagination-btn">»</a>
+            <?php endif; ?>
 
-    <script>
-        const agendaPrev = document.querySelector('.agenda-prev');
-        const agendaNext = document.querySelector('.agenda-next');
-        const agendaContainer = document.querySelector('.agenda-container');
+        </div>
+        <?php endif; ?>
 
-        if (agendaPrev && agendaNext && agendaContainer) {
-            agendaPrev.addEventListener('click', () => {
-                agendaContainer.scrollBy({ left: -350, behavior: 'smooth' });
-            });
+        <div class="dokumentasi-button-wrapper">
+            <a href="tabelDokumentasi.php">
+                <button class="kelola-button">Kelola</button>
+            </a>
+        </div>
+    </section>
 
-            agendaNext.addEventListener('click', () => {
-                agendaContainer.scrollBy({ left: 350, behavior: 'smooth' });
-            });
-        }
-    </script>
+</main>
+
+<script src="assets/js/sidebarHeader.js"></script>
+<script>
+const agendaPrev = document.querySelector('.agenda-prev');
+const agendaNext = document.querySelector('.agenda-next');
+const agendaContainer = document.querySelector('.agenda-container');
+
+if (agendaPrev && agendaNext && agendaContainer) {
+    agendaPrev.addEventListener('click', () => {
+        agendaContainer.scrollBy({ left: -350, behavior: 'smooth' });
+    });
+    agendaNext.addEventListener('click', () => {
+        agendaContainer.scrollBy({ left: 350, behavior: 'smooth' });
+    });
+}
+</script>
+
 </body>
 </html>

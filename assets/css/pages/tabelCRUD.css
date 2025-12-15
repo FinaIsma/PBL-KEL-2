@@ -15,9 +15,38 @@
     
     --shadow-200: 2px 4px 10px rgba(0,0,0,0.08);
     --transition-fast: all 0.2s ease;
+    --ui-scale: 0.88;
 }
 
+/* main, .content {
+    margin-top: 83.5px; /* tinggi navbar */
+/* } */
 
+/* POSISI SIDEBAR */
+.sidebar {
+    width: 220px;
+    position: fixed;
+    top: 83.5px;
+    left: 0;
+    height: calc(100vh - 83.5px);
+}
+
+.navbar {
+    box-shadow: 3px 5px 10px rgba(0, 0, 0, 0.15) !important;
+    background-color: #fff;
+}
+
+/* Header berada di atas full width */
+#header-placeholder {
+    grid-column: 1 / 3;
+    width: 100%;
+}
+
+.content {
+    margin-left: 220px;
+    padding: 20px;
+    margin-top: -40px !important;
+}
 
 .btn-back {
     display: inline-flex;
@@ -60,8 +89,9 @@
 .title-row {
     display: flex;
     align-items: center;
-    gap: 1rem;
+    gap: 1.15rem;
     margin-left: 50px;
+    margin-bottom: 10px;
 }
 
 .title-page {
@@ -72,13 +102,13 @@
 
 /* tombol tambah (+) */
 .btn-add {
-    width: 45px;
-    height: 45px;
+    width: 37px;
+    height: 37px;
     background: var(--secondary);
     border: none;
     border-radius: 50%;   /* bikin bulat */
     color: var(--primary);
-    font-size: 20px;
+    font-size: 16px;
     cursor: pointer;
     display: flex;
     justify-content: center;
@@ -109,7 +139,7 @@
     padding: 10px 12px 10px 38px;
     border: 1px solid #d7d7d7;
     border-radius: var(--radius-6);
-    font-size: 14px;
+    font-size: 12px;
     outline: none;
     background: var(--gray-200);
 }
@@ -161,14 +191,14 @@
     text-align: center;
     font-weight: 700;
     color: var(--color-primary);
-    font-size: 0.95rem;
-    border-bottom: 2px solid var(--color-primary);
+    font-size: 0.8rem;
+    border-bottom: 0.7px solid var(--color-primary);
 }
 
 .table tbody td {
     padding: 1.2rem 1rem;
     text-align: center;
-    font-size: 0.9rem;
+    font-size: 0.8rem;
     color: var(--color-text);
 }
 
@@ -178,20 +208,20 @@
 }
 
 .table tbody tr:hover {
-    background: #fafafa;
+    background: #f2f2f2;
 }
 
 /* ACTION BUTTONS */
 .action-buttons {
     display: flex;
     justify-content: center;
-    gap: 0.5rem;
+    gap: 0.3rem;
 }
 
 /* BASE BUTTON */
 .btn-action {
-    width: 36px;
-    height: 36px;
+    width: 33px;
+    height: 33px;
     border: none;
     border-radius: var(--radius-6);
     cursor: pointer;
@@ -201,7 +231,7 @@
     background: var(--color-secondary);
     color: #0E1F43; /* warna icon */
     transition: 0.2s ease;
-    font-size: 16px;
+    font-size: 14px;
 }
 
 .btn-action:hover {
@@ -223,7 +253,7 @@
     margin-top: 1.5rem;
     display: flex;
     justify-content: flex-end;
-    padding-right: 40px; 
+    padding-right: 50px; 
 }
 
 /* Tombol simpan */
@@ -231,8 +261,9 @@
     background: var(--secondary);
     color: var(--primary);
     border: none;
-    padding: 10px 24px;
-    font-size: 16px;
+    padding: 8px 20px;
+    font-size: 14px;
+    margin-top: -20px;
     font-weight: 600;
     border-radius: var(--radius-6);
     cursor: pointer;
@@ -319,6 +350,23 @@
 }
 body:not(.no-header) {
     padding-top: 83px !important;
+}
+
+.td-image {
+    text-align: center;
+    vertical-align: middle;
+}
+
+.image-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.thumb-preview {
+    width: 120px !important;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
 }
 
 @media (max-width: 480px) {

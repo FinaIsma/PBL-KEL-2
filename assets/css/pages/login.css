@@ -183,22 +183,20 @@ transform: translateY(-50%);
 }
 
 
-/* ---- Password field with eye icon ---- */
 .password-wrapper {
     position: relative;
 }
 
 .toggle-password {
     position: absolute;
-    right: 12px;
+    right: 14px;
     top: 50%;
     transform: translateY(-50%);
     cursor: pointer;
-    font-size: 18px;
-    color: var(--gray-700);
+    color: #666;
     user-select: none;
 }
 
 .toggle-password:hover {
-    color: var(--primary);
+    color: #000;
 }

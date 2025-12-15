@@ -1,60 +1,64 @@
-<?php 
-include "koneksi.php";
+<?php
+session_start();
+if (!isset($_SESSION['logged_in'])) {
+    header("Location: login.php");
+    exit;
+}
+
+require_once __DIR__ . "/backend/config.php";
 
 // --- SETTINGS ---
-$limit = 2;                             
+$limit = 2;
 $page  = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 $start = ($page - 1) * $limit;
 
-$kategori = isset($_GET['kategori']) ? $_GET['kategori'] : "semua";
-$search   = isset($_GET['search']) ? $_GET['search'] : "";
+$kategori = $_GET['kategori'] ?? 'semua';
+$search   = $_GET['search'] ?? '';
 
-// --- QUERY FILTER ---
-$where = "WHERE 1=1";
+// --- BUILD WHERE ---
+$where  = [];
+$params = [];
 
-if ($kategori != "semua") {
-    $where .= " AND kategori = $1";
+if ($kategori !== 'semua') {
+    $where[] = "kategori = :kategori";
+    $params[':kategori'] = $kategori;
 }
 
 if (!empty($search)) {
-    $search_param = "%" . $search . "%";
+    $where[] = "(judul ILIKE :search OR deskripsi ILIKE :search)";
+    $params[':search'] = "%$search%";
+}
 
-    if ($kategori != "semua") {
-        $where .= " AND (judul ILIKE $2 OR deskripsi ILIKE $2)";
-    } else {
-        $where .= " AND (judul ILIKE $1 OR deskripsi ILIKE $1)";
+$whereSQL = $where ? "WHERE " . implode(" AND ", $where) : "";
+
+try {
+    // --- HITUNG TOTAL DATA ---
+    $countStmt = $db->prepare("SELECT COUNT(*) FROM arsip $whereSQL");
+    $countStmt->execute($params);
+    $totalData  = $countStmt->fetchColumn();
+    $totalPages = ceil($totalData / $limit);
+
+    // --- QUERY DATA ---
+    $stmt = $db->prepare("
+        SELECT * FROM arsip
+        $whereSQL
+        ORDER BY arsip_id DESC
+        LIMIT :limit OFFSET :offset
+    ");
+
+    foreach ($params as $key => $val) {
+        $stmt->bindValue($key, $val);
     }
+
+    $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
+    $stmt->bindValue(':offset', $start, PDO::PARAM_INT);
+
+    $stmt->execute();
+    $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+} catch (PDOException $e) {
+    die("Query gagal: " . $e->getMessage());
 }
-
-// --- QUERY UTAMA (Pagination) ---
-if ($kategori != "semua") {
-    $result = pg_query_params(
-        $conn,
-        "SELECT * FROM arsip $where ORDER BY arsip_id DESC LIMIT $limit OFFSET $start",
-        !empty($search) ? [$kategori, $search_param] : [$kategori]
-    );
-
-    $countResult = pg_query_params(
-        $conn,
-        "SELECT COUNT(*) FROM arsip $where",
-        !empty($search) ? [$kategori, $search_param] : [$kategori]
-    );
-} else {
-    $result = pg_query_params(
-        $conn,
-        "SELECT * FROM arsip $where ORDER BY arsip_id DESC LIMIT $limit OFFSET $start",
-        !empty($search) ? [$search_param] : []
-    );
-
-    $countResult = pg_query_params(
-        $conn,
-        "SELECT COUNT(*) FROM arsip $where",
-        !empty($search) ? [$search_param] : []
-    );
-}
-
-$totalData = pg_fetch_result($countResult, 0, 0);
-$totalPages = ceil($totalData / $limit);
 ?>
 
 <!DOCTYPE html>
@@ -64,21 +68,17 @@ $totalPages = ceil($totalData / $limit);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <link rel="stylesheet" href="assets/css/base.css">
-    <link rel="stylesheet" href="assets/css/pages/arsipAdmin.css">
     <link rel="stylesheet" href="assets/css/pages/navbar.css">
-    <link rel="stylesheet" href="assets/css/pages/sidebar.css">
+    <link rel="stylesheet" href="assets/css/pages/sidebarr.css">
+    <link rel="stylesheet" href="assets/css/pages/arsipAdmin.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <title>Kelola Arsip</title>
 </head>
 
 <body>
 
-<div id="header-placeholder"></div>
-
-<div class="layout">
-    <aside class="sidebar">
-        <div id="sidebar-placeholder"></div>
-    </aside>
+<div id="header"></div>
+<div id="sidebar"></div>
 
     <main class="wrapper">
         <section class="section" id="arsip">
@@ -114,8 +114,8 @@ $totalPages = ceil($totalData / $limit);
                 <?php if ($totalData == 0): ?>
                     <p>Tidak ada data arsip ditemukan.</p>
                 <?php endif; ?>
-
-                <?php while ($row = pg_fetch_assoc($result)): ?>
+                
+                <?php foreach ($result as $row): ?>
                 <div class="arsip-card">
                     <div class="arsip-content">
                         
@@ -138,8 +138,11 @@ $totalPages = ceil($totalData / $limit);
                         </div>
 
                         <div class="arsip-side">
-                            <div class="arsip-thumbnail">
-                                <img src="upload/<?= $row['thumbnail']; ?>" alt="">
+                           <div class="arsip-thumbnail">
+                                <canvas 
+                                    class="pdf-thumb"
+                                    data-pdf="upload/<?= htmlspecialchars($row['file_path']) ?>">
+                                </canvas>
                             </div>
 
                             <a href="upload/<?= $row['file_path']; ?>" 
@@ -151,7 +154,7 @@ $totalPages = ceil($totalData / $limit);
                         
                     </div>
                 </div>
-                <?php endwhile; ?>
+                <?php endforeach; ?>
 
             </div>
 
@@ -173,9 +176,34 @@ $totalPages = ceil($totalData / $limit);
 
         </section>
     </main>
-</div>
 
-<script src="assets/js/headerSidebar.js"></script>
+<script src="assets/js/sidebarHeader.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
+<script>
+    pdfjsLib.GlobalWorkerOptions.workerSrc =
+    "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js";
 
+    document.querySelectorAll(".pdf-thumb").forEach(canvas => {
+        const pdfUrl = canvas.dataset.pdf;
+
+        pdfjsLib.getDocument(pdfUrl).promise.then(pdf => {
+            pdf.getPage(1).then(page => {
+
+                const viewport = page.getViewport({ scale: 0.35 });
+                const context = canvas.getContext("2d");
+
+                canvas.width  = viewport.width;
+                canvas.height = viewport.height;
+
+                page.render({
+                    canvasContext: context,
+                    viewport: viewport
+                });
+            });
+        }).catch(err => {
+            console.error("PDF error:", err);
+        });
+    });
+</script>
 </body>
 </html>

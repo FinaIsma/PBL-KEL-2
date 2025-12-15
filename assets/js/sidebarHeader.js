@@ -1,7 +1,7 @@
 fetch("header.php")
     .then(res => res.text())
     .then(html => {
-        document.getElementById("header-placeholder").innerHTML = html;
+        document.getElementById("header").innerHTML = html;
 
         const navbar = document.querySelector(".navbar");
         if (navbar) navbar.classList.add("navbar-ready");

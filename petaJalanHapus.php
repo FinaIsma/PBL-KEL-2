@@ -1,20 +1,14 @@
 <?php
-include("koneksi.php");
+require_once "backend/config.php";
 
-if (!isset($_GET['peta_id'])) {
-    die("ID Peta Jalan tidak ditemukan.");
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $id = intval($_POST['id']);
+
+    $sql = "DELETE FROM peta_jalan WHERE peta_id = :id";
+    $stmt = $db->prepare($sql);
+    $stmt->execute([':id' => $id]);
 }
 
-$peta_id = $_GET['peta_id'];
+header("Location: petaJalanTabel.php");
+exit;
 
-// Hapus data
-$deleteQuery = "DELETE FROM peta_jalan WHERE peta_id=$1";
-$deleteResult = pg_query_params($koneksi, $deleteQuery, [$peta_id]);
-
-if ($deleteResult) {
-    header("Location: petaJalanTabel.php");
-    exit;
-} else {
-    echo "Gagal menghapus data: " . pg_last_error($koneksi);
-}
-?>

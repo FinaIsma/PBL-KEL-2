@@ -1,14 +1,29 @@
 <?php
-include "koneksi.php";
+session_start();
+require_once "backend/config.php";
 
-if (!isset($_GET['arsip_id'])) {
-    die("ID tidak ditemukan.");
+// optional: proteksi login
+if (!isset($_SESSION['user_id'])) {
+    die("Akses ditolak.");
 }
 
-$arsip_id = $_GET['arsip_id'];
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-$sql = "DELETE FROM arsip WHERE arsip_id = $1";
-pg_query_params($conn, $sql, [$arsip_id]);
+    $id = (int) $_POST['id'];
+
+    try {
+        $stmt = $db->prepare(
+            "DELETE FROM arsip WHERE arsip_id = :id"
+        );
+
+        $stmt->execute([
+            'id' => $id
+        ]);
+
+    } catch (PDOException $e) {
+        die("Gagal hapus: " . $e->getMessage());
+    }
+}
 
 header("Location: arsipTabel.php");
-exit();
+exit;

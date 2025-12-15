@@ -1,5 +1,10 @@
 <?php
 session_start();
+if (!isset($_SESSION['logged_in'])) {
+    header("Location: login.php");
+    exit;
+}
+
 require_once "backend/config.php"; // lokasi config.php kamu
 
 // CEK LOGIN
@@ -53,7 +58,7 @@ try {
 
     <link rel="stylesheet" href="assets/css/base.css">
     <link rel="stylesheet" href="assets/css/pages/navbar.css">
-    <link rel="stylesheet" href="assets/css/pages/sidebar.css">
+    <link rel="stylesheet" href="assets/css/pages/sidebarr.css">
     <link rel="stylesheet" href="assets/css/pages/dashboard.css">
 
     <link rel="stylesheet" 
@@ -75,58 +80,64 @@ try {
             <h1 class="title-page">Dashboard</h1>
 
             <section class="cards">
+                <!-- Pengelola Lab -->
                 <div class="card-item">
-                <div class="icon blue"><i class="fa-solid fa-user-gear"></i></div>
+                    <div class="icon blue"><i class="fa-solid fa-user-gear"></i></div>
                     <div>
                         <h3>Pengelola Lab</h3>
                         <p>Jumlah: <?= $count_pengelola ?></p>
                     </div>
-                    <button class="card-btn">→</button>
+                    <a href="tabelPengelola.php" class="card-btn">→</a>
                 </div>
 
+                <!-- Bidang Fokus -->
                 <div class="card-item">
-<div class="icon navy"><i class="fa-solid fa-bullseye"></i></div>
+                    <div class="icon navy"><i class="fa-solid fa-bullseye"></i></div>
                     <div>
                         <h3>Bidang Fokus</h3>
                         <p>Jumlah: <?= $count_fokus ?></p>
                     </div>
-                    <button class="card-btn">→</button>
+                    <a href="tabelBidang.php" class="card-btn">→</a>
                 </div>
 
+                <!-- Layanan -->
                 <div class="card-item">
-<div class="icon box"><i class="fa-solid fa-hand-holding-hand"></i></div>
+                    <div class="icon box"><i class="fa-solid fa-hand-holding-hand"></i></div>
                     <div>
                         <h3>Layanan</h3>
                         <p>Jumlah: <?= $count_layanan ?></p>
                     </div>
-                    <button class="card-btn">→</button>
+                    <a href="tabelLayanan.php" class="card-btn">→</a>
                 </div>
 
+                <!-- Sarana Prasarana -->
                 <div class="card-item">
-<div class="icon facility"><i class="fa-solid fa-building"></i></div>
+                    <div class="icon facility"><i class="fa-solid fa-building"></i></div>
                     <div>
                         <h3>Sarana Prasarana</h3>
                         <p>Jumlah: <?= $count_sarpras ?></p>
                     </div>
-                    <button class="card-btn">→</button>
+                    <a href="tabelSarpras.php" class="card-btn">→</a>
                 </div>
 
+                <!-- Agenda -->
                 <div class="card-item">
-<div class="icon agenda"><i class="fa-solid fa-calendar-check"></i></div>
+                    <div class="icon agenda"><i class="fa-solid fa-calendar-check"></i></div>
                     <div>
                         <h3>Agenda</h3>
                         <p>Jumlah: <?= $count_agenda ?></p>
                     </div>
-                    <button class="card-btn">→</button>
+                    <a href="tabelAgenda.php" class="card-btn">→</a>
                 </div>
 
+                <!-- Arsip -->
                 <div class="card-item">
-<div class="icon archive"><i class="fa-solid fa-box-archive"></i></div>
+                    <div class="icon archive"><i class="fa-solid fa-box-archive"></i></div>
                     <div>
                         <h3>Arsip</h3>
                         <p>Jumlah: <?= $count_arsip ?></p>
                     </div>
-                    <button class="card-btn">→</button>
+                    <a href="arsipAdmin.php" class="card-btn">→</a>
                 </div>
             </section>
 
@@ -172,11 +183,13 @@ try {
                 </table>
 
                 <div class="button-area">
-                    <button class="kelola-btn">Kelola</button>
+                    <a href="tabelPengelola.php">
+                        <button class="kelola-btn">Kelola</button>
+                    </a>
                 </div>
             </section>
         </main>
     <script src="assets/js/dashboard.js"></script>
-    <script src="assets/js/headerSidebar.js"></script>
+    <script src="assets/js/sidebarHeader.js"></script>
 </body>
 </html>

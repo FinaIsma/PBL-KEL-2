@@ -1,100 +1,259 @@
 <?php
-include("koneksi.php");
+require_once "backend/config.php"; // Koneksi PDO
 
 if (!isset($_GET['peta_id'])) {
     die("ID Peta Jalan tidak ditemukan.");
 }
+
 $peta_id = $_GET['peta_id'];
 
-$query = "SELECT * FROM peta_jalan WHERE peta_id = $1";
-$result = pg_query_params($koneksi, $query, [$peta_id]);
-$peta = pg_fetch_assoc($result);
+// Ambil data lama
+$stmt = $db->prepare("SELECT * FROM peta_jalan WHERE peta_id = ?");
+$stmt->execute([$peta_id]);
+$peta = $stmt->fetch(PDO::FETCH_ASSOC);
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $judul = $_POST['judul'];
-    $tahun = $_POST['tahun'];
-    $deskripsi = $_POST['deskripsi'];
-    $user_id = $_POST['user_id']; 
+if (!$peta) {
+    die("Data tidak ditemukan.");
+}
 
-    $file_path = $peta['file_path']; 
+$error = "";
+$success = "";
+
+// PROSES UPDATE
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+
+    $judul     = trim($_POST['judul']);
+    $tahun     = trim($_POST['tahun']);
+    $deskripsi = trim($_POST['deskripsi']);
+    $user_id   = $peta['user_id'];
+
+    $fileDB = $peta['file_path']; // default pakai file lama
+
+    // Jika ada upload baru
     if (!empty($_FILES['file']['name'])) {
-        $target_dir = "uploads/";
-        if (!is_dir($target_dir)) {
-            mkdir($target_dir, 0777, true);
-        }
-        $file_name = basename($_FILES["file"]["name"]);
-        $target_file = $target_dir . $file_name;
-        if (move_uploaded_file($_FILES["file"]["tmp_name"], $target_file)) {
-            $file_path = $target_file;
+
+        if ($_FILES['file']['error'] === UPLOAD_ERR_OK) {
+
+            $ext = strtolower(pathinfo($_FILES['file']['name'], PATHINFO_EXTENSION));
+            if ($ext !== "pdf") {
+                $error = "File harus PDF!";
+            } else {
+                $uploadDir = __DIR__ . "/uploads/";
+
+                if (!is_dir($uploadDir)) {
+                    mkdir($uploadDir, 0755, true);
+                }
+
+                $fileName = "peta_" . time() . ".pdf";
+                $path = $uploadDir . $fileName;
+
+                if (move_uploaded_file($_FILES['file']['tmp_name'], $path)) {
+                    $fileDB = "uploads/" . $fileName;
+                } else {
+                    $error = "Gagal mengupload file.";
+                }
+            }
         } else {
-            echo "Gagal mengunggah file.";
+            $error = "Upload error code: " . $_FILES['file']['error'];
         }
     }
 
-    $updateQuery = "UPDATE peta_jalan SET judul=$1, tahun=$2, deskripsi=$3, file_path=$4, user_id=$5 WHERE peta_id=$6";
-    $updateResult = pg_query_params($koneksi, $updateQuery, [$judul, $tahun, $deskripsi, $file_path, $user_id, $peta_id]);
+    // UPDATE DATABASE
+    if ($error === "") {
+        $sql = "UPDATE peta_jalan 
+                SET judul=?, tahun=?, deskripsi=?, file_path=?, user_id=? 
+                WHERE peta_id=?";
 
-    if ($updateResult) {
-        header("Location: petaJalanTabel.php");
-        exit;
-    } else {
-        echo "Gagal mengupdate data: " . pg_last_error($koneksi);
+        $stmtUp = $db->prepare($sql);
+        $ok = $stmtUp->execute([$judul, $tahun, $deskripsi, $fileDB, $user_id, $peta_id]);
+
+        if ($ok) {
+            header("Location: petaJalanTabel.php");
+            exit;
+        } else {
+            $error = "Gagal update database!";
+        }
     }
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit Peta Jalan</title>
-    <link rel="stylesheet" href="assets/css/base.css">
-    <link rel="stylesheet" href="assets/css/pages/navbar.css">
-    <link rel="stylesheet" href="assets/css/pages/sidebar.css">
-    <link rel="stylesheet" href="assets/css/pages/petaJalanTambah.css">
+<meta charset="UTF-8">
+<title>Edit Peta Jalan</title>
+
+<link rel="stylesheet" href="assets/css/base.css">
+<link rel="stylesheet" href="assets/css/pages/navbar.css">
+<link rel="stylesheet" href="assets/css/pages/sidebarr.css">
+
+<style>
+
+/* ====== LAYOUT (SAMA SEPERTI KODE 2) ====== */
+main, .content {
+    margin-top: 100px;
+}
+
+.sidebar {
+    width: 220px;
+    position: fixed;
+    top: 83.5px;
+    left: 0;
+    height: calc(100vh - 83.5px);
+}
+
+.navbar {
+    box-shadow: 3px 5px 10px rgba(0, 0, 0, 0.15) !important;
+    background-color: #fff;
+}
+
+.content {
+    margin-left: 220px;
+    padding-top: 100px;
+    transform: scale(0.8);
+    transform-origin: top left;
+    width: calc((100% - 220px) / 0.8);
+    margin-top: -110px !important;
+}
+
+.hero-section-admin {
+    padding-left: 80px;
+}
+
+/* ====== FORM SECTION (IDENTIK DENGAN KODE 2) ====== */
+.form-section {
+    padding: 20px 60px;
+}
+
+.form-wrapper {
+    background: #fff;
+    border-radius: 12px;
+    padding: 30px 40px;
+    box-shadow: 0 5px 20px rgba(10, 6, 1, 0.15);
+    border: 1px solid #ddd;
+}
+
+/* ====== FORM ELEMENTS ====== */
+.form-add label {
+    font-family: var(--font-body);
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 6px;
+    display: block;
+    color: #000;
+}
+
+.form-add input,
+.form-add textarea,
+.form-add select {
+    width: 100%;
+    padding: 12px 15px;
+    border-radius: 8px;
+    border: 1px solid #999;
+    font-size: 13px;
+    font-family: var(--font-body);
+    color: #000;
+    background: #f9f9f9;
+    outline: none;
+    margin-bottom: 22px;
+}
+
+.form-add input:focus,
+.form-add textarea:focus {
+    border-color: var(--secondary);
+    box-shadow: 0 0 4px rgba(255, 184, 77, 0.6);
+}
+
+.form-add textarea {
+    resize: vertical;
+}
+
+/* ====== BUTTONS ====== */
+.btn-submit {
+    background: var(--secondary);
+    color: #000;
+    border: none;
+    padding: 14px 40px;
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 16px;
+    cursor: pointer;
+    box-shadow: 0 3px 10px rgba(255, 184, 77, 0.3);
+    transition: 0.3s ease;
+}
+
+.btn-submit:hover {
+    background: #FF9A3D;
+    transform: translateY(-2px);
+}
+
+.btn-cancel {
+    margin-left: 12px;
+    padding: 12px 30px;
+    background: #e0e0e0;
+    color: #000;
+    border-radius: 8px;
+    font-size: 16px;
+    text-decoration: none;
+    font-family: var(--font-body);
+    transition: 0.2s;
+}
+
+.btn-cancel:hover {
+    background: #ccc;
+}
+</style>
+
 </head>
 <body>
-    <div id="header-placeholder"></div>
-    <div class="layout">
-        <aside class="sidebar">
-            <div id="sidebar-placeholder"></div>
-        </aside>
 
-    <main class="content">
-        <section class="hero-section-admin">
-            <h1>Edit Peta Jalan</h1>
-        </section>
+<div id="header"></div>
+<div id="sidebar"></div>
 
-        <section class="form-section">
-            <form action="" method="POST" enctype="multipart/form-data" class="form-peta-jalan">
+<main class="content">
 
-                <label for="judul">Judul</label>
-                <input type="text" id="judul" name="judul" value="<?= htmlspecialchars($peta['judul']) ?>" required>
+    <section class="hero-section-admin">
+        <h1>Edit Peta Jalan</h1>
+    </section>
 
-                <label for="tahun">Tahun</label>
-                <input type="number" id="tahun" name="tahun" value="<?= htmlspecialchars($peta['tahun']) ?>" required>
+    <!-- Alerts -->
+    <?php if (!empty($error)): ?>
+        <div style="padding: 10px 80px; color: red; font-weight: bold;"><?= $error ?></div>
+    <?php endif; ?>
 
-                <label for="deskripsi">Deskripsi</label>
-                <textarea id="deskripsi" name="deskripsi" rows="4" required><?= htmlspecialchars($peta['deskripsi']) ?></textarea>
+    <section class="form-section">
 
-                <label for="file">Upload File (PDF)</label>
-                <?php if(!empty($peta['file_path'])): ?>
-                    <p>File saat ini: <a href="<?= htmlspecialchars($peta['file_path']) ?>" target="_blank">Lihat File</a></p>
-                <?php endif; ?>
-                <input type="file" id="file" name="file" accept="application/pdf">
+        <form method="POST" enctype="multipart/form-data" class="form-add">
 
-                <input type="hidden" name="user_id" value="<?= htmlspecialchars($peta['user_id']) ?>">
+            <label>Judul</label>
+            <input type="text" name="judul" value="<?= htmlspecialchars($peta['judul']) ?>" required>
 
-                <button type="submit" name="submit" class="btn-submit">Simpan</button>
-                <a href="petaJalanTabel.php" class="btn-cancel">Batal</a>
+            <label>Tahun</label>
+            <input type="number" name="tahun" value="<?= htmlspecialchars($peta['tahun']) ?>" required>
 
-            </form>
-        </section>
-    </main>
-</div>
+            <label>Deskripsi</label>
+            <textarea name="deskripsi" rows="4" required><?= htmlspecialchars($peta['deskripsi']) ?></textarea>
 
-<script src="assets/js/headerSidebar.js"></script>
+            <label>Upload File (PDF)</label>
+            <?php if (!empty($peta['file_path'])): ?>
+                <p>
+                    File saat ini:
+                    <a href="uploads/<?= htmlspecialchars($peta['file_path']) ?>" target="_blank">
+                        Lihat File
+                    </a>
+                </p>
+            <?php endif; ?>
+            <input type="file" name="file" accept="application/pdf">
+
+            <button class="btn-submit" type="submit">Simpan</button>
+            <a href="petaJalanTabel.php" class="btn-cancel">Batal</a>
+
+        </form>
+
+    </section>
+
+</main>
+
+<script src="assets/js/sidebarHeader.js"></script>
 
 </body>
 </html>

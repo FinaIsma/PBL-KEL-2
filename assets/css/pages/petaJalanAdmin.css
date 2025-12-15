@@ -6,6 +6,7 @@
     background: #ffffff url('assets/img/aura.png') center/cover no-repeat;
     backdrop-filter: blur(6px);
     display: block;
+    margin-top: -35px !important;
 }
 
 .navbar {
@@ -27,6 +28,7 @@ body {
     color: #ffffff;
     text-align: center;
     padding: 50px 20px 60px;
+    margin-top: -10px !important;
 }
 
 .hero-section-admin h1 {
@@ -165,11 +167,11 @@ body {
 .timeline-card-admin {
     background: #0E1F43;
     color: #ffffff;
-    padding: 60px 25px 30px;
+    padding: 40px 20px 25px;
     border-radius: 15px;
     box-shadow: 0 4px 16px rgba(0,0,0,0.15);
-    max-width: 370px;
-    min-height: 350px;
+    max-width: 260px;
+    min-height: 240px;
     width: 100%;
     position: relative;
     display: flex;
@@ -177,7 +179,7 @@ body {
 }
 
 .timeline-card-admin h3 {
-    font-size: 20px;
+    font-size: 16px;
     font-weight: 700;
     margin-bottom: 10px;
     margin-top: -10px;

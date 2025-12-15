@@ -1,4 +1,9 @@
 <?php
+session_start();
+if (!isset($_SESSION['logged_in'])) {
+    header("Location: login.php");
+    exit;
+}
 include("db.php"); // pastikan koneksi sudah benar
 
 $pengelola = [];
@@ -7,12 +12,27 @@ while ($r = pg_fetch_assoc($res)) {
     $pengelola[] = $r;
 }
 
-$profil = [];
+$profil = [
+    'sejarah' => null,
+    'visi'    => null,
+    'misi'    => []
+];
+
 $q = pg_query($conn, "SELECT * FROM profil ORDER BY profil_id ASC");
 while ($p = pg_fetch_assoc($q)) {
-    $key = strtolower(trim($p['kategori']));
-    $profil[$key] = $p;
+    $kategori = strtolower(trim($p['kategori']));
+
+    if ($kategori === 'misi') {
+        $profil['misi'][] = $p; // kumpulkan semua misi
+    } else {
+        $profil[$kategori] = $p; // sejarah & visi satu data
+    }
 }
+
+$tentangKami = $profil['sejarah'] ?? ['isi' => ''];
+$visi        = $profil['visi'] ?? ['isi' => ''];
+$misiList    = $profil['misi']; // ARRAY
+
 
 $tentangKami = $profil['sejarah'] ?? ['isi' => ''];
 $visi        = $profil['visi'] ?? ['isi' => ''];
@@ -33,9 +53,9 @@ $misi        = $profil['misi'] ?? ['isi' => ''];
     <link rel="stylesheet" href="assets/css/components.css">
     <!-- <link rel="stylesheet" href="assets/css/layout.css"> -->
     <link rel="stylesheet" href="assets/css/responsive.css">
+        <link rel="stylesheet" href="assets/css/pages/navbar.css">
+    <link rel="stylesheet" href="assets/css/pages/sidebarr.css">
     <link rel="stylesheet" href="assets/css/pages/profil-admin.css">
-    <link rel="stylesheet" href="assets/css/pages/navbar.css">
-    <link rel="stylesheet" href="assets/css/pages/sidebar.css">
     <!-- <link rel="stylesheet" href="assets/css/pages/footer.css"> -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
@@ -43,14 +63,10 @@ $misi        = $profil['misi'] ?? ['isi' => ''];
 <body>
     
     <!-- Header -->
-    <div id="header-placeholder"></div>
+    <div id="header"></div>
+    <div id="sidebar"></div>
     
     <!-- Layout dengan Sidebar -->
-    <div class="layout">
-
-        <aside class="sidebar">
-            <div id="sidebar-placeholder"></div>
-        </aside>
         <main class="content">
 
             <section class="tentangKami">
@@ -106,12 +122,8 @@ $misi        = $profil['misi'] ?? ['isi' => ''];
                     <div class="card-misi">
                         <h3 class="text-center">Misi</h3>
                         <ul>
-<?php 
-$misiList = explode("\n", $misi['isi']);
-foreach ($misiList as $item):
-    if (trim($item) == "") continue;
-?>
-    <li><?= htmlspecialchars($item) ?></li>
+<?php foreach ($misiList as $misi): ?>
+    <li><?= htmlspecialchars($misi['isi']) ?></li>
 <?php endforeach; ?>
 </ul>
 
@@ -148,9 +160,8 @@ foreach ($misiList as $item):
     <a href="tabelPengelola.php" class="btn-kelola">Kelola</a>
 </section>
         </main>
-    </div>
 
-    <script src="assets/js/headerSidebar.js"></script>
+    <script src="assets/js/sidebarHeader.js"></script>
     <script>
   // ambil role dari session, default admin kalau tidak ada
   window.userRole = '<?= $_SESSION['role'] ?? "admin" ?>';

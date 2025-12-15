@@ -1,32 +1,41 @@
 <?php
-include 'koneksi.php';
+require_once __DIR__ . "/backend/config.php";
 
-// Pagination
-$page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
-$limit = 4;
+// ===== PAGINATION (6 ITEM / HALAMAN) =====
+$page  = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+$limit = 6; // 2 row x 3 gambar
 $start = ($page - 1) * $limit;
 
-// Ambil agenda
-$agendaQuery = pg_query($conn, "SELECT agenda_id, hari_tgl, judul, deskripsi FROM agenda ORDER BY hari_tgl ASC");
-if (!$agendaQuery) {
-    die("Query agenda gagal: " . pg_last_error());
-}
+try {
+    // ===== AMBIL AGENDA =====
+    $agendaStmt = $db->prepare("
+        SELECT agenda_id, hari_tgl, judul, deskripsi
+        FROM agenda
+        ORDER BY hari_tgl ASC
+    ");
+    $agendaStmt->execute();
+    $agendaData = $agendaStmt->fetchAll(PDO::FETCH_ASSOC);
 
-// Ambil dokumentasi sesuai page
-$dokumentasiQuery = pg_query($conn, "
-    SELECT dokumentasi_id, judul, media_path
-    FROM dokumentasi
-    ORDER BY dokumentasi_id ASC
-    OFFSET $start LIMIT $limit
-");
-if (!$dokumentasiQuery) {
-    die("Query dokumentasi gagal: " . pg_last_error());
-}
+    // ===== AMBIL DOKUMENTASI (PAGINATION) =====
+    $dokStmt = $db->prepare("
+        SELECT dokumentasi_id, judul, media_path
+        FROM dokumentasi
+        ORDER BY dokumentasi_id ASC
+        OFFSET :start LIMIT :limit
+    ");
+    $dokStmt->bindValue(':start', $start, PDO::PARAM_INT);
+    $dokStmt->bindValue(':limit', $limit, PDO::PARAM_INT);
+    $dokStmt->execute();
+    $dokumentasiData = $dokStmt->fetchAll(PDO::FETCH_ASSOC);
 
-// Hitung total halaman dokumentasi
-$totalResult = pg_query($conn, "SELECT COUNT(*) AS total FROM dokumentasi");
-$totalItems = pg_fetch_assoc($totalResult)['total'];
-$totalPages = ceil($totalItems / $limit);
+    // ===== TOTAL HALAMAN =====
+    $countStmt = $db->query("SELECT COUNT(*) FROM dokumentasi");
+    $totalItems = $countStmt->fetchColumn();
+    $totalPages = ceil($totalItems / $limit);
+
+} catch (PDOException $e) {
+    die("Query gagal: " . $e->getMessage());
+}
 ?>
 
 <!DOCTYPE html>
@@ -53,13 +62,13 @@ $totalPages = ceil($totalItems / $limit);
         <div class="agenda-wrapper">
             <button class="scroll-btn left"><i class="fa-solid fa-chevron-left"></i></button>
             <div class="agenda-container">
-                <?php while ($row = pg_fetch_assoc($agendaQuery)): ?>
+                <?php foreach ($agendaData as $row): ?>
                     <div class="agenda-card">
                         <h3><?= htmlspecialchars($row['judul']) ?></h3>
                         <p><?= htmlspecialchars($row['deskripsi']) ?></p>
                         <p><small>Tanggal: <?= htmlspecialchars($row['hari_tgl']) ?></small></p>
                     </div>
-                <?php endwhile; ?>
+                <?php endforeach; ?>
             </div>
             <button class="scroll-btn right"><i class="fa-solid fa-chevron-right"></i></button>
         </div>
@@ -68,39 +77,29 @@ $totalPages = ceil($totalItems / $limit);
     <section class="dokumentasi-section" id="dokumentasi">
         <h2 class="section-title">Dokumentasi</h2>
         <div class="dokumentasi-container">
-            <?php while ($row = pg_fetch_assoc($dokumentasiQuery)): ?>
+            <?php foreach ($dokumentasiData as $row): ?>
                 <div class="dokumentasi-card">
-                    <div class="dokumentasi-image" style="background-image: url('assets/img/<?= htmlspecialchars($row['media_path']) ?>')"></div>
+                    <div class="dokumentasi-image"
+                         style="background-image:url('<?= htmlspecialchars($row['media_path']) ?>')"></div>
                     <div class="dokumentasi-info">
                         <h3><?= htmlspecialchars($row['judul']) ?></h3>
                     </div>
                 </div>
-            <?php endwhile; ?>
+            <?php endforeach; ?>
         </div>
 
         <div class="pagination">
             <?php for ($i = 1; $i <= $totalPages; $i++): ?>
-                <a href="galeri.php?page=<?= $i ?>#dokumentasi" 
-                    class="pagination-btn <?= ($i==$page?'active':'') ?>">
+                <a href="galeri.php?page=<?= $i ?>#dokumentasi"
+                   class="pagination-btn <?= ($i == $page ? 'active' : '') ?>">
                     <?= $i ?>
                 </a>
-
             <?php endfor; ?>
         </div>
     </section>
 
     <div id="footer-placeholder"></div>
     <script src="assets/js/footer.js"></script>
-
-    <!-- Scroll tombol agenda -->
-    <script>
-        const agendaContainer = document.querySelector(".agenda-container");
-        document.querySelector(".scroll-btn.left").onclick = () => {
-            agendaContainer.scrollBy({ left: -300, behavior: "smooth" });
-        };
-        document.querySelector(".scroll-btn.right").onclick = () => {
-            agendaContainer.scrollBy({ left: 300, behavior: "smooth" });
-        };
-    </script>
+    <script src="assets/js/galeri.js"></script>
 </body>
 </html>

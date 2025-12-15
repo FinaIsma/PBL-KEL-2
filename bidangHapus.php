@@ -1,22 +1,24 @@
 <?php
-include("koneksi-bidang.php");
+require_once "backend/config.php";
 
 // Pastikan ada ID
-if (!isset($_GET['id'])) {
+if (!isset($_POST['id'])) {
     die("ID Bidang Fokus tidak ditemukan.");
 }
-$id = $_GET['id'];
 
-$deleteQuery = "DELETE FROM bidang_fokus WHERE bidangfokus_id = $1";
-$deleteResult = pg_query_params($koneksi, $deleteQuery, [$id]);
+$id = intval($_POST['id']);
 
-if ($deleteResult) {
+try {
+    $stmt = $db->prepare("DELETE FROM bidang_fokus WHERE bidangfokus_id = ?");
+    $stmt->execute([$id]);
+
     echo "<script>
             alert('Data berhasil dihapus!');
             window.location.href = 'tabelBidang.php';
           </script>";
     exit;
-} else {
+
+} catch (PDOException $e) {
     echo "<script>
             alert('Gagal menghapus data!');
             window.location.href = 'tabelBidang.php';

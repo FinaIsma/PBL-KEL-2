@@ -1,22 +1,12 @@
 <?php
-include "koneksi.php";
+require_once "backend/config.php";
 
-// Pastikan ada ID
-if (!isset($_GET['id'])) {
-    die("Error: ID tidak ditemukan.");
-}
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $id = intval($_POST['id']);
 
-$id = $_GET['id'];
+    $stmt = $db->prepare("DELETE FROM agenda WHERE agenda_id = ?");
+    $stmt->execute([$id]);
 
-// Query delete
-$query = "DELETE FROM agenda WHERE agenda_id = $1";
-$delete = pg_query_params($conn, $query, [$id]);
-
-if ($delete) {
-    // Setelah delete berhasil → balik ke tabel
     header("Location: tabelAgenda.php");
     exit;
-} else {
-    echo "Gagal menghapus data.";
 }
-?>

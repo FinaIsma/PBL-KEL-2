@@ -1,5 +1,5 @@
 <?php
-include "koneksi.php";
+require_once "backend/config.php";
 
 // --- Ambil ID ---
 if (!isset($_GET['id'])) {
@@ -8,125 +8,283 @@ if (!isset($_GET['id'])) {
 
 $dokumentasi_id = $_GET['id'];
 
-// Ambil data lama
-$result = pg_query_params($conn, "SELECT * FROM dokumentasi WHERE dokumentasi_id = $1", [$dokumentasi_id]);
-$data = pg_fetch_assoc($result);
+// ===== AMBIL DATA LAMA =====
+try {
+    $stmt = $db->prepare("SELECT * FROM dokumentasi WHERE dokumentasi_id = :id");
+    $stmt->execute(['id' => $dokumentasi_id]);
+    $data = $stmt->fetch(PDO::FETCH_ASSOC);
 
-if (!$data) {
-    die("Error: Data tidak ditemukan.");
+    if (!$data) {
+        die("Error: Data tidak ditemukan.");
+    }
+} catch (PDOException $e) {
+    die("Error DB: " . $e->getMessage());
 }
 
-// ====== UPDATE DATA ======
+// ===== UPDATE DATA =====
 if (isset($_POST['submit'])) {
 
     $judul = trim($_POST['judul']);
-    $media_path = $data['media_path']; // default pakai yang lama
+    $media_path = $data['media_path']; // default pakai lama
 
-    // Upload gambar baru jika ada
-    if (isset($_FILES['media']) && $_FILES['media']['error'] === 0) {
+    // ===== UPLOAD BARU =====
+    if (isset($_FILES['media']) && $_FILES['media']['error'] === UPLOAD_ERR_OK) {
 
         $uploadDir = "uploads/dokumentasi/";
 
         if (!is_dir($uploadDir)) {
-            mkdir($uploadDir, 0777, true);
+            mkdir($uploadDir, 0755, true);
         }
 
-        $fileName = time() . "_" . basename($_FILES['media']['name']);
+        $ext = strtolower(pathinfo($_FILES['media']['name'], PATHINFO_EXTENSION));
+        $allowed = ['jpg','jpeg','png','webp','gif'];
+
+        if (!in_array($ext, $allowed)) {
+            die("Format file tidak diizinkan.");
+        }
+
+        $fileName   = "dokumentasi_" . time() . "." . $ext;
         $targetPath = $uploadDir . $fileName;
 
         if (move_uploaded_file($_FILES['media']['tmp_name'], $targetPath)) {
-            // Hapus gambar lama jika ada
+
+            // Hapus file lama jika ada
             if (!empty($data['media_path']) && file_exists($data['media_path'])) {
                 unlink($data['media_path']);
             }
+
             $media_path = $targetPath;
+
         } else {
             die("Gagal mengupload file baru.");
         }
     }
 
-    // Update data ke database
-    $sql = "UPDATE dokumentasi SET judul = $1, media_path = $2 WHERE dokumentasi_id = $3";
-    $resultUpdate = pg_query_params($conn, $sql, [$judul, $media_path, $dokumentasi_id]);
+    // ===== UPDATE DATABASE =====
+    try {
+        $stmt = $db->prepare("
+            UPDATE dokumentasi
+            SET judul = :judul,
+                media_path = :media_path
+            WHERE dokumentasi_id = :id
+        ");
 
-    if (!$resultUpdate) {
-        die("Query Error: " . pg_last_error($conn));
-    } else {
+        $stmt->execute([
+            'judul'      => $judul,
+            'media_path' => $media_path,
+            'id'         => $dokumentasi_id
+        ]);
+
         header("Location: tabelDokumentasi.php");
         exit();
+
+    } catch (PDOException $e) {
+        die("Gagal update data: " . $e->getMessage());
     }
 }
 ?>
 
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Dokumentasi</title>
 
     <link rel="stylesheet" href="assets/css/base.css">
     <link rel="stylesheet" href="assets/css/pages/navbar.css">
-    <link rel="stylesheet" href="assets/css/pages/sidebar.css">
-    <link rel="stylesheet" href="assets/css/pages/createArsip.css">
+    <link rel="stylesheet" href="assets/css/pages/sidebarr.css">
 
     <style>
+        /* ====== LAYOUT (dari kode 2) ====== */
+        main, .content {
+    margin-top: 100px; /* tinggi navbar */
+}
+
+/* POSISI SIDEBAR */
+.sidebar {
+    width: 220px;
+    position: fixed;
+    top: 83.5px;
+    left: 0;
+    height: calc(100vh - 83.5px);
+
+}
+
+.navbar {
+    box-shadow: 3px 5px 10px rgba(0, 0, 0, 0.15) !important;
+    background-color: #fff;
+}
+
+
+.logo-area { 
+    display: flex; 
+    align-items: center; 
+    gap: 10px; 
+    margin-bottom: 40px; 
+}
+
+.lab-title { 
+    font-size: 14px; 
+    line-height: 1.3; 
+}
+.lab-title span { font-weight: 400; }
+
+.menu a { 
+    display: block; 
+    padding: 12px; 
+    color: #fff; 
+    opacity: .85; 
+    margin-bottom: 6px; 
+    border-radius: 6px; 
+}
+
+.menu a.active, .menu a:hover { 
+    background: rgba(255,255,255,.15); 
+    opacity: 1; 
+}
+
+.topbar { 
+    background: #fff; 
+    border-bottom: 1px solid var(--gray-200); 
+    display: flex; 
+    align-items: center; 
+    justify-content: space-between; 
+    padding: 0 24px; 
+}
+
+.top-right { 
+    font-size: 14px; 
+    color: var(--gray-700); 
+}
+
+.content {
+    margin-left: 220px;  /* sama seperti lebar sidebar */
+    padding-top: 100px;
+    transform: scale(0.8);
+    transform-origin: top left;
+    width: calc((100% - 220px) / 0.8); 
+    margin-top: -110px !important; /* opsional kalau memang dibutuhkan */
+}
+
+.hero-section-admin {
+    padding-left: 80px;
+}
+
+
+.form-wrapper {
+    background: #fff;
+    border-radius: 12px;
+    padding: 30px 40px;
+    box-shadow: 0 5px 20px rgba(10, 6, 1, 0.15);
+    border: 1px solid #ddd;
+}
+
+        /* ===== FORM (dari kode 2) ===== */
+        .form-section {
+            padding: 20px 60px;
+        }
+
+        .form-arsip label {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 6px;
+            display: block;
+        }
+
+        .form-arsip input,
+        .form-arsip textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border-radius: 8px;
+            border: 1px solid #999;
+            font-size: 13px;
+            background: #f9f9f9;
+            margin-bottom: 22px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 22px;
+        }
+
+        .form-group.full {
+            grid-column: span 2;
+        }
+
+        .btn-submit {
+            background: var(--secondary);
+            color: #000;
+            border: none;
+            padding: 14px 40px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .btn-cancel {
+            margin-left: 12px;
+            padding: 12px 30px;
+            background: #e0e0e0;
+            border-radius: 8px;
+            text-decoration: none;
+            color: #000;
+        }
+
+        /* Preview */
         #preview {
             width: 150px;
             border-radius: 8px;
-            display: block;
             margin-top: 10px;
         }
     </style>
+
 </head>
+
 <body>
 
-<div id="header-placeholder"></div>
+<div id="header"></div>
+<div id="sidebar"></div>
 
-<div class="layout">
-    <aside class="sidebar">
-        <div id="sidebar-placeholder"></div>
-    </aside>
+<main class="content">
 
-    <main class="content">
-        <div class="hero-section-admin">
-            <h1>Edit Dokumentasi</h1>
-        </div>
+    <section class="hero-section-admin">
+        <h1>Edit Dokumentasi</h1>
+    </section>
 
-        <section class="form-section">
-            <form action="" method="POST" enctype="multipart/form-data" class="form-arsip">
+    <section class="form-section">
+        <form action="" method="POST" enctype="multipart/form-data" class="form-arsip">
 
-                <div class="form-grid">
+            <div class="form-grid">
 
-                    <!-- Judul -->
-                    <div class="form-group">
-                        <label>Judul Dokumentasi</label>
-                        <input type="text" name="judul" value="<?= htmlspecialchars($data['judul']) ?>" required>
-                    </div>
-
-                    <!-- Gambar Lama -->
-                    <div class="form-group">
-                        <label>Gambar Saat Ini</label>
-                        <img id="preview" src="<?= $data['media_path'] ?>" alt="Preview">
-                    </div>
-
-                    <!-- Upload Baru -->
-                    <div class="form-group">
-                        <label>Ganti Gambar (Opsional)</label>
-                        <input type="file" name="media" accept="image/*" onchange="previewImage(event)">
-                    </div>
-
+                <div class="form-group">
+                    <label>Judul Dokumentasi</label>
+                    <input type="text" name="judul" value="<?= htmlspecialchars($data['judul']) ?>" required>
                 </div>
 
-                <button type="submit" name="submit" class="btn-submit">Update</button>
-                <a href="tabelDokumentasi.php" class="btn-cancel">Batal</a>
+                <div class="form-group">
+                    <label>Gambar Saat Ini</label>
+                    <img id="preview" src="<?= $data['media_path'] ?>" alt="Preview">
+                </div>
 
-            </form>
-        </section>
-    </main>
-</div>
+                <div class="form-group">
+                    <label>Ganti Gambar (Opsional)</label>
+                    <input type="file" name="media" accept="image/*" onchange="previewImage(event)">
+                </div>
 
-<script src="assets/js/headerSidebar.js"></script>
+            </div>
+
+            <button type="submit" name="submit" class="btn-submit">Update</button>
+            <a href="tabelDokumentasi.php" class="btn-cancel">Batal</a>
+
+        </form>
+    </section>
+
+</main>
+
+<script src="assets/js/sidebarHeader.js"></script>
 
 <script>
     function previewImage(event) {
@@ -135,12 +293,11 @@ if (isset($_POST['submit'])) {
 
         if (file) {
             const reader = new FileReader();
-            reader.onload = function(e) {
-                preview.src = e.target.result;
-            }
+            reader.onload = e => preview.src = e.target.result;
             reader.readAsDataURL(file);
         }
     }
 </script>
+
 </body>
 </html>

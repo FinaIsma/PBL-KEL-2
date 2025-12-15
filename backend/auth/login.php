@@ -21,13 +21,12 @@ try {
         if ($password === $user['password']) {
 
             $_SESSION['logged_in'] = true;
+            $_SESSION['user_id']  = $user['user_id'];
             $_SESSION['username'] = $user['username'];
 
-            // ⬇️ langsung masuk ke dashboard HTML kamu
             header("Location: ../../dashboard.php");
             exit;
         }
-
     }
 
     header("Location: ../../login.php?error=1");

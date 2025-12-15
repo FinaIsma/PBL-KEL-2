@@ -1,26 +1,46 @@
 <?php
-// Panggil koneksi PostgreSQL
-require_once "koneksi.php";
+session_start();
+if (!isset($_SESSION['logged_in'])) {
+    header("Location: login.php");
+    exit;
+}
 
-// Pastikan ada ID di URL
-if (!isset($_GET['id'])) {
+require_once __DIR__ . "/backend/config.php";
+
+// Pastikan ada ID
+if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
     header("Location: arsip.php");
     exit;
 }
 
-$id = $_GET['id'];
+$id = (int) $_GET['id'];
 
-// Ambil data menggunakan query aman (menghindari SQL injection)
-$query = "SELECT * FROM arsip WHERE arsip_id = $1";
-$result = pg_query_params($conn, $query, [$id]);
-$data = pg_fetch_assoc($result);
+try {
+    // Query aman dengan PDO
+    $stmt = $db->prepare("
+        SELECT * 
+        FROM arsip 
+        WHERE arsip_id = :id
+    ");
+    $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+    $stmt->execute();
 
-// Jika data tidak ditemukan
-if (!$data) {
-    echo "<script>alert('Arsip tidak ditemukan'); window.location='arsip.php';</script>";
-    exit;
+    $data = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    // Jika data tidak ditemukan
+    if (!$data) {
+        echo "<script>
+                alert('Arsip tidak ditemukan');
+                window.location='arsipAdmin.php';
+              </script>";
+        exit;
+    }
+
+} catch (PDOException $e) {
+    die("Query gagal: " . $e->getMessage());
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -32,17 +52,15 @@ if (!$data) {
     <link rel="stylesheet" href="assets/css/pages/navbar.css">
     <link rel="stylesheet" href="assets/css/pages/arsipDetail.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <!-- PDF.JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
 </head>
 
 <body>
 
     <!-- NAVBAR -->
-    <div id="navbar-placeholder"></div>
-    <script src="assets/js/navbar.js"></script>
-
-    <header class="arsip-hero">
-        <h1>Arsip</h1>
-    </header>
+    <div id="header" style="margin-bottom: -120px;"></div>
 
     <div class="page-container">
         <div class="event-card">
@@ -53,16 +71,16 @@ if (!$data) {
                     <i class="fa-solid fa-arrow-left"></i>
                 </a>
 
-                <h1 class="event-title"><?= $data['judul']; ?></h1>
+                <h1 class="event-title"><?= htmlspecialchars($data['judul']); ?></h1>
 
                 <p class="event-description">
-                    <?= $data['deskripsi']; ?>
+                    <?= htmlspecialchars($data['deskripsi']); ?>
                 </p>
 
                 <div class="event-info">
                     <div class="info-row">
                         <span class="info-label">Penulis:</span>
-                        <span class="info-value"><?= $data['penulis']; ?></span>
+                        <span class="info-value"><?= htmlspecialchars($data['penulis']); ?></span>
                     </div>
 
                     <div class="info-row">
@@ -72,20 +90,22 @@ if (!$data) {
 
                     <div class="info-row">
                         <span class="info-label">Kategori:</span>
-                        <span class="info-value"><?= $data['kategori']; ?></span>
+                        <span class="info-value"><?= htmlspecialchars($data['kategori']); ?></span>
                     </div>
                 </div>
             </div>
 
             <!-- BAGIAN KANAN -->
             <div class="event-right">
-                <div class="event-thumbnail-small">
-                    <img src="upload/<?= $data['thumbnail']; ?>" 
-                         alt="Thumbnail"
-                         style="width:100%; border-radius: 8px;">
+                <!-- THUMBNAIL PDF AUTO GENERATE -->
+                <div class="arsip-thumbnail">
+                    <canvas 
+                        class="pdf-thumb"
+                        data-pdf="upload/<?= htmlspecialchars($data['file_path']); ?>">
+                    </canvas>
                 </div>
 
-                <a href="upload/<?= $data['file_path']; ?>" 
+                <a href="upload/<?= htmlspecialchars($data['file_path']); ?>" 
                    class="download-button" 
                    download>
                    Unduh
@@ -95,7 +115,7 @@ if (!$data) {
             <!-- PREVIEW PDF BESAR -->
             <div class="event-image-large">
                 <iframe 
-                    src="upload/<?= $data['file_path']; ?>" 
+                    src="upload/<?= htmlspecialchars($data['file_path']); ?>" 
                     width="100%" 
                     height="750px" 
                     style="border: none; border-radius: 10px;">
@@ -105,5 +125,61 @@ if (!$data) {
         </div>
     </div>
 
+    <script src="assets/js/sidebarHeader.js"></script>
+
+    <!-- SCRIPT GENERATE THUMBNAIL PDF -->
+    <script>
+        pdfjsLib.GlobalWorkerOptions.workerSrc =
+        "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js";
+
+        document.querySelectorAll(".pdf-thumb").forEach(canvas => {
+            const pdfUrl = canvas.dataset.pdf;
+
+            pdfjsLib.getDocument(pdfUrl).promise.then(pdf => {
+                pdf.getPage(1).then(page => {
+
+                    const viewport = page.getViewport({ scale: 0.35 });
+                    const context = canvas.getContext("2d");
+
+                    canvas.width  = viewport.width;
+                    canvas.height = viewport.height;
+
+                    page.render({
+                        canvasContext: context,
+                        viewport: viewport
+                    });
+                });
+            }).catch(err => {
+                console.error("PDF error:", err);
+            });
+        });
+    </script>
+
 </body>
+
+<style>
+.navbar {
+    background-color: #fff !important;
+}
+
+.navbar.scrolled {
+    backdrop-filter: blur(6px) !important;
+    box-shadow: 3px 5px 10px rgba(0, 0, 0, 0.15) !important;
+}
+
+/* THUMBNAIL PDF */
+.arsip-thumbnail {
+    width: 80px;
+    flex-shrink: 0;
+    overflow: hidden;
+}
+
+.pdf-thumb {
+    width: 100%;
+    height: auto;
+    display: block;
+    background: #f1f1f1;
+    border-radius: 4px;
+}
+</style>
 </html>

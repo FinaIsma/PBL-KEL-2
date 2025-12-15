@@ -1,9 +1,31 @@
+.sidebar {
+    width: 220px;
+    position: fixed;
+    top: 83.5px;
+    left: 0;
+    height: calc(100vh - 83.5px);
+
+}
+
+.navbar {
+    box-shadow: 3px 5px 10px rgba(0, 0, 0, 0.15) !important;
+    background-color: #fff;
+}
+
+/* Header berada di atas full width */
+#header-placeholder {
+    grid-column: 1 / 3;
+    width: 100%;
+}
+
 .layout {
     display: flex;
     min-height: 100vh;
 }
 
 .content {
+    margin-left: 220px;
+    margin-top: -40px !important;
     flex: 1;
     margin-left: 220px; 
     padding: 0;
@@ -12,16 +34,17 @@
     backdrop-filter: blur(6px);
 }
 
-.navbar {
+/* .navbar {
     background-color: #fff !important;
     color: black;
-}
+} */
 
 .hero-section-admin {
     background-color: #0E1F43; 
     color: white;
     text-align: center;
     padding: 70px 10px 70px; 
+    margin-bottom: 25px;
 }
 
 .hero-section-admin h1 {
@@ -29,12 +52,11 @@
     font-size: 42px;
     font-weight: 800;
     color: #fff;
-    margin: 0;
+    margin-top: 15px;
 }
 
 .section-title {
     text-align: center;
-    font-size: 36px;
     font-weight: 700;
     color: #0a1628;
     margin-bottom: 20px;
@@ -48,14 +70,14 @@
     display: block;
     width: 80%;
     max-width: 1070px;
-    height: 3px;
+    height: 1px;
     background: linear-gradient(90deg, #ffd700 0%, #ffb800 100%);
     margin: 15px auto 0;
 }
 
 .agenda-section-admin {
     position: relative;
-    padding: 40px 0 70px;
+    padding: 40px 0 0px;
     background: #ffffff;
     overflow: visible;
 }
@@ -67,23 +89,23 @@
     background-image: url('../../img/aura.png');
     background-size: contain;
     background-repeat: no-repeat;
-    opacity: 0.55;
+    opacity: 0.7;
     z-index: 0;
     pointer-events: none;
 }
 
 .agenda-section-admin::before {
-    top: -50px;
+    top: -80px !important;
     left: -250px;
     width: 500px;
     height: 500px;
 }
 
 .agenda-section-admin::after {
-    bottom: -200px;
-    right: -200px;
-    width: 600px;
-    height: 600px;
+    bottom: -20px;
+    right: -150px;
+    width: 400px;
+    height: 400px;
 }
 
 .agenda-wrapper {
@@ -101,8 +123,8 @@
     background: #0E1F43;
     color: white;
     border: none;
-    width: 45px;
-    height: 45px;
+    width: 30px;
+    height: 30px;
     border-radius: 50%;
     cursor: pointer;
     display: flex;
@@ -110,7 +132,7 @@
     justify-content: center;
     transition: all 0.3s ease;
     flex-shrink: 0;
-    font-size: 18px;
+    font-size: 14px;
 }
 
 .agenda-nav:hover {
@@ -120,7 +142,7 @@
 
 .agenda-container {
     display: flex;
-    gap: 30px;
+    gap: 10px;
     overflow-x: auto;
     scroll-behavior: smooth;
     flex: 1;
@@ -132,17 +154,17 @@
 }
 
 .agenda-card {
-    flex: 0 0 300px;
+    flex: 0 0 250px;
     background: #0E1F43;
     color: white !important;
-    padding: 30px;
-    border-radius: 15px;
+    padding: 20px;
+    border-radius: 12px;
     box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-    min-width: 300px;
+    min-width: 150px;
 }
 
 .agenda-card h3 {
-    font-size: 22px;
+    font-size: 16px;
     font-weight: 700;
     margin-bottom: 15px;
     color: white !important;
@@ -150,7 +172,7 @@
 }
 
 .agenda-card p {
-    font-size: 14px;
+    font-size: 12px;
     line-height: 1.6;
     margin-bottom: 15px;
     opacity: 0.9;
@@ -163,7 +185,7 @@
 }
 
 .agenda-card ul li {
-    font-size: 14px;
+    font-size: 12px;
     line-height: 1.8;
     padding-left: 20px;
     position: relative;
@@ -209,11 +231,11 @@
 
 .dokumentasi-container {
     max-width: 1200px;
-    margin: 50px auto 0;
+    margin: 50px 0 0;
     display: grid;
-    grid-template-columns: repeat(2, 1fr); 
+    grid-template-columns: repeat(3, 1fr); 
     grid-template-rows: repeat(2, auto);   
-    gap: 30px;
+    gap: 10px;
     padding: 0 50px;
     position: relative;
     z-index: 1;
@@ -230,7 +252,8 @@
     align-items: center;
     text-align: center; 
     flex-direction: column;
-    height: 80%;
+    height: auto;
+    margin-bottom: 0 !important;
 }
 
 .dokumentasi-card:hover {
@@ -239,8 +262,8 @@
 }
 
 .dokumentasi-image {
-    width: 65%;
-    height: 400px;
+    width: 88%;
+    height: 200px;
     background-color: #c4c4c4;
     background-size: cover;
     background-position: center;
@@ -249,7 +272,7 @@
 }
 
 .dokumentasi-info {
-    padding: 20px;
+    padding: 8px;
     background: #0E1F43;
     color: white;
     flex-grow: 1;
@@ -258,23 +281,24 @@
 }
 
 .dokumentasi-info h3 {
-    font-size: 18px;
+    font-size: 15px;
     font-weight: 700;
-    margin-bottom: 8px;
+    margin-bottom: 0px;
+    margin-top: -10px !important;
     color: white;
     font-family: var(--font-title);
 }
 
 .dokumentasi-info p {
-    font-size: 14px;
-    margin: 0;
+    font-size: 13px;
+    margin-bottom: 10px;
     opacity: 0.9;
 }
 
 .dokumentasi-button-wrapper {
     display: flex;
     justify-content: flex-end; 
-    margin-top: 40px;
+    margin-top: 0px !important;
     margin-right: 70px;
 }
 
@@ -283,7 +307,7 @@
     justify-content: center;
     align-items: center;
     gap: 15px;
-    margin-top: 50px;
+    margin-top: 40px !important;
 }
 
 .pagination-btn {
@@ -324,4 +348,23 @@
 
 body {
     padding-top: 0 !important ;
+}
+
+.pagination-btn {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    border: none;
+    background: #0E1F43;
+    color: white;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+
+    /* FIX CENTER */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    line-height: 1; /* optional tapi membantu */
 }
