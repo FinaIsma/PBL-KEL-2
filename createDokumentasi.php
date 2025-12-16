@@ -1,5 +1,11 @@
 <?php
+session_start();
 require_once "backend/config.php";
+
+if (!isset($_SESSION['logged_in'])) {
+    header("Location: login.php");
+    exit;
+}
 
 $success = "";
 $error   = "";
@@ -9,9 +15,8 @@ $mediaDB   = null;
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     $judul   = trim($_POST['judul']);
-    $user_id = trim($_POST['user_id']);
+    $user_id = $_SESSION['user_id'];
 
-    // ---------- PROSES UPLOAD ----------
     if (!empty($_FILES['media_path']['name'])) {
 
         if ($_FILES['media_path']['error'] === UPLOAD_ERR_OK) {
@@ -43,7 +48,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         }
     }
 
-    // ---------- INSERT DATABASE ----------
     if ($error === "") {
         try {
             $stmt = $db->prepare("
@@ -223,8 +227,6 @@ main, .content {
 
             <label>File / Gambar</label>
             <input type="file" name="media_path" accept="image/png, image/jpeg" required>
-
-            <input type="hidden" name="user_id" value="1">
 
             <button class="btn-submit" type="submit">Simpan</button>
             <a href="tabelDokumentasi.php" class="btn-cancel">Batal</a>

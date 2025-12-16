@@ -1,5 +1,11 @@
 <?php
+session_start();
 include("db.php");
+
+if (!isset($_SESSION['logged_in'])) {
+    header("Location: login.php");
+    exit;
+}
 
 $id = intval($_GET['id'] ?? 0);
 
@@ -21,9 +27,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $nama    = trim($_POST['nama']);
     $jabatan = trim($_POST['jabatan']);
     $kontak  = trim($_POST['kontak']);
-    $editor  = 1;
+    $editor  = $_SESSION['user_id'];
 
-    /* ================= FOTO UPDATE ================= */
     if (!empty($_FILES['foto']['name'])) {
 
         $ext = strtolower(pathinfo($_FILES['foto']['name'], PATHINFO_EXTENSION));
@@ -40,7 +45,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
             if (move_uploaded_file($_FILES['foto']['tmp_name'], $targetPath)) {
 
-                // Hapus foto lama jika ada
                 if (!empty($row['foto']) && file_exists(__DIR__ . "/" . $row['foto'])) {
                     unlink(__DIR__ . "/" . $row['foto']);
                 }
@@ -53,7 +57,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         }
     }
 
-    /* ================= UPDATE DATABASE ================= */
     if ($error === "") {
 
         $sql = "UPDATE pengelola_lab 
@@ -73,6 +76,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     }
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="id">
 <head>

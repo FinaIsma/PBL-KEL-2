@@ -1,13 +1,19 @@
 <?php
+session_start();
 require_once "backend/config.php";
+
+if (!isset($_SESSION['logged_in'])) {
+    header("Location: login.php");
+    exit;
+}
 
 $error = "";
 
-// Pastikan ada ID
 if (!isset($_GET['id'])) {
     die("ID Bidang Fokus tidak ditemukan.");
 }
 $id = $_GET['id'];
+
 
 // ================= AMBIL DATA LAMA =================
 try {
@@ -30,8 +36,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     $judul     = trim($_POST['judul']);
     $deskripsi = trim($_POST['deskripsi']);
-    $user_id   = $data['user_id']; // tetap pakai user lama
-    $gambar    = $data['gambar'];  // default gambar lama
+    $user_id   = $_SESSION['user_id'];
+    $gambar    = $data['gambar'];
 
     // ===== UPLOAD GAMBAR =====
     if (!empty($_FILES['gambar']['name'])) {
@@ -52,7 +58,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     }
 
     // ===== UPDATE DATABASE =====
-    if (empty($error)) {
+        if (empty($error)) {
         try {
             $update = $db->prepare("
                 UPDATE bidang_fokus

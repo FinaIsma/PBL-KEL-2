@@ -1,5 +1,12 @@
+```php
 <?php
+session_start();
 require_once "backend/config.php";
+
+if (!isset($_SESSION['logged_in'])) {
+    header("Location: login.php");
+    exit;
+}
 
 $error = "";
 $success = "";
@@ -9,7 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $judul     = trim($_POST['judul']);
     $tanggal   = $_POST['tanggal'];
     $deskripsi = trim($_POST['deskripsi']);
-    $editor    = 1;
+    $editor    = $_SESSION['user_id'];
 
     if ($judul === "" || $tanggal === "") {
         $error = "Judul dan tanggal wajib diisi.";

@@ -1,34 +1,43 @@
-<?php 
+<?php
+session_start();
 include("db.php");
 
-$id = intval($_GET['id'] ?? 0);
-if (!$id) die("ID layanan tidak ditemukan");
+if (!isset($_SESSION['logged_in'])) {
+    header("Location: login.php");
+    exit;
+}
 
-// Ambil data lama
+$id = intval($_GET['id'] ?? 0);
+if (!$id) die("ID profil tidak ditemukan");
+
 $result = pg_query($conn, "SELECT * FROM profil WHERE profil_id = $id");
-if (!$editData = pg_fetch_assoc($result)) die("Data layanan tidak ditemukan");
+if (!$editData = pg_fetch_assoc($result)) die("Data profil tidak ditemukan");
 
 $error = "";
 $success = "";
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
-    $kategori   = trim($_POST['kategori']);
-    $judul      = trim($_POST['judul']);
-    $isi        = trim($_POST['isi']);
-    $editor     = 1; // session nantinya
+    $kategori = trim($_POST['kategori']);
+    $judul    = trim($_POST['judul']);
+    $isi      = trim($_POST['isi']);
+    $editor   = $_SESSION['user_id'];
 
     $sql = "UPDATE profil 
-            SET kategori='$kategori', judul='$judul', isi='$isi', user_id=$editor
+            SET kategori='$kategori',
+                judul='$judul',
+                isi='$isi',
+                user_id=$editor
             WHERE profil_id=$id";
 
     if (pg_query($conn, $sql)) {
         header("Location: tabelProfil.php");
         exit;
     } else {
-        $error = "Gagal memperbarui data layanan!";
+        $error = "Gagal memperbarui data profil!";
     }
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="id">
 <head>

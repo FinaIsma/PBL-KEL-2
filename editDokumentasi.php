@@ -1,33 +1,32 @@
 <?php
+session_start();
 require_once "backend/config.php";
 
-// --- Ambil ID ---
+if (!isset($_SESSION['logged_in'])) {
+    header("Location: login.php");
+    exit;
+}
+
 if (!isset($_GET['id'])) {
     die("Error: ID dokumentasi tidak ditemukan.");
 }
 
 $dokumentasi_id = $_GET['id'];
+$user_id = $_SESSION['user_id'];
 
-// ===== AMBIL DATA LAMA =====
-try {
-    $stmt = $db->prepare("SELECT * FROM dokumentasi WHERE dokumentasi_id = :id");
-    $stmt->execute(['id' => $dokumentasi_id]);
-    $data = $stmt->fetch(PDO::FETCH_ASSOC);
+$stmt = $db->prepare("SELECT * FROM dokumentasi WHERE dokumentasi_id = :id");
+$stmt->execute(['id' => $dokumentasi_id]);
+$data = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    if (!$data) {
-        die("Error: Data tidak ditemukan.");
-    }
-} catch (PDOException $e) {
-    die("Error DB: " . $e->getMessage());
+if (!$data) {
+    die("Error: Data tidak ditemukan.");
 }
 
-// ===== UPDATE DATA =====
 if (isset($_POST['submit'])) {
 
     $judul = trim($_POST['judul']);
-    $media_path = $data['media_path']; // default pakai lama
+    $media_path = $data['media_path'];
 
-    // ===== UPLOAD BARU =====
     if (isset($_FILES['media']) && $_FILES['media']['error'] === UPLOAD_ERR_OK) {
 
         $uploadDir = "uploads/dokumentasi/";
@@ -48,39 +47,33 @@ if (isset($_POST['submit'])) {
 
         if (move_uploaded_file($_FILES['media']['tmp_name'], $targetPath)) {
 
-            // Hapus file lama jika ada
             if (!empty($data['media_path']) && file_exists($data['media_path'])) {
                 unlink($data['media_path']);
             }
 
             $media_path = $targetPath;
-
         } else {
-            die("Gagal mengupload file baru.");
+            die("Gagal upload file.");
         }
     }
 
-    // ===== UPDATE DATABASE =====
-    try {
-        $stmt = $db->prepare("
-            UPDATE dokumentasi
-            SET judul = :judul,
-                media_path = :media_path
-            WHERE dokumentasi_id = :id
-        ");
+    $stmt = $db->prepare("
+        UPDATE dokumentasi
+        SET judul = :judul,
+            media_path = :media_path,
+            user_id = :user_id
+        WHERE dokumentasi_id = :id
+    ");
 
-        $stmt->execute([
-            'judul'      => $judul,
-            'media_path' => $media_path,
-            'id'         => $dokumentasi_id
-        ]);
+    $stmt->execute([
+        'judul'      => $judul,
+        'media_path' => $media_path,
+        'user_id'    => $user_id,
+        'id'         => $dokumentasi_id
+    ]);
 
-        header("Location: tabelDokumentasi.php");
-        exit();
-
-    } catch (PDOException $e) {
-        die("Gagal update data: " . $e->getMessage());
-    }
+    header("Location: tabelDokumentasi.php");
+    exit();
 }
 ?>
 

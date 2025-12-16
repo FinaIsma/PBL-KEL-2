@@ -1,8 +1,13 @@
 <?php
+session_start();
 include("db.php");
 
-$id = intval($_GET['id'] ?? 0);
+if (!isset($_SESSION['logged_in'])) {
+    header("Location: login.php");
+    exit;
+}
 
+$id = intval($_GET['id'] ?? 0);
 if (!$id) {
     die("ID sarpras tidak ditemukan");
 }
@@ -20,9 +25,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     $judul     = trim($_POST['judul']);
     $deskripsi = trim($_POST['deskripsi']);
-    $editor    = 1;
+    $editor    = $_SESSION['user_id'];
 
-    // === UPLOAD MEDIA BARU ===
     if (!empty($_FILES['media']['name'])) {
 
         $ext = strtolower(pathinfo($_FILES['media']['name'], PATHINFO_EXTENSION));
@@ -33,7 +37,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         } else {
 
             $uploadDir = __DIR__ . '/assets/img/media/';
-
             if (!is_dir($uploadDir)) {
                 mkdir($uploadDir, 0755, true);
             }
@@ -55,11 +58,13 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         }
     }
 
-    // === UPDATE DATA ===
     if ($error === "") {
 
         $sql = "UPDATE sarana_prasarana 
-                SET judul='$judul', deskripsi='$deskripsi', media_path='$mediaName', user_id=$editor
+                SET judul='$judul',
+                    deskripsi='$deskripsi',
+                    media_path='$mediaName',
+                    user_id=$editor
                 WHERE sarpras_id=$id";
 
         if (pg_query($conn, $sql)) {
@@ -71,6 +76,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     }
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="id">
 <head>

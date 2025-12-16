@@ -2,14 +2,17 @@
 session_start();
 require_once "backend/config.php";
 
-/* ===== CEK ID ===== */
+if (!isset($_SESSION['logged_in'])) {
+    header("Location: login.php");
+    exit;
+}
+
 if (!isset($_GET['id'])) {
     die("Error: ID arsip tidak ditemukan.");
 }
 
 $arsip_id = (int) $_GET['id'];
 
-/* ===== AMBIL DATA LAMA ===== */
 $stmt = $db->prepare("SELECT * FROM arsip WHERE arsip_id = :id");
 $stmt->execute(['id' => $arsip_id]);
 $data = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -18,7 +21,6 @@ if (!$data) {
     die("Error: Data tidak ditemukan.");
 }
 
-/* ===== PROSES UPDATE ===== */
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     $judul     = trim($_POST['judul']);
@@ -26,6 +28,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $penulis   = trim($_POST['penulis']);
     $tanggal   = $_POST['tanggal'];
     $deskripsi = trim($_POST['deskripsi']);
+    $user_id   = $_SESSION['user_id'];
 
     try {
         $sql = "
@@ -34,7 +37,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 judul     = :judul,
                 deskripsi = :deskripsi,
                 penulis   = :penulis,
-                tanggal   = :tanggal
+                tanggal   = :tanggal,
+                user_id   = :user_id
         ";
 
         $params = [
@@ -42,10 +46,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             'judul'     => $judul,
             'deskripsi' => $deskripsi,
             'penulis'   => $penulis,
-            'tanggal'   => $tanggal
+            'tanggal'   => $tanggal,
+            'user_id'   => $user_id
         ];
 
-        /* ===== UPDATE FILE PDF (OPSIONAL) ===== */
         if (!empty($_FILES['file']['name'])) {
 
             $ext = strtolower(pathinfo($_FILES['file']['name'], PATHINFO_EXTENSION));
@@ -61,7 +65,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $newFileName = "arsip_" . time() . ".pdf";
             move_uploaded_file($_FILES['file']['tmp_name'], $uploadDir . $newFileName);
 
-            // (opsional) hapus file lama
             if (!empty($data['file_path']) && file_exists($uploadDir . $data['file_path'])) {
                 unlink($uploadDir . $data['file_path']);
             }
@@ -80,7 +83,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         exit;
 
     } catch (PDOException $e) {
-        die("Gagal update data: " . $e->getMessage());
+        die("Gagal update data");
     }
 }
 ?>

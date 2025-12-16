@@ -1,23 +1,26 @@
-<?php 
+<?php
+session_start();
 include("db.php");
+
+if (!isset($_SESSION['logged_in'])) {
+    header("Location: login.php");
+    exit;
+}
 
 $error = "";
 
-// --- Ambil ID ---
 $id = intval($_GET['id'] ?? 0);
 if (!$id) die("ID layanan tidak ditemukan");
 
-// --- Ambil data lama ---
 $result = pg_query($conn, "SELECT * FROM layanan WHERE layanan_id = $id");
 if (!$editData = pg_fetch_assoc($result)) die("Data layanan tidak ditemukan");
 
-// --- Proses Form ---
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     $jenis     = trim($_POST['jenis']);
     $nama      = trim($_POST['nama']);
     $deskripsi = trim($_POST['deskripsi']);
-    $editor    = 1;  // contoh
+    $editor    = $_SESSION['user_id'];
 
     $sql = "UPDATE layanan 
             SET jenis='$jenis', nama='$nama', deskripsi='$deskripsi', user_id=$editor
@@ -31,6 +34,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     }
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="id">
 <head>

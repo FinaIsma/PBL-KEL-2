@@ -1,7 +1,12 @@
 <?php
+session_start();
 require_once __DIR__ . "/backend/config.php";
 
-// --- Ambil data lama ---
+if (!isset($_SESSION['logged_in'])) {
+    header("Location: login.php");
+    exit;
+}
+
 if (!isset($_GET['id'])) {
     die("Error: ID agenda tidak ditemukan.");
 }
@@ -21,12 +26,14 @@ if (isset($_POST['submit'])) {
     $hari_tgl  = $_POST['hari_tgl'];
     $judul     = $_POST['judul'];
     $deskripsi = $_POST['deskripsi'];
+    $editor    = $_SESSION['user_id'];
 
     $update = $db->prepare("
         UPDATE agenda
         SET hari_tgl = :hari_tgl,
             judul = :judul,
-            deskripsi = :deskripsi
+            deskripsi = :deskripsi,
+            user_id = :editor
         WHERE agenda_id = :id
     ");
 
@@ -34,6 +41,7 @@ if (isset($_POST['submit'])) {
         'hari_tgl'  => $hari_tgl,
         'judul'     => $judul,
         'deskripsi' => $deskripsi,
+        'editor'    => $editor,
         'id'        => $agenda_id
     ]);
 

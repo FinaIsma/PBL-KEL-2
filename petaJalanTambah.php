@@ -1,5 +1,11 @@
 <?php
+session_start();
 require_once "backend/config.php";
+
+if (!isset($_SESSION['logged_in'])) {
+    header("Location: login.php");
+    exit;
+}
 
 $success = "";
 $error = "";
@@ -10,9 +16,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $judul     = trim($_POST['judul']);
     $tahun     = trim($_POST['tahun']);
     $deskripsi = trim($_POST['deskripsi']);
-    $user_id   = $_POST['user_id'];
+    $user_id   = $_SESSION['user_id'];
 
-    // ---------- PROSES UPLOAD ----------
     if (!empty($_FILES['file']['name'])) {
 
         if ($_FILES['file']['error'] === UPLOAD_ERR_OK) {
@@ -36,7 +41,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $error = "Gagal mengupload file!";
                 }
 
-                // path untuk database
                 $file_path = "uploads/" . $fileName;
             }
         } else {
@@ -44,14 +48,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 
-    // ---------- INSERT KE DATABASE ----------
     if ($error === "") {
 
         $sql = "INSERT INTO peta_jalan (judul, tahun, deskripsi, file_path, user_id)
-        VALUES (:judul, :tahun, :deskripsi, :file_path, :user_id)";
-        
+                VALUES (:judul, :tahun, :deskripsi, :file_path, :user_id)";
+
         $stmt = $db->prepare($sql);
-        
         $result = $stmt->execute([
             ':judul'     => $judul,
             ':tahun'     => $tahun,
@@ -69,6 +71,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="id">
 <head>

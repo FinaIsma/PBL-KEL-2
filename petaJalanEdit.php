@@ -1,5 +1,11 @@
 <?php
-require_once "backend/config.php"; // Koneksi PDO
+session_start();
+require_once "backend/config.php";
+
+if (!isset($_SESSION['logged_in'])) {
+    header("Location: login.php");
+    exit;
+}
 
 if (!isset($_GET['peta_id'])) {
     die("ID Peta Jalan tidak ditemukan.");
@@ -7,7 +13,6 @@ if (!isset($_GET['peta_id'])) {
 
 $peta_id = $_GET['peta_id'];
 
-// Ambil data lama
 $stmt = $db->prepare("SELECT * FROM peta_jalan WHERE peta_id = ?");
 $stmt->execute([$peta_id]);
 $peta = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -19,17 +24,15 @@ if (!$peta) {
 $error = "";
 $success = "";
 
-// PROSES UPDATE
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     $judul     = trim($_POST['judul']);
     $tahun     = trim($_POST['tahun']);
     $deskripsi = trim($_POST['deskripsi']);
-    $user_id   = $peta['user_id'];
+    $user_id   = $_SESSION['user_id'];
 
-    $fileDB = $peta['file_path']; // default pakai file lama
+    $fileDB = $peta['file_path'];
 
-    // Jika ada upload baru
     if (!empty($_FILES['file']['name'])) {
 
         if ($_FILES['file']['error'] === UPLOAD_ERR_OK) {
@@ -58,14 +61,20 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         }
     }
 
-    // UPDATE DATABASE
     if ($error === "") {
         $sql = "UPDATE peta_jalan 
                 SET judul=?, tahun=?, deskripsi=?, file_path=?, user_id=? 
                 WHERE peta_id=?";
 
         $stmtUp = $db->prepare($sql);
-        $ok = $stmtUp->execute([$judul, $tahun, $deskripsi, $fileDB, $user_id, $peta_id]);
+        $ok = $stmtUp->execute([
+            $judul,
+            $tahun,
+            $deskripsi,
+            $fileDB,
+            $user_id,
+            $peta_id
+        ]);
 
         if ($ok) {
             header("Location: petaJalanTabel.php");
@@ -76,6 +85,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     }
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
