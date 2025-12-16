@@ -56,7 +56,7 @@ try {
 
         <!-- BAGIAN KIRI -->
         <div class="event-left">
-            <a href="arsip.php" class="btn-back">
+            <a href="javascript:void(0)" class="btn-back" onclick="history.back()">
                 <i class="fa-solid fa-arrow-left"></i>
             </a>
 

@@ -46,7 +46,7 @@ if (isset($_GET['delete_id'])) {
     <main class="content">
 
         <div class="top-bar-page">
-            <a href="layanan-admin.php" class="btn-back">
+            <a href="javascript:void(0)" class="btn-back" onclick="history.back()">
                 <i class="fa-solid fa-arrow-left"></i>
             </a>
 

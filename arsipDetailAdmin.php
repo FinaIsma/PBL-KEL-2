@@ -67,8 +67,8 @@ try {
 
             <!-- BAGIAN KIRI -->
             <div class="event-left">
-                <a href="arsipAdmin.php" class="btn-back">
-                    <i class="fa-solid fa-arrow-left"></i>
+                <a href="javascript:void(0)" class="btn-back" onclick="history.back()">
+                <i class="fa-solid fa-arrow-left"></i>
                 </a>
 
                 <h1 class="event-title"><?= htmlspecialchars($data['judul']); ?></h1>

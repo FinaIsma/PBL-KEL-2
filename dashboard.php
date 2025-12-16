@@ -6,7 +6,6 @@ if (!isset($_SESSION['logged_in'])) {
     exit;
 }
 
-// AMBIL DATA PENGELOLA LAB
 try {
     $stmt = $db->prepare("SELECT * FROM pengelola_lab ORDER BY pengelola_id ASC");
     $stmt->execute();
@@ -18,22 +17,11 @@ try {
 
 // HITUNG JUMLAH DATA
 try {
-    // Pengelola Lab
     $count_pengelola = $db->query("SELECT COUNT(*) FROM pengelola_lab")->fetchColumn();
-
-    // Bidang Fokus
     $count_fokus = $db->query("SELECT COUNT(*) FROM bidang_fokus")->fetchColumn();
-
-    // Layanan
     $count_layanan = $db->query("SELECT COUNT(*) FROM layanan")->fetchColumn();
-
-    // Sarana Prasarana
     $count_sarpras = $db->query("SELECT COUNT(*) FROM sarana_prasarana")->fetchColumn();
-
-    // Agenda
     $count_agenda = $db->query("SELECT COUNT(*) FROM agenda")->fetchColumn();
-
-    // Arsip
     $count_arsip = $db->query("SELECT COUNT(*) FROM arsip")->fetchColumn();
 
 } catch (PDOException $e) {
@@ -60,10 +48,8 @@ try {
 
 <body>
 
-    <!-- HEADER -->
     <div id="header"></div>
 
-    <!-- IMPORT SIDEBAR -->
     <div id="sidebar"></div>
                 <section class="aura-bg">
                 <img src="assets/img/aura.png" alt="" class="aura aura-1">
@@ -130,7 +116,7 @@ try {
                         <h3>Arsip</h3>
                         <p>Jumlah: <?= $count_arsip ?></p>
                     </div>
-                    <a href="arsipAdmin.php" class="card-btn">→</a>
+                    <a href="arsipTabel.php" class="card-btn">→</a>
                 </div>
             </section>
 

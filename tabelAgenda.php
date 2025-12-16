@@ -72,8 +72,8 @@ $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 <main class="content">
 
     <div class="top-bar-page">
-        <a href="galeriAdmin.php" class="btn-back">
-            <i class="fa-solid fa-arrow-left"></i>
+        <a href="javascript:void(0)" class="btn-back" onclick="history.back()">
+                <i class="fa-solid fa-arrow-left"></i>
         </a>
 
         <div class="title-container">
