@@ -1,4 +1,4 @@
-fetch("header.html")
+fetch("header.php")
     .then(res => res.text())
     .then(html => {
         document.getElementById("header-placeholder").innerHTML = html;
@@ -8,7 +8,7 @@ fetch("header.html")
     });
 
 // Import Sidebar
-fetch("sidebar.html")
+fetch("sidebar.php")
     .then(res => res.text())
     .then(data => {
         document.getElementById("sidebar").innerHTML = data;

@@ -16,7 +16,7 @@ fetch("header.php")
     });
 
 // Import Sidebar
-fetch("sidebar.html")
+fetch("sidebar.php")
     .then(res => res.text())
     .then(data => {
         document.getElementById("sidebar").innerHTML = data;
