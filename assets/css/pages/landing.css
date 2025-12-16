@@ -153,3 +153,78 @@ section, .container, .wrapper {
     }
 }
 
+@media (max-width: 1024px) {
+    .hero .container {
+        margin-left: 30px;
+        margin-right: 30px;
+    }
+
+    .hero-image {
+        width: 260px !important;
+    }
+
+    .hero .container .hero-text h1 {
+        font-size: 34px;
+    }
+
+    .hero .container .hero-text h2 {
+        font-size: 26px;
+    }
+}
+
+@media (max-width: 768px) {
+    section {
+        margin-bottom: 120px !important;
+    }
+
+    .hero .container {
+        flex-direction: column;
+        text-align: center;
+        gap: 30px;
+        margin-left: 20px;
+        margin-right: 20px;
+    }
+
+    .hero p {
+        max-width: 100%;
+    }
+
+    .hero-image {
+        width: 240px !important;
+        margin-right: 0;
+    }
+
+    .hero-btn {
+        margin-top: 20px !important;
+    }
+}
+
+@media (max-width: 480px) {
+    section h3 {
+        font-size: 24px !important;
+    }
+
+    .hero .container .hero-text h1 {
+        font-size: 28px;
+    }
+
+    .hero .container .hero-text h2 {
+        font-size: 22px;
+    }
+
+    .hero-image {
+        width: 200px !important;
+    }
+
+    .hero::before {
+        width: 300px;
+        height: 300px;
+        left: -180px;
+    }
+
+    .hero::after {
+        width: 360px;
+        height: 360px;
+        right: -220px;
+    }
+}

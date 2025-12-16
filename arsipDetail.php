@@ -1,7 +1,5 @@
 <?php
 require_once __DIR__ . "/backend/config.php";
-
-// Pastikan ada ID
 if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
     header("Location: arsip.php");
     exit;
@@ -10,7 +8,6 @@ if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
 $id = (int) $_GET['id'];
 
 try {
-    // Query aman dengan PDO
     $stmt = $db->prepare("
         SELECT * 
         FROM arsip 
@@ -21,7 +18,6 @@ try {
 
     $data = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    // Jika data tidak ditemukan
     if (!$data) {
         echo "<script>
                 alert('Arsip tidak ditemukan');
@@ -46,8 +42,6 @@ try {
     <link rel="stylesheet" href="assets/css/pages/navbar.css">
     <link rel="stylesheet" href="assets/css/pages/arsipDetail.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-
-    <!-- PDF.JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
 </head>
 

@@ -28,7 +28,7 @@ if (!empty($where)) {
     $whereSQL = "WHERE " . implode(" AND ", $where);
 }
 
-// ===== QUERY TOTAL DATA =====
+// QUERY TOTAL DATA
 $countQuery = "SELECT COUNT(*) FROM arsip $whereSQL";
 $stmtCount  = $db->prepare($countQuery);
 $stmtCount->execute($params);
@@ -36,7 +36,7 @@ $stmtCount->execute($params);
 $totalData  = $stmtCount->fetchColumn();
 $totalPages = ceil($totalData / $limit);
 
-// ===== QUERY DATA =====
+// QUERY DATA
 $query = "
     SELECT * FROM arsip
     $whereSQL
@@ -182,7 +182,6 @@ $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 <div id="footer-placeholder"></div>
 <script src="assets/js/footer.js"></script>
 
-<!-- SCRIPT GENERATE PDF THUMBNAIL -->
 <script>
 pdfjsLib.GlobalWorkerOptions.workerSrc =
 "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js";

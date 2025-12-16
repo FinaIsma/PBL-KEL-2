@@ -263,3 +263,99 @@
 body {
     padding-top: 80px !important ;
 }
+
+@media (max-width: 1024px) {
+    .hero-section h1 {
+        font-size: 40px;
+    }
+
+    .timeline-container {
+        max-width: 900px;
+    }
+
+    .timeline-card {
+        width: 340px;
+        min-height: 280px;
+    }
+}
+
+@media (max-width: 768px) {
+    body {
+        padding-top: 70px !important;
+    }
+
+    .hero-section {
+        padding: 40px 16px 50px;
+        margin-bottom: 60px !important;
+    }
+
+    .hero-section h1 {
+        font-size: 32px;
+    }
+
+    .timeline-container::before,
+    .timeline-circle-top,
+    .timeline-end-circle,
+    .timeline-item::before {
+        display: none;
+    }
+
+    .timeline-item {
+        flex-direction: column;
+        margin-bottom: 40px;
+        padding: 0 !important;
+        align-items: center;
+    }
+
+    .timeline-item.left,
+    .timeline-item.right {
+        justify-content: center;
+        padding: 0;
+    }
+
+    .timeline-card {
+        width: 100%;
+        max-width: 500px;
+        min-height: auto;
+        padding-bottom: 70px;
+    }
+
+    .timeline-icon {
+        top: -22px;
+        width: 48px;
+        height: 48px;
+    }
+
+    .timeline-icon i {
+        font-size: 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero-section h1 {
+        font-size: 26px;
+    }
+
+    .timeline-section {
+        padding: 40px 12px 60px;
+    }
+
+    .timeline-card {
+        padding: 18px;
+    }
+
+    .timeline-card h3 {
+        font-size: 18px;
+    }
+
+    .timeline-card p,
+    .timeline-card ul li {
+        font-size: 14px;
+        line-height: 1.7;
+    }
+
+    .file-btn {
+        bottom: 16px;
+        font-size: 14px;
+    }
+}

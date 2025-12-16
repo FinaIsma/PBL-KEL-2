@@ -2,7 +2,6 @@
 session_start();
 require_once "db.php";
 
-/* ===== CEK LOGIN (ADMIN) ===== */
 if (!isset($_SESSION['logged_in']) || !isset($_SESSION['user_id'])) {
     header("Location: login.php");
     exit;
@@ -17,8 +16,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $nama    = trim($_POST['nama']);
     $jabatan = trim($_POST['jabatan']);
     $kontak  = trim($_POST['kontak']);
-
-    // user yang login
     $editor = $_SESSION['user_id'];
 
     /* ===== PROSES UPLOAD FOTO ===== */

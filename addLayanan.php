@@ -50,10 +50,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     <link rel="stylesheet" href="assets/css/pages/sidebarr.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
-
 <style>
-
-/* ====== LAYOUT (SAMA DENGAN TAMBAH PENGELOLA) ====== */
 main, .content {
     margin-top: 100px;
 }
@@ -84,8 +81,6 @@ main, .content {
     padding-left: 80px;
 }
 
-
-/* ====== FORM WRAPPER ====== */
 .form-section {
     padding: 20px 60px;
 }
@@ -98,8 +93,6 @@ main, .content {
     border: 1px solid #ddd;
 }
 
-
-/* ====== FORM ELEMENTS ====== */
 .form-add label {
     font-family: var(--font-body);
     font-size: 16px;
@@ -134,7 +127,6 @@ main, .content {
 .form-add textarea {
     resize: vertical;
 }
-
 
 /* ====== BUTTONS ====== */
 .btn-submit {

@@ -33,9 +33,9 @@
 
 .arsip-hero {
     width: 100%;
-    background: #0E1F43;      /* navy sesuai screenshot */
+    background: #0E1F43;     
     text-align: center;
-    padding-top: 150px !important;     /* tinggi sama seperti gambar */
+    padding-top: 150px !important;     
     display: flex;
     justify-content: center;
     align-items: center;
@@ -229,15 +229,15 @@
     background: var(--primary);
     color: white;
     font-family: var(--font-body);
-    font-size: 15px;          /* supaya angka pas */
+    font-size: 15px;         
     font-weight: 600;
     cursor: pointer;
     transition: all 0.25s ease;
 }
 
 .page-btn.active {
-    background: var(--secondary);  /* kuning */
-    color: var(--primary);         /* navy */
+    background: var(--secondary);  
+    color: var(--primary);         
     font-weight: 700;
 }
 
@@ -341,8 +341,111 @@
 }
 
 .arsip-container {
-    max-width: 1000px;      /* ubah 800–1000 sesuai selera */
+    max-width: 1000px;      
     margin: 0 auto;
     padding: 20px 0;
-    margin-bottom: 150px;  /* biar jarak ke footer besar */
+    margin-bottom: 150px;  /
+}
+
+
+@media (max-width: 768px) {
+
+    #arsip {
+        padding: 24px;
+    }
+
+    .arsip-hero {
+        padding-top: 120px !important;
+        padding-bottom: 60px;
+        margin-top: -80px !important;
+    }
+
+    .arsip-hero h1 {
+        font-size: 32px;
+        padding: 0 16px;
+    }
+
+    .arsip-controls {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 12px;
+    }
+
+    .btn-filter {
+        width: 100%;
+        text-align: center;
+    }
+
+    .search-box {
+        width: 100%;
+    }
+
+    .arsip-content {
+        flex-direction: column;
+        gap: 16px;
+    }
+
+    .arsip-side {
+        flex-direction: row;
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .btn-download {
+        max-width: none;
+        width: 100%;
+        justify-content: center;
+    }
+
+    .pagination {
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+}
+
+@media (max-width: 480px) {
+
+    #arsip {
+        padding: 16px;
+    }
+
+    .arsip-hero h1 {
+        font-size: 26px;
+    }
+
+    .arsip-card {
+        padding: 16px;
+    }
+
+    .arsip-title {
+        font-size: 17px;
+    }
+
+    .arsip-desc {
+        font-size: 13px;
+    }
+
+    .arsip-meta {
+        gap: 4px;
+    }
+
+    .arsip-thumbnail {
+        width: 70px;
+        height: 70px;
+    }
+
+    .btn-download {
+        font-size: 13px;
+        padding: 10px;
+    }
+
+    .page-btn {
+        width: 32px;
+        height: 32px;
+        font-size: 14px;
+    }
+
+    #arsip::before {
+        display: none;
+    }
 }

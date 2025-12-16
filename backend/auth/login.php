@@ -17,7 +17,6 @@ try {
 
     if ($user) {
 
-        // PASSWORD MASIH PLAIN TEXT
         if ($password === $user['password']) {
 
             $_SESSION['logged_in'] = true;

@@ -151,12 +151,12 @@
 .slider-container {
     position: relative;
     width: 100%;
-    overflow: hidden; /* jangan visible */
+    overflow: hidden;
     padding: 0;
     margin-bottom: 75px;
     margin-top: 50px;
     display: flex;
-    justify-content: center; /* pastikan tombol dan slider rata tengah */
+    justify-content: center;
     align-items: center;
 }
 
@@ -164,8 +164,8 @@
 .pengelolaLab-card {
     display: flex;
     gap: 30px;
-    justify-content: center; /* <== ini bikin kartu di tengah */
-    align-items: center;     /* optional, untuk vertikal */
+    justify-content: center;
+    align-items: center;
     transition: transform 0.4s ease-in-out;
 }
 
@@ -175,13 +175,13 @@
     border-radius: 50%;
     background-size: cover;
     background-position: center;
-    margin-top: 20px;    /* jarak foto ke nama */
+    margin-top: 20px;
 }
 
 .card-info {
     display: flex;
     flex-direction: column;
-    gap: 4px;               /* jarak antar teks */
+    gap: 4px;
 }
 
 .card-header {
@@ -220,7 +220,7 @@
 }
 
 .card-name:hover {
-    transform: translateY(-10px);  /* Naik ke atas */
+    transform: translateY(-10px);
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
 }
 
@@ -291,10 +291,6 @@
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
 }
 
-
-/* buat navbar */
-
-/* Navbar transparan */
 .navbar:not(.scrolled) .nav-menu a,
 .navbar:not(.scrolled) .nav-brand .brand-title,
 .navbar:not(.scrolled) .nav-brand .brand-sub,
@@ -305,7 +301,6 @@
     transition: 0.3s ease;
 }
 
-/* Hover untuk navbar transparan → tetap putih */
 .navbar:not(.scrolled) .nav-menu a:hover,
 .navbar:not(.scrolled) .dropdown-btn:hover,
 .navbar:not(.scrolled) .nav-menu li span:hover,
@@ -327,7 +322,6 @@
     backdrop-filter: blur(6px);
 }
 
-/* Semua tulisan berubah jadi primary saat scroll */
 .navbar.scrolled .nav-menu a,
 .navbar.scrolled .nav-menu li span,
 .navbar.scrolled .nav-menu li i,
@@ -338,7 +332,6 @@
     color: var(--primary) !important;
 }
 
-/* Hover saat navbar scrolled → hitam semua */
 .navbar.scrolled .nav-menu a:hover,
 .navbar.scrolled .nav-menu li span:hover,
 .navbar.scrolled .nav-menu li i:hover,
@@ -347,93 +340,96 @@
     color: #000000 !important;
 }
 
-/* buat responsif */
-/* Tablet */
 @media (max-width: 1024px) {
     .tentangKami-container {
-        flex-direction: column;
-        gap: var(--space-5);
+        gap: var(--space-6);
     }
 
     .tentangKami-left h1 {
-        font-size: 40px;
-        padding-right: var(--space-4);
-        padding-left: var(--space-5);
-    }
-
-    .tentangKami-right p {
-        font-size: 0.95rem;
+        font-size: 42px;
+        padding-right: 40px;
+        padding-left: var(--space-6);
     }
 
     .visiMisi-container {
-        flex-direction: column;
         gap: var(--space-5);
     }
 
-    .card-visi, .card-misi {
-        width: 100%;
-    }
-
     .pengelolaLab-card {
-        gap: 15px;
-    }
-
-    .card-name {
-        width: 200px;
-        height: 280px;
-    }
-
-    .foto, .foto-1 {
-        height: 180px;
-    }
-
-    .arrow {
-        width: 40px;
-        height: 40px;
-        font-size: var(--space-4);
+        gap: 20px;
     }
 }
 
-/* Mobile */
 @media (max-width: 768px) {
     .tentangKami {
-        padding-top: 120px;
+        padding-top: 140px;
+    }
+
+    .tentangKami-container {
+        flex-direction: column;
+        align-items: flex-start;
     }
 
     .tentangKami-left h1 {
         font-size: 32px;
-        padding-right: var(--space-3);
-        padding-left: var(--space-3);
+        padding: 0;
+        margin-bottom: var(--space-4);
     }
 
     .btn-link {
-        justify-content: center;
+        justify-content: flex-start;
         margin-right: 0;
     }
 
     .visiMisi-container {
         flex-direction: column;
-        gap: var(--space-4);
     }
 
-    .card-visi, .card-misi {
-        padding: var(--space-4);
+    .card-visi,
+    .card-misi {
+        width: 100%;
     }
 
-    .pengelolaLab-card {
-        flex-direction: column;
-        gap: var(--space-4);
-        justify-content: center;
+    .slider-container {
+        margin-top: 30px;
+        margin-bottom: 50px;
+    }
+
+    .arrow {
+        width: 42px;
+        height: 42px;
+        font-size: var(--space-4);
+    }
+}
+
+@media (max-width: 480px) {
+    .tentangKami {
+        padding-top: 120px;
+        padding-left: var(--space-4);
+        padding-right: var(--space-4);
+    }
+
+    .tentangKami-left h1 {
+        font-size: 26px;
+        line-height: 1.2;
+    }
+
+    .visi-misi {
+        padding: var(--space-6) var(--space-4);
+    }
+
+    .pengelolaLab {
+        padding: var(--space-6) var(--space-4);
     }
 
     .card-name {
-        width: 100%;
-        max-width: 250px;
-        height: auto;
+        width: 220px;
+        height: 300px;
     }
 
-    .foto, .foto-1 {
-        height: 150px;
+    .foto,
+    .foto-1 {
+        height: 200px;
     }
 
     .arrow-left {
@@ -442,30 +438,5 @@
 
     .arrow-right {
         right: 5px;
-    }
-}
-
-/* Extra small devices */
-@media (max-width: 480px) {
-    .tentangKami-left h1 {
-        font-size: 28px;
-    }
-
-    .card-header {
-        font-size: 0.9rem;
-    }
-
-    .card-body {
-        font-size: 0.8rem;
-    }
-
-    .arrow {
-        width: 35px;
-        height: 35px;
-        font-size: var(--space-3);
-    }
-
-    .foto, .foto-1 {
-        height: 120px;
     }
 }

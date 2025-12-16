@@ -4,9 +4,6 @@
     padding: 40px 20px;
 }
 
-/* ==========================================================
-   CARD UTAMA
-========================================================== */
 .event-card {
     background: #fff;
     border-radius: 18px;
@@ -18,9 +15,6 @@
     position: relative;
 }
 
-/* ==========================================================
-   BACK BUTTON
-========================================================== */
 .btn-back {
     font-size: 20px;
     color: #000;
@@ -35,9 +29,6 @@
     transform: translateX(-5px);
 }
 
-/* ==========================================================
-   BAGIAN KIRI
-========================================================== */
 .event-left {
     display: flex;
     flex-direction: column;
@@ -73,9 +64,6 @@
     color: #333;
 }
 
-/* ==========================================================
-   BAGIAN KANAN
-========================================================== */
 .event-right {
     display: flex;
     flex-direction: column;
@@ -96,7 +84,7 @@
     height: 100%;
     max-width: fit-content;
     max-height: fit-content;
-    object-fit: cover;   /* BIKIN GAMBAR TETAP RAPI & GA KEPOOOOTONG ANEH */
+    object-fit: cover; 
     border-radius: 10px;
 }
 
@@ -119,9 +107,6 @@
     transform: translateY(-2px);
 }
 
-/* ==========================================================
-   PREVIEW BESAR (PDF)
-========================================================== */
 .event-image-large {
     grid-column: 1 / -1;
     margin-top: 20px;
@@ -137,7 +122,6 @@
     border: none;
 }
 
-/* AURA KUNING */
 .event-image-large::after {
     content: '';
     position: absolute;
@@ -153,12 +137,29 @@
     z-index: -1;
 }
 
-/* ==========================================================
-   RESPONSIVE
-========================================================== */
+@media (max-width: 1024px) {
+    .page-container {
+        padding: 32px 16px;
+    }
+
+    .event-card {
+        padding: 32px;
+        gap: 28px;
+    }
+
+    .event-title {
+        font-size: 22px;
+    }
+
+    .event-image-large iframe {
+        height: 520px;
+    }
+}
+
 @media (max-width: 768px) {
     .event-card {
         grid-template-columns: 1fr;
+        padding: 24px;
     }
 
     .event-right {
@@ -168,11 +169,69 @@
     }
 
     .event-thumbnail-small {
-        width: 100px;
-        height: 100px;
+        width: 96px;
+        height: 96px;
+    }
+
+    .event-title {
+        font-size: 20px;
+    }
+
+    .event-description {
+        font-size: 14px;
     }
 
     .event-image-large iframe {
-        height: 300px;
+        height: 360px;
+    }
+
+    .event-image-large::after {
+        display: none;
+    }
+}
+
+@media (max-width: 480px) {
+    .page-container {
+        padding: 20px 12px;
+    }
+
+    .event-card {
+        padding: 18px;
+        gap: 20px;
+        border-radius: 14px;
+    }
+
+    .btn-back {
+        font-size: 16px;
+    }
+
+    .event-title {
+        font-size: 18px;
+    }
+
+    .event-description {
+        font-size: 13px;
+    }
+
+    .event-right {
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .event-thumbnail-small {
+        width: 88px;
+        height: 88px;
+    }
+
+    .download-button {
+        width: 100%;
+        justify-content: center;
+        padding: 10px;
+        font-size: 13px;
+    }
+
+    .event-image-large iframe {
+        height: 260px;
+        border-radius: 10px;
     }
 }

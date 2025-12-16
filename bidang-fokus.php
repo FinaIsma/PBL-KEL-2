@@ -116,6 +116,7 @@ function pathGambar($gambar) {
 .focus-content h2{
     font-size: 1.6rem;
     margin-bottom: var(--space-3);
+    color: white;
 }
 
 .paragraph-btn-wrapper{
@@ -161,15 +162,91 @@ function pathGambar($gambar) {
     color: var(--primary) !important;
 }
 
-/* ================= RESPONSIVE ================= */
-@media(max-width: 992px){
-    .focus-column{
-        flex-direction: column;
+@media (max-width: 1024px) {
+    .bidangHero-left h1 {
+        font-size: 42px;
     }
-    .focus-image{
-        width: 100%;
+
+    .bidang-wrapper {
+        margin-left: 24px !important;
+        margin-right: 24px !important;
+        padding-top: 100px;
+        padding-bottom: 120px;
+    }
+
+    .focus-image {
+        width: 260px;
     }
 }
+
+@media (max-width: 768px) {
+    .bidangHero {
+        padding-top: 130px;
+        padding-bottom: 100px;
+    }
+
+    .bidangHero-left h1 {
+        font-size: 34px;
+    }
+
+    .bidang-wrapper {
+        margin-left: 16px !important;
+        margin-right: 16px !important;
+        gap: var(--space-5);
+    }
+
+    .focus-column {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .focus-image {
+        width: 100%;
+    }
+
+    .focus-image img {
+        height: 220px;
+    }
+
+    .paragraph-btn-wrapper {
+        flex-direction: column;
+        align-items: center;
+        gap: var(--space-3);
+    }
+}
+
+@media (max-width: 480px) {
+    .bidangHero-left h1 {
+        font-size: 26px;
+    }
+
+    .bidang-wrapper {
+        padding-top: 80px;
+        padding-bottom: 100px;
+        margin-left: 12px !important;
+        margin-right: 12px !important;
+    }
+
+    .focus-column {
+        padding: var(--space-5);
+        gap: var(--space-4);
+    }
+
+    .focus-content h2 {
+        font-size: 1.25rem;
+    }
+
+    .focus-image img {
+        height: 180px;
+    }
+
+    .focus-btn {
+        width: 100%;
+        text-align: center;
+    }
+}
+
 </style>
 </head>
 

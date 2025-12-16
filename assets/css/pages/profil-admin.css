@@ -1,8 +1,7 @@
 main, .content, .tentangKami {
-    margin-top: 83.5px; /* tinggi navbar */
+    margin-top: 83.5px;
 }
 
-/* POSISI SIDEBAR */
 .sidebar {
     width: 220px;
     position: fixed;
@@ -17,19 +16,18 @@ main, .content, .tentangKami {
     background-color: #fff !important;
 }
 
-/* Header berada di atas full width */
 #header-placeholder {
     grid-column: 1 / 3;
     width: 100%;
 }
 
 .content {
-    margin-left: 220px;  /* sama seperti lebar sidebar */
+    margin-left: 220px;
     padding-top: 12px;
     transform: scale(0.8);
     transform-origin: top left;
     width: calc((100% - 220px) / 0.8); 
-    margin-top: -135px !important; /* opsional kalau memang dibutuhkan */
+    margin-top: -135px !important;
     margin-bottom: -300px !important;
 }
 
@@ -37,16 +35,16 @@ main, .content, .tentangKami {
     background: var(--primary);
     color: #fff;
     padding: var(--space-6);
-    padding-top: 80px; /* tambah ruang atas supaya konten tidak ketutupan navbar */
+    padding-top: 80px;
     position: relative;
-    margin-top: 0; /* jangan pakai negatif */
+    margin-top: 0;
 }
 
 .tentangKami-container{
     display: flex;
     position: relative;
     justify-content: space-between;
-    align-items: center; /* 🔥 Bikin kiri & kanan sejajar tengah */
+    align-items: center;
     gap: var(--space-7);   
     margin-right: 0;
 }
@@ -126,7 +124,7 @@ main, .content, .tentangKami {
 
 .visi-misi > * {
     position: relative;
-    z-index: 1;  /* ← Content di atas aura */
+    z-index: 1;
 }
 .vismis-button{
     position: relative;
@@ -170,7 +168,6 @@ main, .content, .tentangKami {
 }
 
 
-/* pengelola Lab */
 .pengelolaLab {
     padding: var(--space-7) ;
     position: relative;
@@ -232,13 +229,13 @@ main, .content, .tentangKami {
     border-radius: 50%;
     background-size: cover;
     background-position: center;
-    margin-top: 20px;    /* jarak foto ke nama */
+    margin-top: 20px;
 }
 
 .card-info {
     display: flex;
     flex-direction: column;
-    gap: 4px;               /* jarak antar teks */
+    gap: 4px;
 }
 
 .card-header {
@@ -279,8 +276,8 @@ main, .content, .tentangKami {
 .card-name:hover {
     transform: translateY(-10px);
     border-radius: var(--space-5); 
-    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2); /* shadow lebih lembut */
-    z-index: 2; /* pastikan di atas kartu lain */
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+    z-index: 2;
 }
 
 .foto {
@@ -349,8 +346,6 @@ main, .content, .tentangKami {
     transform: translateY(-50%) scale(1.1);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
 }
-
-
 
 /* tombol edit */
 .btn-edit-tenkam {

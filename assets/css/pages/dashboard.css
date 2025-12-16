@@ -1,11 +1,9 @@
-/* FIX AGAR MAIN TIDAK TERTUTUP HEADER */
 body {
-    padding-top: 83.5px; /* sama seperti tinggi header */
+    padding-top: 83.5px;
 }
 
-/* POSISI SIDEBAR */
 .sidebar {
-    top: 83.5px !important; /* samakan dengan tinggi header */
+    top: 83.5px !important;
     grid-row: 2;
     height: 100%;
 }
@@ -15,15 +13,13 @@ body {
     background-color: #fff;
 }
 
-/* MAIN CONTENT POSISI PAS DI SEBELAH SIDEBAR */
 .main {
-    margin-left: 220px;      /* lebar sidebar */
-    padding: 24px;           /* supaya rapi */
+    margin-left: 220px;    
+    padding: 24px;    
     min-height: calc(100vh - 83.5px);
-    background: #f5f6fa;     /* opsional biar ke-detect area main */
+    background: #f5f6fa;
 }
 
-/* Grid layout utama */
 .layout {
     display: grid;
     grid-template-columns: 260px 1fr;
@@ -32,13 +28,11 @@ body {
     overflow: hidden;
 }
 
-/* Header berada di atas full width */
 #header-placeholder {
     grid-column: 1 / 3;
     width: 100%;
 }
 
-/* Main content mengisi semua ruang tersisa */
 .content {
     grid-column: 2;
     grid-row: 2;
@@ -225,7 +219,7 @@ td {
 /* === TABEL BORDER RADIUS === */
 .table-section table {
     border-radius: 10px;
-    overflow: hidden;              /* wajib untuk clip radius */
+    overflow: hidden;
     border: 1px solid var(--gray-300);
     z-index: 10;
 }
@@ -238,12 +232,10 @@ td {
     z-index: 10 !important;
 }
 
-/* Header lebih soft */
 .table-section thead th {
     border-bottom: 1px solid var(--gray-300);
 }
 
-/* === HOVER PADA TABEL === */
 .table-section tbody tr {
     transition: 0.2s ease;
 }
@@ -253,23 +245,20 @@ td {
     cursor: pointer;
 }
 
-/* Section untuk background aura */
 .aura-bg, .table-section img {
     position: relative;
     width: 100%;
     height: 0;
 }
 
-/* Aura umum */
 .aura, .table-section img {
     position: absolute;
-    z-index: 0 !important;        /* pastiin DIA DI BELAKANG konten */
+    z-index: 0 !important;
     filter: blur(20px);
     opacity: 1;
-    pointer-events: none; /* biar ga ganggu klik */
+    pointer-events: none;
 }
 
-/* Aura 1 */
 .table-section img{
     top: 70% !important;
     left: 8% !important;
@@ -278,7 +267,6 @@ td {
     z-index: 0;
 }
 
-/* Aura 2 */
 .aura-2 {
     top: 50% !important;
     left: 78% !important;
@@ -294,6 +282,6 @@ td {
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 22px;       /* ukuran ikon */
-    color: #fff;           /* warna ikon putih */
+    font-size: 22px; 
+    color: #fff;
 }

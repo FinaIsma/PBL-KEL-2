@@ -2,7 +2,6 @@
 session_start();
 require_once "db.php";
 
-/* ===== CEK LOGIN ADMIN ===== */
 if (!isset($_SESSION['logged_in']) || !isset($_SESSION['user_id'])) {
     header("Location: login.php");
     exit;

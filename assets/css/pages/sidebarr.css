@@ -13,7 +13,6 @@ html, body {
     box-sizing: inherit;
 }
 
-/* Sidebar Desktop */
 .sidebar {
     position: fixed;          
     top: 83.5px;                
@@ -38,7 +37,6 @@ html, body {
     overflow-x: hidden;
 }
 
-/* Main content dengan sidebar */
 .main,
 .arsip-main,
 .wrapper,
@@ -77,7 +75,6 @@ html, body {
     opacity: 1;
 }
 
-/* Toggle Button (Hidden on Desktop) */
 .sidebar-toggle {
     display: none;
     position: fixed;
@@ -110,7 +107,6 @@ html, body {
     box-shadow: 0 -6px 0 white, 0 6px 0 white;
 }
 
-/* Overlay untuk mobile */
 .sidebar-overlay {
     display: none;
     position: fixed;

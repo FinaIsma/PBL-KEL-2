@@ -14,17 +14,9 @@
 
 /* Wrapper Section */
 #arsip {
-    padding: 0; /* Hilangkan padding atas */
+    padding: 0;
 } 
 
-/* === LAYOUT FIX SUPAYA RAPAT KE SIDEBAR ===
-.layout {
-    display: flex;
-    width: 100%;
-    min-height: 100vh;
-} */
-
-/* KONTEN UTAMA FULL SISA LAYAR - NO PADDING TOP */
 .wrapper {
     margin-left: 220px;
     width: calc(100% - 220px);
@@ -33,13 +25,11 @@
     margin-top: -122px !important
 }
 
-/* Header navbar - hilangkan margin top */
 #header-placeholder {
     margin-left: 220px;
     width: calc(100% - 220px);
 }
 
-/* Arsip Title Header - Full Width dengan Background */
 .arsip-title-header {
     background: var(--primary);
     padding: 3rem 3rem 3rem 3rem;
@@ -57,13 +47,12 @@
     text-align: center;
 }
 
-/* Section Content - Padding hanya di konten */
+/* Section Content */
 .wrapper .section {
-    padding: 2rem 3rem;         /* default */
-    padding-top: 3rem;          /* FIX: tambahkan jarak dari title */
+    padding: 2rem 3rem;
+    padding-top: 3rem;
 }
 
-/* Controls: Filter + Search */
 .arsip-controls {
     display: flex;
     justify-content: space-between;
@@ -251,7 +240,7 @@ section#arsip > *:not(.arsip-title-header) {
 }
 
 .pagination {
-    margin-top: 3rem !important; /* FIX jadi lebih dekat */
+    margin-top: 3rem !important;
 }
 
 .kelola-wrapper {
@@ -333,101 +322,4 @@ section#arsip > *:not(.arsip-title-header) {
 
 .mb-5 {
     margin-bottom: 2rem;
-}
-
-/* RESPONSIVE STYLES */
-
-/* Mobile mode sidebar mengecil */
-@media(max-width:900px){
-    .sidebar {
-        position: relative;
-        width: 100%;
-        height: auto;
-    }
-    .wrapper, #header-placeholder {
-        margin-left: 0;
-        width: 100%;
-    }
-}
-
-/* TABLET (768px) */
-@media (max-width: 768px) {
-    .wrapper .section {
-        padding: 1.5rem;
-    }
-    
-    .arsip-title-header {
-        padding: 2rem 1.5rem;
-    }
-    
-    .arsip-title-header h1 {
-        font-size: 2rem;
-    }
-    
-    .arsip-controls {
-        flex-direction: column;
-        align-items: stretch;
-    }
-
-    .search-box {
-        width: 100%;
-    }
-
-    .arsip-content {
-        flex-direction: column;
-    }
-
-    .arsip-side {
-        width: 100%;
-        flex-direction: row;
-        justify-content: space-between;
-    }
-
-}
-
-/* MOBILE (480px) */
-@media (max-width: 480px) {
-    .wrapper .section {
-        padding: 1rem;
-    }
-    
-    .arsip-title-header {
-        padding: 1.5rem 1rem;
-    }
-    
-    .arsip-title-header h1 {
-        font-size: 1.5rem;
-    }
-    
-    .arsip-card {
-        padding: var(--space-4);
-    }
-
-    .btn-filter {
-        padding: var(--space-2) var(--space-3);
-        font-size: var(--small-size);
-    }
-
-    .arsip-title {
-        font-size: 18px;
-    }
-
-    .arsip-desc {
-        font-size: var(--small-size);
-    }
-
-    .search-box {
-        width: 100%;
-    }
-    .search-input {
-        padding: 10px 40px 10px 15px;
-        border-radius: 8px;
-        border: 1px solid #ccc;
-    }
-
-    .btn-filter:hover {
-        background: #f7c843 !important;
-        color: #000 !important;
-        transform: translateY(-2px);
-    }
 }

@@ -13,7 +13,7 @@ h1 {
     font-size: 50px;
     
 }
-/* Sarana prasaran */
+
 .Sarpras{
     padding: var(--space-7);
     position: relative;
@@ -46,7 +46,7 @@ h1 {
     background-size: contain;
     background-repeat: no-repeat;
     pointer-events: none;
-    opacity: 0.8;    /* opsional */
+    opacity: 0.8;
     z-index: 0;
 }
 .Sarpras > * {
@@ -88,7 +88,7 @@ h1 {
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 .Sarpras-card h3 {
-    color: #fff; /* ganti sesuai warna yang kontras dengan background */
+    color: #fff;
     font-size: 18px;
     text-align: center;
     margin-top: 10px;
@@ -101,7 +101,7 @@ h1 {
 .Sarpras-img {
     width: 100%;
     height: 220px;
-    background-size: cover; /* atau cover */
+    background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
     border-radius: 6px;
@@ -112,7 +112,7 @@ h1 {
 .Sarpras-dummy {
     width: 100%;
     height: 230px;         
-    object-fit: cover;      /* memotong gambar agar sesuai kotak */
+    object-fit: cover;
     border-radius: 6px;
     margin-bottom: 10px;
     background-color: #ffffff; 
@@ -172,7 +172,7 @@ h1 {
 }
 .layanan-wrapper {
     display: grid;
-    grid-template-columns: repeat(3, 1fr); /* 3 kolom */
+    grid-template-columns: repeat(3, 1fr);
     gap: var(--space-7);
     width: 100%;
     justify-items: center;
@@ -182,8 +182,8 @@ h1 {
 .layanan-card {
     background: var(--primary);
     color: var(--background);
-    max-width: 450px;   /* batas maksimal */
-    width: 90%;        /* biar mengecil mengikuti grid */
+    max-width: 450px;
+    width: 90%;
     min-height: 450px;
     border-radius: var(--radius-md);
     display: flex;
@@ -205,9 +205,8 @@ h1 {
 .layanan-card p {
     flex-grow: 1;
     margin-top: var(--space-3);
-    /* Truncate multiline */
     display: -webkit-box;
-    -webkit-line-clamp: 10;     /* jumlah baris yg ditampilkan */
+    -webkit-line-clamp: 10;
     -webkit-box-orient: vertical;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -252,11 +251,6 @@ h1 {
     color: #fff;
 }
 
-
-
-/* buat navbar */
-
-/* Navbar transparan */
 .navbar:not(.scrolled) .nav-menu a,
 .navbar:not(.scrolled) .nav-brand .brand-title,
 .navbar:not(.scrolled) .nav-brand .brand-sub,
@@ -267,7 +261,6 @@ h1 {
     transition: 0.3s ease;
 }
 
-/* Hover untuk navbar transparan → tetap putih */
 .navbar:not(.scrolled) .nav-menu a:hover,
 .navbar:not(.scrolled) .dropdown-btn:hover,
 .navbar:not(.scrolled) .nav-menu li span:hover,
@@ -275,12 +268,10 @@ h1 {
     color: #ffffff !important;
 }
 
-/* Dropdown default tetap hitam saat navbar transparan */
 .navbar:not(.scrolled) .dropdown-menu li a {
     color: var(--gray-900) !important;
 }
 
-/* Hover dropdown tetap hitam saat navbar transparan */
 .navbar:not(.scrolled) .dropdown-menu li a:hover {
     color: #000000 !important;
 }
@@ -290,7 +281,6 @@ h1 {
     backdrop-filter: blur(6px);
 }
 
-/* Semua tulisan berubah jadi primary saat scroll */
 .navbar.scrolled .nav-menu a,
 .navbar.scrolled .nav-menu li span,
 .navbar.scrolled .nav-menu li i,
@@ -301,11 +291,114 @@ h1 {
     color: var(--primary) !important;
 }
 
-/* Hover saat navbar scrolled → hitam semua */
 .navbar.scrolled .nav-menu a:hover,
 .navbar.scrolled .nav-menu li span:hover,
 .navbar.scrolled .nav-menu li i:hover,
 .navbar.scrolled .dropdown-btn:hover,
 .navbar.scrolled .dropdown-menu li a:hover {
     color: #000000 !important;
+}
+
+@media (max-width: 1024px) {
+    h1 {
+        font-size: 42px;
+    }
+
+    .Sarpras-container {
+        grid-template-columns: repeat(2, 1fr);
+        row-gap: 24px;
+    }
+
+    .Sarpras-card {
+        max-width: 360px;
+        height: auto;
+    }
+
+    .layanan-wrapper {
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--space-6);
+    }
+}
+
+@media (max-width: 768px) {
+    .layanan-foto {
+        height: 240px;
+        margin-top: -70px;
+    }
+
+    h1 {
+        font-size: 32px;
+        text-align: center;
+    }
+
+    .Sarpras {
+        padding: var(--space-6);
+    }
+
+    .Sarpras-container {
+        grid-template-columns: 1fr;
+    }
+
+    .Sarpras-card {
+        max-width: 100%;
+    }
+
+    .button-container {
+        margin-top: var(--space-6);
+    }
+
+    .layanan-title {
+        padding: var(--space-6);
+    }
+
+    .layanan-wrapper {
+        grid-template-columns: 1fr;
+        gap: var(--space-5);
+    }
+
+    .layanan-card {
+        width: 100%;
+        min-height: auto;
+    }
+
+    .title-konsul {
+        font-size: 20px;
+        height: auto;
+        padding: var(--space-3);
+    }
+}
+
+@media (max-width: 480px) {
+    .layanan-foto {
+        height: 200px;
+        margin-top: -60px;
+    }
+
+    h1 {
+        font-size: 26px;
+    }
+
+    .Sarpras {
+        padding: var(--space-5);
+    }
+
+    .Sarpras-img,
+    .Sarpras-card img,
+    .Sarpras-dummy {
+        height: 180px;
+    }
+
+    .Sarpras-card h3 {
+        font-size: 16px;
+    }
+
+    .layanan-card p {
+        font-size: 12px;
+        line-height: 1.8;
+    }
+
+    .btn-box {
+        width: 100%;
+        height: 38px;
+    }
 }
