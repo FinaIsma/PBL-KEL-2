@@ -6,7 +6,7 @@ $username = $_POST['username'] ?? '';
 $password = $_POST['password'] ?? '';
 
 if (!$username || !$password) {
-    header("Location: ../../login.php?error=1");
+    header("Location: ../../login.php");
     exit;
 }
 
@@ -28,7 +28,7 @@ try {
         }
     }
 
-    header("Location: ../../login.php?error=1");
+    header("Location: ../../login.php");
 
 } catch (PDOException $e) {
     echo "Error: " . $e->getMessage();

@@ -1,5 +1,11 @@
 <?php
-require_once "backend/config.php";
+session_start();
+if (!isset($_SESSION['logged_in'])) {
+    header("Location: login.php");
+    exit;
+}
+
+include("backend/config.php"); 
 
 $showConfirm = false;
 $confirmData = null;

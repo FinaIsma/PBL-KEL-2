@@ -1,13 +1,6 @@
 <?php
 session_start();
-if (!isset($_SESSION['logged_in'])) {
-    header("Location: login.php");
-    exit;
-}
-
-require_once "backend/config.php"; // lokasi config.php kamu
-
-// CEK LOGIN
+require_once "backend/config.php";
 if (!isset($_SESSION['logged_in'])) {
     header("Location: login.php");
     exit;

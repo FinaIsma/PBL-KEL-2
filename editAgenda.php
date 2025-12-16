@@ -1,5 +1,5 @@
 <?php
-include "koneksi.php";
+require_once __DIR__ . "/backend/config.php";
 
 // --- Ambil data lama ---
 if (!isset($_GET['id'])) {
@@ -8,37 +8,40 @@ if (!isset($_GET['id'])) {
 
 $agenda_id = $_GET['id'];
 
-$result = pg_query_params($conn, "SELECT * FROM agenda WHERE agenda_id = $1", [$agenda_id]);
-$data = pg_fetch_assoc($result);
+$stmt = $db->prepare("SELECT * FROM agenda WHERE agenda_id = :id");
+$stmt->execute(['id' => $agenda_id]);
+$data = $stmt->fetch(PDO::FETCH_ASSOC);
 
 if (!$data) {
     die("Error: Data tidak ditemukan.");
 }
 
-// --- Jika tombol UPDATE ditekan ---
 if (isset($_POST['submit'])) {
 
     $hari_tgl  = $_POST['hari_tgl'];
     $judul     = $_POST['judul'];
     $deskripsi = $_POST['deskripsi'];
 
-    $sql = "
+    $update = $db->prepare("
         UPDATE agenda
-        SET hari_tgl=$1, judul=$2, deskripsi=$3
-        WHERE agenda_id=$4
-    ";
+        SET hari_tgl = :hari_tgl,
+            judul = :judul,
+            deskripsi = :deskripsi
+        WHERE agenda_id = :id
+    ");
 
-    pg_query_params($conn, $sql, [
-        $hari_tgl,
-        $judul,
-        $deskripsi,
-        $agenda_id
+    $update->execute([
+        'hari_tgl'  => $hari_tgl,
+        'judul'     => $judul,
+        'deskripsi' => $deskripsi,
+        'id'        => $agenda_id
     ]);
 
     header("Location: tabelAgenda.php");
     exit();
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
