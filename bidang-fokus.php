@@ -25,21 +25,15 @@ function pathGambar($gambar) {
 <head>
     <meta charset="UTF-8">
     <title>Bidang Fokus</title>
-
-    <!-- BASE -->
     <link rel="stylesheet" href="assets/css/base.css">
     <link rel="stylesheet" href="assets/css/utils.css">
     <link rel="stylesheet" href="assets/css/components.css">
     <link rel="stylesheet" href="assets/css/responsive.css">
-
-    <!-- PAGE -->
     <link rel="stylesheet" href="assets/css/pages/navbar.css">
     <link rel="stylesheet" href="assets/css/pages/footer.css">
-
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
 <style>
-/* ================= HERO ================= */
 .bidangHero{
     background: var(--primary);
     color: #fff;
@@ -67,8 +61,6 @@ function pathGambar($gambar) {
     color: white;
 }
 
-
-/* ================= CONTENT ================= */
 .bidang-wrapper{
     padding: var(--space-7);
     padding-top: 120px;
@@ -140,7 +132,6 @@ function pathGambar($gambar) {
     transform: translateX(4px);
 }
 
-/* ================= NAVBAR ================= */
 .navbar:not(.scrolled) .nav-menu a,
 .navbar:not(.scrolled) .nav-brand span,
 .navbar:not(.scrolled) .dropdown-btn{
@@ -252,11 +243,9 @@ function pathGambar($gambar) {
 
 <body>
 
-<!-- NAVBAR -->
 <div id="navbar-placeholder"></div>
 <script src="assets/js/navbar.js"></script>
 
-<!-- HERO -->
 <section class="bidangHero">
     <div class="bidangHero-container">
         <div class="bidangHero-left">
@@ -265,7 +254,6 @@ function pathGambar($gambar) {
     </div>
 </section>
 
-<!-- CONTENT -->
 <main class="bidang-wrapper">
 <?php foreach ($bidang as $row): ?>
     <div class="focus-column">
@@ -289,7 +277,6 @@ function pathGambar($gambar) {
 <?php endforeach; ?>
 </main>
 
-<!-- FOOTER -->
 <div id="footer-placeholder"></div>
 <script src="assets/js/footer.js"></script>
 <script type="module" src="assets/js/main.js"></script>

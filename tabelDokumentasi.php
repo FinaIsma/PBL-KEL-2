@@ -9,7 +9,6 @@ include("backend/config.php");
 $showConfirm = false;
 $confirmData = null;
 
-// Modal hapus
 if (isset($_GET['delete_id'])) {
     $delete_id = intval($_GET['delete_id']);
 
@@ -24,7 +23,6 @@ if (isset($_GET['delete_id'])) {
     }
 }
 
-// Search
 $search = isset($_GET['search']) ? $_GET['search'] : "";
 
 if ($search != "") {
@@ -79,7 +77,7 @@ $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 <main class="content">
 
 <div class="top-bar-page">
-    <a href="javascript:void(0)" class="btn-back" onclick="history.back()">
+    <a href="galeriAdmin.php" class="btn-back">
         <i class="fa-solid fa-arrow-left"></i>
     </a>
 

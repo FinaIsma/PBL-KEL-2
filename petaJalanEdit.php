@@ -51,7 +51,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 $path = $uploadDir . $fileName;
 
                 if (move_uploaded_file($_FILES['file']['tmp_name'], $path)) {
-                    $fileDB = "uploads/" . $fileName;
+                    $fileDB = $fileName;
                 } else {
                     $error = "Gagal mengupload file.";
                 }

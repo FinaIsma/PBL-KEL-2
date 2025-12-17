@@ -41,7 +41,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $error = "Gagal mengupload file!";
                 }
 
-                $file_path = "uploads/" . $fileName;
+                $file_path = $fileName;
             }
         } else {
             $error = "Upload error code: " . $_FILES['file']['error'];
@@ -84,167 +84,159 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
     <style>
+    
+    main, .content {
+    margin-top: 100px;
+    }
 
-/* ====== LAYOUT ====== */
-main, .content {
-    margin-top: 100px; /* tinggi navbar */
-}
+    .sidebar {
+        width: 220px;
+        position: fixed;
+        top: 83.5px;
+        left: 0;
+        height: calc(100vh - 83.5px);
 
-/* POSISI SIDEBAR */
-.sidebar {
-    width: 220px;
-    position: fixed;
-    top: 83.5px;
-    left: 0;
-    height: calc(100vh - 83.5px);
+    }
 
-}
-
-.navbar {
-    box-shadow: 3px 5px 10px rgba(0, 0, 0, 0.15) !important;
-    background-color: #fff;
-}
+    .navbar {
+        box-shadow: 3px 5px 10px rgba(0, 0, 0, 0.15) !important;
+        background-color: #fff;
+    }
 
 
-.logo-area { 
-    display: flex; 
-    align-items: center; 
-    gap: 10px; 
-    margin-bottom: 40px; 
-}
+    .logo-area { 
+        display: flex; 
+        align-items: center; 
+        gap: 10px; 
+        margin-bottom: 40px; 
+    }
 
-.lab-title { 
-    font-size: 14px; 
-    line-height: 1.3; 
-}
-.lab-title span { font-weight: 400; }
+    .lab-title { 
+        font-size: 14px; 
+        line-height: 1.3; 
+    }
+    .lab-title span { font-weight: 400; }
 
-.menu a { 
-    display: block; 
-    padding: 12px; 
-    color: #fff; 
-    opacity: .85; 
-    margin-bottom: 6px; 
-    border-radius: 6px; 
-}
+    .menu a { 
+        display: block; 
+        padding: 12px; 
+        color: #fff; 
+        opacity: .85; 
+        margin-bottom: 6px; 
+        border-radius: 6px; 
+    }
 
-.menu a.active, .menu a:hover { 
-    background: rgba(255,255,255,.15); 
-    opacity: 1; 
-}
+    .menu a.active, .menu a:hover { 
+        background: rgba(255,255,255,.15); 
+        opacity: 1; 
+    }
 
-.topbar { 
-    background: #fff; 
-    border-bottom: 1px solid var(--gray-200); 
-    display: flex; 
-    align-items: center; 
-    justify-content: space-between; 
-    padding: 0 24px; 
-}
+    .topbar { 
+        background: #fff; 
+        border-bottom: 1px solid var(--gray-200); 
+        display: flex; 
+        align-items: center; 
+        justify-content: space-between; 
+        padding: 0 24px; 
+    }
 
-.top-right { 
-    font-size: 14px; 
-    color: var(--gray-700); 
-}
+    .top-right { 
+        font-size: 14px; 
+        color: var(--gray-700); 
+    }
 
-.content {
-    margin-left: 220px;  /* sama seperti lebar sidebar */
-    padding-top: 100px;
-    transform: scale(0.8);
-    transform-origin: top left;
-    width: calc((100% - 220px) / 0.8); 
-    margin-top: -110px !important; /* opsional kalau memang dibutuhkan */
-}
+    .content {
+        margin-left: 220px;
+        padding-top: 100px;
+        transform: scale(0.8);
+        transform-origin: top left;
+        width: calc((100% - 220px) / 0.8); 
+        margin-top: -110px !important;
+    }
 
-.hero-section-admin {
-    padding-left: 80px;
-}
+    .hero-section-admin {
+        padding-left: 80px;
+    }
 
+    .form-section {
+        padding: 20px 60px;
+    }
 
-/* ====== FORM SECTION ====== */
-.form-section {
-    padding: 20px 60px;
-}
+    .form-wrapper {
+        background: #fff;
+        border-radius: 12px;
+        padding: 30px 40px;
+        box-shadow: 0 5px 20px rgba(10, 6, 1, 0.15);
+        border: 1px solid #ddd;
+    }
 
-.form-wrapper {
-    background: #fff;
-    border-radius: 12px;
-    padding: 30px 40px;
-    box-shadow: 0 5px 20px rgba(10, 6, 1, 0.15);
-    border: 1px solid #ddd;
-}
+    .form-add label {
+        font-family: var(--font-body);
+        font-size: 16px;
+        font-weight: 600;
+        margin-bottom: 6px;
+        display: block;
+        color: #000;
+    }
 
+    .form-add input,
+    .form-add textarea,
+    .form-add select {
+        width: 100%;
+        padding: 12px 15px;
+        border-radius: 8px;
+        border: 1px solid #999;
+        font-size: 13px;
+        font-family: var(--font-body);
+        color: #000;
+        background: #f9f9f9;
+        outline: none;
+        margin-bottom: 22px;
+    }
 
-/* ====== FORM ELEMENTS ====== */
-.form-add label {
-    font-family: var(--font-body);
-    font-size: 16px;
-    font-weight: 600;
-    margin-bottom: 6px;
-    display: block;
-    color: #000;
-}
+    .form-add input:focus,
+    .form-add textarea:focus {
+        border-color: var(--secondary);
+        box-shadow: 0 0 4px rgba(255, 184, 77, 0.6);
+    }
 
-.form-add input,
-.form-add textarea,
-.form-add select {
-    width: 100%;
-    padding: 12px 15px;
-    border-radius: 8px;
-    border: 1px solid #999;
-    font-size: 13px;
-    font-family: var(--font-body);
-    color: #000;
-    background: #f9f9f9;
-    outline: none;
-    margin-bottom: 22px;
-}
+    .form-add textarea {
+        resize: vertical;
+    }
 
-.form-add input:focus,
-.form-add textarea:focus {
-    border-color: var(--secondary);
-    box-shadow: 0 0 4px rgba(255, 184, 77, 0.6);
-}
+    .btn-submit {
+        background: var(--secondary);
+        color: #000;
+        border: none;
+        padding: 14px 40px;
+        border-radius: 8px;
+        font-weight: 700;
+        font-size: 16px;
+        cursor: pointer;
+        box-shadow: 0 3px 10px rgba(255, 184, 77, 0.3);
+        transition: 0.3s ease;
+    }
 
-.form-add textarea {
-    resize: vertical;
-}
+    .btn-submit:hover {
+        background: #FF9A3D;
+        transform: translateY(-2px);
+    }
 
+    .btn-cancel {
+        margin-left: 12px;
+        padding: 12px 30px;
+        background: #e0e0e0;
+        color: #000;
+        border-radius: 8px;
+        font-size: 16px;
+        text-decoration: none;
+        font-family: var(--font-body);
+        transition: 0.2s;
+    }
 
-/* ====== BUTTONS ====== */
-.btn-submit {
-    background: var(--secondary);
-    color: #000;
-    border: none;
-    padding: 14px 40px;
-    border-radius: 8px;
-    font-weight: 700;
-    font-size: 16px;
-    cursor: pointer;
-    box-shadow: 0 3px 10px rgba(255, 184, 77, 0.3);
-    transition: 0.3s ease;
-}
-
-.btn-submit:hover {
-    background: #FF9A3D;
-    transform: translateY(-2px);
-}
-
-.btn-cancel {
-    margin-left: 12px;
-    padding: 12px 30px;
-    background: #e0e0e0;
-    color: #000;
-    border-radius: 8px;
-    font-size: 16px;
-    text-decoration: none;
-    font-family: var(--font-body);
-    transition: 0.2s;
-}
-
-.btn-cancel:hover {
-    background: #ccc;
-}
+    .btn-cancel:hover {
+        background: #ccc;
+    }
 
 </style>
 </head>

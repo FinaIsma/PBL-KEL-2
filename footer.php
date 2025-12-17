@@ -18,7 +18,6 @@
                 yang berfokus pada pengembangan kompetensi jaringan komputer dan keamanan siber.
             </p>
 
-            <!-- Bullet list with proper icons -->
             <ul class="footer-bullets">
                 <li><i class="fa-solid fa-location-dot"></i> Jl. Soekarno Hatta No.9, Jatimulyo, Kec. Lowokwaru, <br>Kota Malang, Jawa Timur 65141</li>
                 <li><i class="fa-solid fa-phone"></i> +62 812 3456 7890</li>

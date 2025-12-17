@@ -24,7 +24,6 @@ if (isset($_GET['delete_id'])) {
     }
 }
 
-// Ambil data
 try {
     $stmt = $db->query("SELECT * FROM peta_jalan ORDER BY peta_id ASC");
     $petaJalan = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -39,7 +38,6 @@ try {
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Peta Jalan</title>
 
-<!-- STYLE SAMA DENGAN HALAMAN TABEL LAIN -->
 <link rel="stylesheet" href="assets/css/base.css">
 <link rel="stylesheet" href="assets/css/utils.css">
 <link rel="stylesheet" href="assets/css/components.css">
@@ -58,8 +56,8 @@ try {
 <main class="content">
 
     <div class="top-bar-page">
-        <a href="javascript:void(0)" class="btn-back" onclick="history.back()">
-                <i class="fa-solid fa-arrow-left"></i>
+        <a href="petaJalanAdmin.php" class="btn-back">
+            <i class="fa-solid fa-arrow-left"></i>
         </a>
 
         <div class="title-container">

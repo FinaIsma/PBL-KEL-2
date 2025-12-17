@@ -5,14 +5,13 @@ const itemWidth = 260;
 const gap = 35;
 const step = itemWidth + gap;
 
-let index = 0; // index item paling kiri dari 3 tampilan
-
+let index = 0;
 function updateCarousel() {
     track.style.transform = `translateX(${-index * step}px)`;
 
     items.forEach(item => item.classList.remove("center"));
 
-    const centerIndex = index + 1; // item kedua dari 3 tampilan
+    const centerIndex = index + 1;
     if (items[centerIndex]) {
         items[centerIndex].classList.add("center");
     }

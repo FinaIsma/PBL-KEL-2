@@ -92,9 +92,6 @@ $misi        = $profil['misi'] ?? ['isi' => ''];
                             <a href="" target="_blank" class="btn">SIMTA JTI</a>
                             <a href="https://jti.polinema.ac.id" target="_blank" class="btn">JTI Polinema</a> 
                         </div>
-                        <div class="btn-simpan-wrapper">
-                            <a class="btn-simpan">Simpan</a>
-                        </div>
                     </div>
                 </div>
             </section>
@@ -122,14 +119,12 @@ $misi        = $profil['misi'] ?? ['isi' => ''];
                     <div class="card-misi">
                         <h3 class="text-center">Misi</h3>
                         <ul>
-<?php foreach ($misiList as $misi): ?>
-    <li><?= htmlspecialchars($misi['isi']) ?></li>
-<?php endforeach; ?>
-</ul>
-
+                            <?php foreach ($misiList as $misi): ?>
+                                <li><?= htmlspecialchars($misi['isi']) ?></li>
+                                <?php endforeach; ?>
+                            </ul>
                     </div>
                 </div>
-                <a class="btn-simpan2">Simpan</a>
             </section>
 
             <section class="pengelolaLab">
@@ -163,8 +158,7 @@ $misi        = $profil['misi'] ?? ['isi' => ''];
 
     <script src="assets/js/sidebarHeader.js"></script>
     <script>
-  // ambil role dari session, default admin kalau tidak ada
-  window.userRole = '<?= $_SESSION['role'] ?? "admin" ?>';
+    window.userRole = '<?= $_SESSION['role'] ?? "admin" ?>';
 </script>
 <script type="module" src="assets/js/main.js"></script>
 </body>

@@ -84,9 +84,6 @@ try {
             </div>
         </div>
 
-        <!-- BAGIAN KANAN -->
-        <div class="event-right">
-            <!-- AUTO GENERATE PDF THUMBNAIL -->
             <div class="arsip-thumbnail">
                 <canvas
                     class="pdf-thumb"
@@ -101,7 +98,6 @@ try {
             </a>
         </div>
 
-        <!-- PREVIEW PDF BESAR -->
         <div class="event-image-large">
             <iframe
                 src="upload/<?= htmlspecialchars($data['file_path']); ?>"
@@ -114,7 +110,6 @@ try {
     </div>
 </div>
 
-<!-- SCRIPT GENERATE PDF THUMBNAIL -->
 <script>
 pdfjsLib.GlobalWorkerOptions.workerSrc =
 "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js";

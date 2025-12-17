@@ -45,7 +45,7 @@ if (isset($_GET['delete_id'])) {
 
     <main class="content">
         <div class="top-bar-page">
-            <a href="javascript:void(0)" class="btn-back" onclick="history.back()">
+            <a href="profil-admin.php" class="btn-back">
                 <i class="fa-solid fa-arrow-left"></i>
             </a>
 
@@ -79,11 +79,11 @@ if (isset($_GET['delete_id'])) {
                     </tr>
                 </thead>
                 <tbody id="table-body">
-<?php
-$result = pg_query($conn, "SELECT * FROM profil ORDER BY profil_id ASC");
-$no = 1;
-while ($row = pg_fetch_assoc($result)):
-?>
+    <?php
+    $result = pg_query($conn, "SELECT * FROM profil ORDER BY profil_id ASC");
+    $no = 1;
+    while ($row = pg_fetch_assoc($result)):
+    ?>
 <tr>
     <td><?= $no++ ?></td>
     <td><?= htmlspecialchars($row['kategori']) ?></td>

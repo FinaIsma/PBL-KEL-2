@@ -38,15 +38,13 @@ if (isset($_GET['delete_id'])) {
 </head>
 
 <body>
-
-    <!-- EXACT SAMA REFERENSI -->
     <div id="header"></div>
     <div id="sidebar"></div>
 
     <main class="content">
 
         <div class="top-bar-page">
-            <a href="javascript:void(0)" class="btn-back" onclick="history.back()">
+            <a href="layanan-admin.php" class="btn-back">
                 <i class="fa-solid fa-arrow-left"></i>
             </a>
 

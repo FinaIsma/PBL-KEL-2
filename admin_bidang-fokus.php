@@ -29,8 +29,6 @@ function pathGambar($gambar) {
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Bidang Fokus</title>
-    
-  <!-- CSS Lokal -->
   <link rel="stylesheet" href="assets/css/base.css">
   <link rel="stylesheet" href="assets/css/pages/navbar.css">
   <link rel="stylesheet" href="assets/css/pages/sidebarr.css">
@@ -39,13 +37,9 @@ function pathGambar($gambar) {
 
 </head>
 <body>
-   <!-- Detail Header -->
   <div id="header">
     </div>
     <div id="sidebar"></div>
-    
-    <!-- Main Content -->
-    
     <div class="hero-section-admin">
   <h1>Bidang Fokus</h1>
 </div>
@@ -57,13 +51,10 @@ function pathGambar($gambar) {
             <div class="focus-image"><img src="<?= htmlspecialchars(pathGambar($row['gambar'])) ?>"
          alt="<?= htmlspecialchars($row['judul']) ?>"></div>
 
-                    
-                    <!-- Konten -->
                     <div class="focus-content">
                         <h2><?= htmlspecialchars($row['judul']) ?></h2>
                         <div class="paragraph-btn-wrapper">
                             <p><?= htmlspecialchars(substr($row['deskripsi'], 0, 120)) ?>...</p>
-                            <!-- Detail link -->
                         </div>
                     </div>
                 </div>
@@ -71,13 +62,11 @@ function pathGambar($gambar) {
         <?php else: ?>
         <?php endif; ?>
 
-        <!-- Back to List Button -->
         <div class="back-to-list">
           <a href="tabelBidang.php" class="back-list-btn">Kelola</a>
         </div>
     </main>
-    
-  <!-- Load Header & Sidebar JS -->
+
   <script src="assets/js/sidebarHeader.js"></script>
   <script type="module" src="assets/js/main.js"></script>
 

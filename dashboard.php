@@ -15,7 +15,6 @@ try {
     die("Error DB: " . $e->getMessage());
 }
 
-// HITUNG JUMLAH DATA
 try {
     $count_pengelola = $db->query("SELECT COUNT(*) FROM pengelola_lab")->fetchColumn();
     $count_fokus = $db->query("SELECT COUNT(*) FROM bidang_fokus")->fetchColumn();
@@ -132,7 +131,6 @@ try {
                     <thead>
                         <tr>
                             <th>ID</th>
-                            <th>Gambar</th>
                             <th>Jabatan</th>
                             <th>Nama</th>
                             <th>Kontak</th>
@@ -142,16 +140,6 @@ try {
     <?php foreach ($pengelola as $row): ?>
         <tr>
             <td><?= $row['pengelola_id'] ?></td>
-
-            <td>
-                <?php if (!empty($row['foto'])): ?>
-                    <img src="uploads/pengelola/<?=$row['foto']?>" 
-                         alt="Foto" >
-                         <!-- style="width:55px; height:55px; object-fit:cover; border-radius:6px;"-->
-                <?php else: ?>
-                    <div class="img-placeholder"></div>
-                <?php endif; ?>
-            </td>
 
             <td><?= $row['jabatan'] ?></td>
             <td><?= $row['nama'] ?></td>

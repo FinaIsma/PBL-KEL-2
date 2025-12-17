@@ -10,7 +10,6 @@ require_once "backend/config.php";
 $showConfirm = false;
 $confirmData = null;
 
-/* ===== AMBIL DATA UNTUK MODAL HAPUS ===== */
 if (isset($_GET['delete_id'])) {
     $delete_id = (int) $_GET['delete_id'];
 
@@ -25,7 +24,6 @@ if (isset($_GET['delete_id'])) {
     }
 }
 
-/* ===== AMBIL SEMUA DATA ===== */
 $stmt = $db->prepare("SELECT * FROM bidang_fokus ORDER BY bidangfokus_id ASC");
 $stmt->execute();
 $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -67,8 +65,8 @@ $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
 <main class="content">
 
     <div class="top-bar-page">
-        <a href="javascript:void(0)" class="btn-back" onclick="history.back()">
-                <i class="fa-solid fa-arrow-left"></i>
+        <a href="admin_bidang-fokus.php" class="btn-back">
+            <i class="fa-solid fa-arrow-left"></i>
         </a>
 
         <div class="title-container">
@@ -133,7 +131,7 @@ $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
     </div>
 
     <div class="btn-save-wrapper">
-        <a href="admin_detail-bidang.php" class="btn-save">Simpan</a>
+        <a href="admin_bidang-fokus.php" class="btn-save">Simpan</a>
     </div>
 
 </main>

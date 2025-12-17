@@ -5,23 +5,32 @@ document.addEventListener("DOMContentLoaded", () => {
             document.getElementById("navbar-placeholder").innerHTML = data;
 
             const currentPage = window.location.pathname.split("/").pop();
-            const links = document.querySelectorAll(".nav-menu a");
-
-            links.forEach(link => {
+            document.querySelectorAll(".nav-menu a").forEach(link => {
                 if (link.getAttribute("href") === currentPage) {
                     link.classList.add("active");
                 }
             });
+
+            const navToggle = document.getElementById("navToggle");
+            const navMenu = document.querySelector(".nav-menu");
+
+            navToggle.addEventListener("click", () => {
+                navMenu.classList.toggle("active");
+            });
+
+            document.querySelectorAll(".dropdown-btn").forEach(btn => {
+                btn.addEventListener("click", () => {
+                    btn.parentElement.classList.toggle("active");
+                });
+            });
+
+            const navbar = document.querySelector(".navbar");
+            window.addEventListener("scroll", () => {
+                if (window.scrollY > 10) {
+                    navbar.classList.add("scrolled");
+                } else {
+                    navbar.classList.remove("scrolled");
+                }
+            });
         });
-});
-
-
-window.addEventListener("scroll", function () {
-    const navbar = document.querySelector(".navbar");
-
-    if (window.scrollY > 10) {
-        navbar.classList.add("scrolled");
-    } else {
-        navbar.classList.remove("scrolled");
-    }
 });

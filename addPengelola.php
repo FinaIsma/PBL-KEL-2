@@ -189,7 +189,7 @@ main, .content { margin-top: 100px; }
                 <input type="text" name="kontak" required>
 
                 <label>Foto</label>
-                <input type="file" name="foto" accept="image/*">
+                <input type="file" name="foto" accept="image/*" required>
 
                 <button type="submit" class="btn-submit">Simpan</button>
                 <a href="tabelPengelola.php" class="btn-cancel">Batal</a>

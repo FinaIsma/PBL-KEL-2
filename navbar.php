@@ -16,7 +16,6 @@
 
             <li class="dropdown">
                 <span class="dropdown-btn">Riset & Kegiatan ▾</span>
-
                 <ul class="dropdown-menu">
                     <li><a href="bidang-fokus.php">Bidang Fokus</a></li>
                     <li><a href="petaJalan.php">Peta Jalan</a></li>
@@ -27,6 +26,8 @@
             <li><a href="layanan.php">Layanan</a></li>
             <li><a href="galeri.php">Galeri</a></li>
         </ul>
+
+        <div class="nav-toggle" id="navToggle">⋮</div>
 
     </div>
 </nav>

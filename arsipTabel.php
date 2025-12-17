@@ -10,7 +10,6 @@ include("backend/config.php");
 $showConfirm = false;
 $confirmData = null;
 
-/* ===== MODAL KONFIRMASI HAPUS ===== */
 if (isset($_GET['delete_id'])) {
     $delete_id = (int) $_GET['delete_id'];
 
@@ -30,7 +29,6 @@ if (isset($_GET['delete_id'])) {
     }
 }
 
-/* ===== SEARCH ===== */
 $search = $_GET['search'] ?? "";
 
 try {
@@ -100,7 +98,7 @@ try {
 
     <div class="top-bar-page">
 
-        <a href="javascript:void(0)" class="btn-back" onclick="history.back()">
+        <a href="arsipAdmin.php" class="btn-back">
                 <i class="fa-solid fa-arrow-left"></i>
         </a>
 
@@ -201,8 +199,6 @@ try {
 
 <script src="assets/js/sidebarHeader.js"></script>
 <script type="module" src="assets/js/main.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
-
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
 
 <script>

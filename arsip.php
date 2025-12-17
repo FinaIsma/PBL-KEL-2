@@ -1,34 +1,28 @@
 <?php
 require_once __DIR__ . "/backend/config.php";
 
-// ==== PAGINATION SETTING ====
 $limit  = 2;
 $page   = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 $offset = ($page - 1) * $limit;
 
-// ===== BUILD QUERY DINAMIS =====
 $where  = [];
 $params = [];
 
-// Filter kategori
 if (!empty($_GET['kategori'])) {
     $where[] = "kategori = :kategori";
     $params[':kategori'] = $_GET['kategori'];
 }
 
-// Search
 if (!empty($_GET['search'])) {
     $where[] = "(judul ILIKE :search OR deskripsi ILIKE :search)";
     $params[':search'] = "%" . $_GET['search'] . "%";
 }
 
-// Gabungkan WHERE
 $whereSQL = "";
 if (!empty($where)) {
     $whereSQL = "WHERE " . implode(" AND ", $where);
 }
 
-// QUERY TOTAL DATA
 $countQuery = "SELECT COUNT(*) FROM arsip $whereSQL";
 $stmtCount  = $db->prepare($countQuery);
 $stmtCount->execute($params);
@@ -36,7 +30,6 @@ $stmtCount->execute($params);
 $totalData  = $stmtCount->fetchColumn();
 $totalPages = ceil($totalData / $limit);
 
-// QUERY DATA
 $query = "
     SELECT * FROM arsip
     $whereSQL
@@ -46,12 +39,10 @@ $query = "
 
 $stmt = $db->prepare($query);
 
-// bind parameter filter
 foreach ($params as $key => $val) {
     $stmt->bindValue($key, $val);
 }
 
-// bind limit & offset (HARUS integer)
 $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
 $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
 
@@ -70,8 +61,6 @@ $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <link rel="stylesheet" href="assets/css/pages/arsip.css">
     <link rel="stylesheet" href="assets/css/pages/footer.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-
-    <!-- PDF.JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
 
     <title>Arsip</title>
@@ -79,7 +68,6 @@ $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 <body>
 
-<!-- NAVBAR -->
 <div id="navbar-placeholder"></div>
 <script src="assets/js/navbar.js"></script>
 
@@ -91,7 +79,6 @@ $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 <section class="section" id="arsip">
 <div class="arsip-container">
 
-    <!-- FILTER + SEARCH -->
     <div class="arsip-controls mb-5">
         <div class="d-flex gap-2">
             <a href="arsip.php" class="btn-filter active">Semua</a>
@@ -111,7 +98,6 @@ $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
         </div>
     </div>
 
-    <!-- LIST -->
     <div class="arsip-list">
 
         <?php if ($totalData == 0): ?>
@@ -139,7 +125,6 @@ $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 </div>
 
                 <div class="arsip-side">
-                    <!-- AUTO PDF THUMBNAIL -->
                     <div class="arsip-thumbnail">
                         <canvas
                             class="pdf-thumb"
@@ -183,8 +168,7 @@ $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 <script src="assets/js/footer.js"></script>
 
 <script>
-pdfjsLib.GlobalWorkerOptions.workerSrc =
-"https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js";
+pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js";
 
 document.querySelectorAll(".pdf-thumb").forEach(canvas => {
     const pdfUrl = canvas.dataset.pdf;

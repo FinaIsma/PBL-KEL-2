@@ -4,13 +4,12 @@ if (!isset($_SESSION['logged_in'])) {
     header("Location: login.php");
     exit;
 }
-require_once "backend/config.php"; // ini harus berisi $db (PDO)
+require_once "backend/config.php";
 
 $search = $_GET['search'] ?? '';
 
 try {
     if ($search !== '') {
-        // Pakai prepared statement biar aman
         $sql = "
             SELECT * 
             FROM peta_jalan

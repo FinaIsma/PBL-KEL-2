@@ -26,7 +26,6 @@ if (isset($_GET['delete_id'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sarana & Prasarana</title>
 
-    <!-- FIXED PATH — SAMA DENGAN REFERENSI -->
     <link rel="stylesheet" href="assets/css/base.css">
     <link rel="stylesheet" href="assets/css/utils.css">
     <link rel="stylesheet" href="assets/css/components.css">
@@ -43,10 +42,8 @@ if (isset($_GET['delete_id'])) {
         <div id="sidebar"></div>
 
     <main class="content">
-
-        <!-- TOP BAR -->
         <div class="top-bar-page">
-            <a href="javascript:void(0)" class="btn-back" onclick="history.back()">
+            <a href="layanan-admin.php" class="btn-back">
                 <i class="fa-solid fa-arrow-left"></i>
             </a>
 

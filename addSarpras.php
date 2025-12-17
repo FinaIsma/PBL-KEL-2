@@ -2,7 +2,6 @@
 session_start();
 require_once "db.php";
 
-/* ===== CEK LOGIN ===== */
 if (!isset($_SESSION['logged_in']) || !isset($_SESSION['user_id'])) {
     header("Location: login.php");
     exit;
@@ -17,7 +16,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $deskripsi = trim($_POST['deskripsi']);
     $editor    = $_SESSION['user_id'];
 
-    /* ===== UPLOAD GAMBAR SAJA ===== */
     if (!empty($_FILES['media']['name'])) {
 
         if ($_FILES['media']['error'] === UPLOAD_ERR_OK) {
@@ -51,7 +49,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $error = "Gambar wajib diupload!";
     }
 
-    /* ===== INSERT DATABASE ===== */
     if ($error === "") {
 
         $sql = "
